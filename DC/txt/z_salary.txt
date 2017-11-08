@@ -1580,3 +1580,181 @@ BEGIN
 drop table #tmpa
 END ;
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+z_salary_nv6:--z_salary_nv6
+declare @t_xmon nvarchar(20)
+declare @t_xkind nvarchar(20)
+declare @t_bsssno nvarchar(20)
+declare @t_esssno nvarchar(20)
+set @t_xmon = case when '#non' = [1] then '' else [1] end
+set @t_xkind = case when '#non' = [3] then '' else [3] end
+set @t_bsssno = case when '#non' = [4] then '' else [4] end
+set @t_esssno = case when '#non' = [5] then CHAR(255) else [5] end
+--**************************************************************
+declare @tmp table( 
+	gno nvarchar(1), 
+	noa nvarchar(30), 
+	noq nvarchar(20), 
+	cno nvarchar(20), 
+	acomp nvarchar(MAX), 
+	sno nvarchar(20), 
+	namea nvarchar(50), 
+	indate nvarchar(10), 
+	ft_date nvarchar(10), 
+	outdate nvarchar(10),
+	moneys int, 
+	pubmoney int, 
+	bo_admins int, 
+	bo_traffic int, 
+	bo_special int, 
+	bo_oth int, 
+	total1 int, 
+	ch_labor1 int, 
+	ch_labor2 int, 
+	ich_health int, 
+	mi_sailday int, 
+	mi_total int, 
+	bo_full int, 
+	tax_other int, 
+	total2 int, 
+	addh2_1 float, 
+	addh2_2 float, 
+	addmoney int, 
+	tax_other2 int, 
+	total3 int, 
+	borrow int, 
+	ch_labor int, 
+	chla_comp int, 
+	chla_self int, 
+	hplus float,
+	lopofee int, 
+	tax int, 
+	tax5 int, 
+	welfare int, 
+	ch_health int, 
+	total4 int, 
+	total5 int, 
+	monkind nvarchar(20), 
+	mon nvarchar(10), 
+	minus int, 
+	plus int, 
+	plusitem nvarchar(max), 
+	minusitem nvarchar(max), 
+	plusmemo nvarchar(max), 
+	minusmemo nvarchar(max), 
+	bomemo nvarchar(max),
+	itemnoq int,
+	vasph float
+) 
+insert into @tmp 
+select '0' gno, a.noa,b.noq,c.cno,isnull((select top 1 acomp from acomp where noa=c.cno),''),
+b.sno,b.namea,c.indate,c.ft_date,c.outdate,b.money,b.pubmoney,b.bo_admin,b.bo_traffic,b.bo_special, 
+b.bo_oth,b.total1,b.ch_labor1,b.ch_labor2,b.ch_health_insure,b.mi_saliday,b.mi_total,b.bo_full,b.tax_other,b.total2,b.addh2_1,b.addh2_2, 
+b.addmoney,b.tax_other2,b.total3,b.borrow,b.ch_labor,b.ch_labor_comp,b.ch_labor_self,isnull(b.hplus2,0),b.lodging_power_fee,b.tax,b.tax5, 
+b.welfare,b.ch_health,b.total4,b.total5,a.monkind,a.mon,isnull(b.minus,0),isnull(b.plus,0), 
+(select plusitem from (select sssno,STUFF((select ','+T4.item from salchg T2 left join salchgitem T4 on T2.plusitem=T4.noa where T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')plusitem from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
+(select minusitem from (select sssno,STUFF((select ','+T4.item from salchg T2 left join salchgitem T4 on T2.minusitem=T4.noa where T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')minusitem from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
+(select plusmemo from (select sssno,STUFF((select ','+T2.memo from salchg T2 where plusitem!='' and minusitem='' and T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')plusmemo from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
+(select minusmemo from (select sssno,STUFF((select ','+T2.memo from salchg T2 where plusitem='' and minusitem!='' and T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')minusmemo from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
+(select top 1 memo from saladjust where noa=b.sno order by noq desc),0
+,(select top 1 total from salvacas where sssno=c.noa and noa=left(a.mon,len(noa)))
+from salary a 
+left join salarys b on a.noa = b.noa 
+left join sss c on b.sno = c.noa 
+where (LEN(@t_xmon) = 0 or @t_xmon = a.mon) and 
+(LEN(@t_xkind) = 0 or @t_xkind = a.monkind) and 
+(b.sno between @t_bsssno and @t_esssno) and 
+(a.person = '本國') 
+
+--gno=1
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
+select '1' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp where gno='0'
+
+--加項
+--gno=2
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph,itemnoq)
+select '2' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outdate,a.moneys,a.pubmoney,a.bo_admins,a.bo_traffic,a.bo_special,a.bo_oth,a.total1,a.ch_labor1,a.ch_labor2,a.ich_health,a.mi_sailday,a.mi_total,a.bo_full,a.tax_other,a.total2,a.addh2_1,a.addh2_2,a.addmoney,a.tax_other2,a.total3,a.borrow,a.ch_labor,a.chla_comp,a.chla_self,a.hplus,a.lopofee,a.tax,a.tax5,a.welfare,a.ch_health,a.total4,a.total5,a.monkind,a.mon
+,a.minus,b.plus,c.item,a.minusitem,b.memo,a.minusmemo,a.bomemo,a.vasph
+,ROW_NUMBER()over(partition by a.noq order by b.noa) from @tmp a 
+left join salchg b on a.sno=b.sssno and a.mon=b.mon left join salchgitem c on b.plusitem=c.noa
+where a.gno='0' and isnull(b.plusitem,'')!=''
+
+--gno=3
+update a
+set gno=case when a.itemnoq=b.maxitemnoq then '3' else gno end
+from @tmp a 
+outer apply (select MAX(itemnoq)maxitemnoq from @tmp where noa=a.noa and noq=a.noq)b
+where gno='2'
+
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
+select '3' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp a
+where gno='0' and not exists (select * from @tmp where noa=a.noa and noq=a.noq and (gno='2' or gno='3'))
+
+--gno=4
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
+select '4' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp where gno='0'
+
+--減項
+--gno=5
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph,itemnoq)
+select '5' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outdate,a.moneys,a.pubmoney,a.bo_admins,a.bo_traffic,a.bo_special,a.bo_oth,a.total1,a.ch_labor1,a.ch_labor2,a.ich_health,a.mi_sailday,a.mi_total,a.bo_full,a.tax_other,a.total2,a.addh2_1,a.addh2_2,a.addmoney,a.tax_other2,a.total3,a.borrow,a.ch_labor,a.chla_comp,a.chla_self,a.hplus,a.lopofee,a.tax,a.tax5,a.welfare,a.ch_health,a.total4,a.total5,a.monkind,a.mon
+,b.minus,a.plus,a.plusitem,c.item,a.plusmemo,b.memo,a.bomemo,a.vasph 
+,ROW_NUMBER()over(partition by a.noq order by b.noa) from @tmp a 
+left join salchg b on a.sno=b.sssno and a.mon=b.mon left join salchgitem c on b.minusitem=c.noa
+where a.gno='0' and isnull(b.minusitem,'')!=''
+
+--gno=6
+update a
+set gno=case when a.itemnoq=b.maxitemnoq then '6' else gno end
+from @tmp a 
+outer apply (select MAX(itemnoq)maxitemnoq from @tmp where noa=a.noa and noq=a.noq)b
+where gno='5'
+
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
+select '6' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp a
+where gno='0' and not exists (select * from @tmp where noa=a.noa and noq=a.noq and (gno='5' or gno='6'))
+
+--gno=7
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
+select '7' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp where gno='0'
+
+delete @tmp where gno='0'
+
+select 
+dbo.getComma(moneys,-1) moneys, 
+dbo.getComma(pubmoney,-1) pubm, 
+dbo.getComma(bo_admins,-1)boad, 
+dbo.getComma(bo_traffic,-1) botr, 
+dbo.getComma(bo_special,-1) bosp, 
+dbo.getComma(bo_oth,-1) boot, 
+dbo.getComma(total1,-1) total1, 
+dbo.getComma(ch_labor1,-1) chla, 
+dbo.getComma(ch_labor2,-1) chlb, 
+dbo.getComma(ich_health,-1) ichh, 
+dbo.getComma(mi_sailday,-1) misa, 
+dbo.getComma(mi_total,-1) mito, 
+dbo.getComma(bo_full,-1) bofu, 
+dbo.getComma(tax_other,-1) taxo, 
+dbo.getComma(total2,-1) total2, 
+dbo.getComma(addh2_1,-1) ad21, 
+dbo.getComma(addh2_2,-1) ad22, 
+dbo.getComma(addmoney,-1) addm, 
+dbo.getComma(tax_other2,-1) taxt, 
+dbo.getComma(total3,-1) total3, 
+dbo.getComma(borrow,-1) bow, 
+dbo.getComma(ch_labor,-1) chlo, 
+dbo.getComma(chla_comp,-1) chlc, 
+dbo.getComma(chla_self,-1) chls, 
+dbo.getComma(hplus,-1) hplus,
+dbo.getComma(lopofee,-1) lopo, 
+dbo.getComma(tax,-1)tax, 
+dbo.getComma(tax5,-1) tax5, 
+dbo.getComma(welfare,-1) welfare, 
+dbo.getComma(ch_health,-1) chhe, 
+dbo.getComma(total4,-1) total4, 
+dbo.getComma(total5,-1) total5,
+dbo.getComma(minus,-1) minus, 
+dbo.getComma(plus,-1) plus, 
+(select worker from salary where @t_xmon = mon and @t_xkind = monkind and person = '本國') worker 
+,*
+from @tmp order by noa,noq,gno;
+---------------------------------------------------------------------------------------
