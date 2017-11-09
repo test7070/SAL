@@ -1470,6 +1470,12 @@
 			        				q_tr('txtOstand_'+j,Math.round(((dec($('#txtMoney_'+j).val())+dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val())+dec($('#txtBo_full_'+j).val()))/inday/8)*100)/100);//加班費基數(取小數點兩位並四捨五入)
 			        			else
 			        				q_tr('txtOstand_'+j,Math.round(((dec($('#txtMoney_'+j).val())+dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val())+dec($('#txtBo_full_'+j).val()))/30/8)*100)/100);//加班費基數(取小數點兩位並四捨五入)
+		        			}else if(q_getPara('sys.project').toUpperCase()=='LN'){
+		        				//勞基法加班費基數=本俸+主管津貼+工作津貼+其他津貼+全勤+伙食費+交通津貼(必要)
+		        				if(inday>0)
+			        				q_tr('txtOstand_'+j,Math.round(((dec($('#txtMoney_'+j).val())+dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_traffic_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val())+dec($('#txtBo_full_'+j).val())+dec($('#txtMeals_'+j).val()))/inday/8)*100)/100);//加班費基數(取小數點兩位並四捨五入)
+			        			else
+			        				q_tr('txtOstand_'+j,Math.round(((dec($('#txtMoney_'+j).val())+dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_traffic_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val())+dec($('#txtBo_full_'+j).val())+dec($('#txtMeals_'+j).val()))/30/8)*100)/100);//加班費基數(取小數點兩位並四捨五入)
 		        			}else{
 		        				//勞基法加班費基數=本俸+主管津貼+工作津貼+其他津貼+全勤+伙食費
 		        				if(inday>0)
@@ -1558,10 +1564,10 @@
 					t_daymoney+=dec($('#txtDaymoney_'+j).val());//日薪
 					t_pubmoney+=dec($('#txtPubmoney_'+j).val());//公費
 					t_bo_admin+=dec($('#txtBo_admin_'+j).val())*monkind;//主管津貼
-					t_bo_traffic+=dec($('#txtBo_traffic_'+j).val()*monkind);//交通津貼
+					t_bo_traffic+=dec($('#txtBo_traffic_'+j).val())*monkind;//交通津貼
 					t_bo_full+=dec($('#txtBo_full_'+j).val());//全勤
-					t_bo_special+=dec($('#txtBo_special_'+j).val()*monkind);//特別津貼
-					t_bo_oth+=dec($('#txtBo_oth_'+j).val()*monkind);//其他津貼
+					t_bo_special+=dec($('#txtBo_special_'+j).val())*monkind;//特別津貼
+					t_bo_oth+=dec($('#txtBo_oth_'+j).val())*monkind;//其他津貼
 					t_tax_other+=dec($('#txtTax_other_'+j).val());//應稅其他
 					t_mtotal+=dec($('#txtMtotal_'+j).val());//給薪金額
 					t_mitotal+=dec($('#txtMi_total_'+j).val());//扣薪金額
