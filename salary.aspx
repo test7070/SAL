@@ -90,6 +90,10 @@
 	            $('#cmbAddsource').val('2');
 	            $('#cmbAddlimit').val('0');
 	            $('#textMon').val(q_date().substr(0,r_lenm));
+	            
+	            if(q_getPara('sys.project').toUpperCase()=='LN'){
+	            	$('#btnBank').hide();
+	            }
 				
 				$('#txtDatea').focusout(function () {
 					q_cd( $(this).val() ,$(this));
