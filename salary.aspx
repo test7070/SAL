@@ -146,8 +146,7 @@
 	            			q_getPara('sys.project').toUpperCase()=='IT' || q_getPara('sys.project').toUpperCase()=='AMD' ||
 	            			q_getPara('sys.project').toUpperCase()=='VU' || q_getPara('sys.project').toUpperCase()=='VU2' || q_getPara('sys.project').toUpperCase()=='SF' ||
 	            			q_getPara('sys.project').toUpperCase()=='XY' || q_getPara('sys.project').toUpperCase()=='RB' ||
-	            			q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS' ||
-	            			q_getPara('sys.project').toUpperCase()=='LN' //使用最基本的薪資
+	            			q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS' 
 	            		){
 	            			//LOAD 客戶
 	            			q_gt('sssr',"where=^^ '"+$('#txtMon').val()+"' between left(stopdate,"+r_lenm+") and left(dbo.q_cdn(reindate,-1),"+r_lenm+") ^^", 0, 0, 0, "sssr", r_accy);
@@ -1121,7 +1120,7 @@
 								sum();
 							}
 						});
-						$('#txtMoney2_'+j).change(function() {sum();});
+						$('#txtMoney3_'+j).change(function() {sum();});
 	            	}
 	            }
 	            _bbsAssign();
@@ -1151,6 +1150,9 @@
 	            	$('.bbsdetail').show();
 	            	$('.vuhide').hide();
 	            }else if (q_getPara('sys.project').toUpperCase()=='LN'){
+	            	$('#lblBo_admin').text('職務津貼');
+	            	$('#lblBo_admins').text('職務津貼');
+	            	$('#lblBo_oth').text('房屋津貼');
 	            	$('#lblBo_oths').text('房屋津貼');
 	            	$('#lblMoney3s').text('託櫃工資');
 	            	$('#lblMoney6s').text('團保費');
@@ -1394,8 +1396,7 @@
 	            	q_getPara('sys.project').toUpperCase()=='IT' || q_getPara('sys.project').toUpperCase()=='AMD' ||
 	            	q_getPara('sys.project').toUpperCase()=='VU' || q_getPara('sys.project').toUpperCase()=='VU2' || q_getPara('sys.project').toUpperCase()=='SF' ||
 	            	q_getPara('sys.project').toUpperCase()=='XY' || q_getPara('sys.project').toUpperCase()=='RB' ||
-	            	q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS' ||
-	            	q_getPara('sys.project').toUpperCase()=='LN' //使用最基本的薪資
+	            	q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS'
 	            ){
 	            	tload=true;
 	            }
@@ -1895,8 +1896,7 @@
 	            	q_getPara('sys.project').toUpperCase()=='IT' || q_getPara('sys.project').toUpperCase()=='AMD' ||
 	            	q_getPara('sys.project').toUpperCase()=='VU' || q_getPara('sys.project').toUpperCase()=='VU2' || q_getPara('sys.project').toUpperCase()=='SF' ||
 	            	q_getPara('sys.project').toUpperCase()=='XY' || q_getPara('sys.project').toUpperCase()=='RB' ||
-	            	q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS' ||
-	            	q_getPara('sys.project').toUpperCase()=='LN' //使用最基本的薪資
+	            	q_getPara('sys.project').toUpperCase()=='RK' || q_getPara('sys.project').toUpperCase()=='RS' 
 	            ){
 	            	tload=true;
 	            }
