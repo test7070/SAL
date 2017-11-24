@@ -178,7 +178,7 @@
 		function btnIns() {
 			_btnIns();
 			$('#txt' + bbmKey[0].substr( 0,1).toUpperCase() + bbmKey[0].substr(1)).val('AUTO');
-			$('#txtYear').val(q_date().substr(0,6));
+			$('#txtYear').val(q_date().substr(0,r_lenm));
 			$('#txtDatea').val(q_date());
 			$('#txtYear').focus();
 			table_change();
