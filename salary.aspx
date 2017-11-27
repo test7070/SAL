@@ -166,7 +166,32 @@
 				            		+t_mon+';'+t_len+';'+t_person+';'+t_monkind+';'+t_proj+';'+t_date1+';'+t_date2
 				            	);
 				            }
-	            				
+	            		}else if (q_getPara('sys.project').toUpperCase()=='LN'){
+	            			//直接匯入
+	            			getdtmp();
+			            	var t_mon=$('#txtMon').val();
+			            	var t_len=r_len;
+			            	var t_person=$('#cmbPerson').val();
+			            	var t_monkind=$('#cmbMonkind').val();
+			            	var t_proj=q_getPara('sys.project').toUpperCase();
+			            	var t_date1=date_1;
+			            	var t_date2=date_2;
+			            	var t_date3=date_3;
+			            	var t_date4=date_4;
+			            	var t_date5=q_cdn(t_date4,1);
+			            	var t_date6=q_cdn(q_cdn(t_date3,45).substr(0,r_lenm)+'/01',-1);
+			            	//'0@沒有加班時數,1@根據加班單,2@根據出勤紀錄表,3@根據出勤紀錄自訂加班時數'
+			            	var t_addselect='2';
+			            	var t_addmon=$('#txtMon').val();
+			            	//'0@無限制,1@根據calss5限制加班總時數'
+			            	var t_addlimit='0';
+			            	if(q_cur==1 || q_cur==2){
+				            	q_func('qtxt.query.salaryimport', 'salary.txt,salaryimport,' 
+				            		+t_mon+';'+t_len+';'+t_person+';'+t_monkind+';'+t_proj+';'
+				            		+t_date1+';'+t_date2+';'+t_date3+';'+t_date4+';'+t_date5+';'+t_date6+';'
+				            		+t_addselect+';'+t_addlimit+';'+t_addmon
+				            	);
+				            }
 	            		}else{
 	            			$('#textMon').val($('#txtMon').val().substr(0,r_lenm));
 	            			$('#div_select').show();
