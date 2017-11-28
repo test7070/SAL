@@ -20,8 +20,9 @@
             }
             $(document).ready(function() {
                 q_getId();
-                q_gf('', 'z_salary');
+                q_gt('acomp', '', 0, 0, 0, "");
             });
+            var t_acomp = '';
             function q_gfPost() {
                 $('#q_report').q_report({
                     fileName : 'z_salary',
@@ -58,7 +59,11 @@
                     }, {
                         type : '6',
                         name : 'xyear'
-                    }]
+                    }, {
+						type : '5',
+						name : 'xacomp',
+						value : t_acomp.split(',')
+					}]
                 });
                 q_popAssign();
                 q_getFormat();
@@ -99,7 +104,17 @@
             function q_boxClose(s2) {
             }
 
-            function q_gtPost(s2) {
+            function q_gtPost(t_name) {
+            	switch (t_name) {
+                    case 'acomp':
+                        t_acomp = ' @全部';
+                        var as = _q_appendData("acomp", "", true);
+                        for ( i = 0; i < as.length; i++) {
+                            t_acomp += (t_acomp.length > 0 ? ',' : '') + as[i].noa + '@' + as[i].acomp;
+                        }
+                        q_gf('', 'z_salary');
+                        break;
+				}
             }
 		</script>
 	</head>
@@ -107,10 +122,10 @@
 	ondragenter="event.dataTransfer.dropEffect='none'; event.stopPropagation(); event.preventDefault();"
 	ondragover="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();">
-		<div id="q_menu"></div>
+		<div id="q_menu"> </div>
 		<div style="position: absolute;top: 10px;left:50px;z-index: 1;">
 			<div id="container">
-				<div id="q_report"></div>
+				<div id="q_report"> </div>
 			</div>
 			<div class="prt" style="margin-left: -40px;">
 				<!--#include file="../inc/print_ctrl.inc"-->
