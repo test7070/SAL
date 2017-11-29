@@ -23,6 +23,7 @@ declare @tmp table(
 	meals float, --伙食
 	plus float, --其他
 	total1 float, --小計
+	total2 float, --應領金額
 	tax float, --所得稅
 	lab float, --勞保費
 	heal float, --健保費
@@ -30,16 +31,23 @@ declare @tmp table(
 	mtotal float, --事病假
 	minus float, --其他
 	total4 float, 
-	total5 float 
+	total5 float,
+	pcount float
 ) 
 insert into @tmp 
 select '0' gno,c.noa,b.partno,b.part,b.jobno,b.job,b.namea
-,b.money+b.mtotal,b.bo_traffic,b.bo_special,b.bo_admin,b.bo_full,b.bo_oth,b.money3
+,isnull(b.money,0)+isnull(b.mtotal,0),b.bo_traffic,b.bo_special,b.bo_admin,b.bo_full,b.bo_oth,b.money3
 ,case when isnull(b.addmoney,0)>0 then (round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0)) else 0 end
 ,isnull(b.addmoney,0)-(round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0))
 ,isnull(b.meals,0)
 ,isnull(b.plus,0)+isnull(b.tax_other,0)+isnull(b.tax_other2,0)
 +isnull(b.bo_born,0)+isnull(b.bo_night,0)+isnull(b.bo_duty,0)+ISNULL(b.money1,0)+ISNULL(b.money2,0)
+
+,isnull(b.bo_traffic,0)+isnull(b.bo_special,0)+isnull(b.bo_admin,0)
++isnull(b.bo_full,0)+isnull(b.bo_oth,0)+isnull(b.plus,0)+isnull(b.addmoney,0)
++isnull(b.tax_other,0)+isnull(b.tax_other2,0)
++isnull(b.bo_born,0)+isnull(b.bo_night,0)+isnull(b.bo_duty,0)+ISNULL(b.money1,0)+ISNULL(b.money2,0)+isnull(b.meals,0)
+
 ,isnull(b.money,0)+isnull(b.mtotal,0)+isnull(b.bo_traffic,0)+isnull(b.bo_special,0)+isnull(b.bo_admin,0)
 +isnull(b.bo_full,0)+isnull(b.bo_oth,0)+isnull(b.plus,0)+isnull(b.addmoney,0)
 +isnull(b.tax_other,0)+isnull(b.tax_other2,0)
@@ -56,7 +64,7 @@ select '0' gno,c.noa,b.partno,b.part,b.jobno,b.job,b.namea
 ,isnull(b.mi_person,0)+isnull(b.mi_sick,0)+isnull(b.mi_nosalary,0)+isnull(b.mi_leave,0)+isnull(b.welfare,0)
 +isnull(b.minus,0)+isnull(b.borrow,0)+isnull(b.tax,0)+isnull(b.tax5,0)+isnull(b.stay_tax,0)+isnull(b.tax12,0)+isnull(b.tax18,0)+isnull(b.lodging_power_fee,0)+isnull(b.stay_money,0)
 +isnull(b.ch_labor,0)+isnull(b.ch_labor_self,0)+isnull(b.ch_health,0)
-,b.total5
+,b.total5,0
 from salary a 
 left join salarys b on a.noa = b.noa 
 left join sss c on b.sno=c.noa
@@ -65,9 +73,14 @@ where a.mon=@t_xmon
 if((select count(*) from @tmp)>0)
 begin
 	insert into @tmp 
-	select '1' gno,'','','','','','',SUM(salary),SUM(botr),SUM(bosp),SUM(boad),SUM(bofu),sum(boot),SUM(m3),SUM(add46),SUM(add2),SUM(meals),SUM(plus),SUM(total1)
-	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),SUM(minus),sum(total4),SUM(total5) 
-	from @tmp 
+	select '1' gno,'',partno,CHAR(255),CHAR(255),CHAR(255),'',SUM(salary),SUM(botr),SUM(bosp),SUM(boad),SUM(bofu),sum(boot),SUM(m3),SUM(add46),SUM(add2),SUM(meals),SUM(plus),SUM(total1),SUM(total2)
+	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),SUM(minus),sum(total4),SUM(total5),count(*)
+	from @tmp where gno='0' group by partno
+
+	insert into @tmp 
+	select '2' gno,'',CHAR(255),CHAR(255),CHAR(255),CHAR(255),'',SUM(salary),SUM(botr),SUM(bosp),SUM(boad),SUM(bofu),sum(boot),SUM(m3),SUM(add46),SUM(add2),SUM(meals),SUM(plus),SUM(total1),SUM(total2)
+	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),SUM(minus),sum(total4),SUM(total5),count(*)
+	from @tmp where gno='0'
 end
 
 select gno,sssno,job,part,namea, 
@@ -83,6 +96,7 @@ dbo.getComma(add2,-1) add2,
 dbo.getComma(meals,-1) meals, 
 dbo.getComma(plus,-1) plus, 
 dbo.getComma(total1,-1) total1, 
+dbo.getComma(total2,-1) total2, 
 dbo.getComma(tax,-1) tax, 
 dbo.getComma(lab,-1) lab, 
 dbo.getComma(heal,-1) heal, 
@@ -91,8 +105,9 @@ dbo.getComma(mtotal,-1) mtotal,
 dbo.getComma(minus,-1) minus, 
 dbo.getComma(total4,-1) total4, 
 dbo.getComma(total5,-1) total5,
+dbo.getComma(pcount,-1) pcount,
 (select worker from salary where @t_xmon = mon ) worker 
-from @tmp order by gno,partno,jobno;
+from @tmp order by partno,gno,jobno,sssno;
 ----------------------------------------------------------------------------------------------
 z_salaryp_ln02:--z_salaryp_ln02
 declare @t_xmon nvarchar(20)
