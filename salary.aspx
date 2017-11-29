@@ -30,9 +30,9 @@
 	        var bbsMask = [];
 	        q_sqlCount = 6; brwCount = 6; brwList = []; brwNowPage = 0; brwKey = 'noa';
 	        aPop = new Array(
-	        	['textSno', 'lablSno', 'sss', 'noa,namea,partno,part', 'textSno,textNamea,textPartno,textPart', 'sss_b.aspx'],
+	        	['textSno', 'lablSno', 'sss', 'noa,namea,jobno,job,partno,part', 'textSno,textNamea,txtJobno,txtJob,textPartno,textPart', 'sss_b.aspx'],
 	        	['textPartno', 'lablPart', 'part', 'noa,part', 'textPartno,textPart', "part_b.aspx"],
-	        	['txtSno_', 'lblSno', 'sss', 'noa,namea,partno,part', 'txtSno_,txtNamea_,txtPartno_,txtPart_', 'sss_b.aspx'],
+	        	['txtSno_', 'lblSno', 'sss', 'noa,namea,jobno,job,partno,part', 'txtSno_,txtNamea_,txtJobno_,txtJob_,txtPartno_,txtPart_', 'sss_b.aspx'],
 	        	['txtPartno_', 'btnPartno_', 'part', 'noa,part', 'txtPartno_,txtPart_', "part_b.aspx"]
 	        );
 			q_desc=1;
@@ -82,7 +82,7 @@
 	            	q_cmbParse("cmbMonkind", ('').concat(new Array( '本月','上期', '下期')));
 	            }
 	            
-	            if(q_getPara('sys.project').toUpperCase()=='NV' || q_getPara('sys.project').toUpperCase()=='LN')
+	            if(q_getPara('sys.project').toUpperCase()=='NV')
 	            	q_cmbParse("cmbTypea", ('').concat(new Array('薪資','獎金')));
 	            else
 	            	q_cmbParse("cmbTypea", ('').concat(new Array('薪資')));
@@ -615,19 +615,19 @@
 						}
 						var as = _q_appendData("tmp0", "", true, true);
 						if ($('#cmbPerson').find("option:selected").text().indexOf('日薪')>-1){
-							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtDaymoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtAddmoney,txtHplus2,txtMemo2,txtPartno,txtPart,txtMeals,textIsaostand,txtOstand'
+							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtDaymoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtAddmoney,txtHplus2,txtMemo2,txtPartno,txtPart,txtJobno,txtJob,txtMeals,textIsaostand,txtOstand'
 							, as.length, as
-							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,inday,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,addmoney,hplus2,memo2,partno,part,meals,ismanua,ostand'
+							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,inday,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,addmoney,hplus2,memo2,partno,part,jobno,job,meals,ismanua,ostand'
 							, '');
 						}else if ($('#cmbPerson').find("option:selected").text().indexOf('時薪')>-1){
-							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtDaymoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtAddmoney,txtHplus2,txtMemo2,txtPartno,txtPart,txtMeals,textIsaostand,txtOstand'
+							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtDaymoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtAddmoney,txtHplus2,txtMemo2,txtPartno,txtPart,txtJobno,txtJob,txtMeals,textIsaostand,txtOstand'
 							, as.length, as
-							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,hrs,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,addmoney,hplus2,memo2,partno,part,meals,ismanua,ostand'
+							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,hrs,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,addmoney,hplus2,memo2,partno,part,jobno,job,meals,ismanua,ostand'
 							, '');
 						}else{
-							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtMoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtMi_sick,txtMi_person,txtMi_nosalary,txtMi_leave,txtAddmoney,txtHplus2,txtBo_born,txtBo_night,txtBo_duty,txtTax_other,txtMeals,txtMemo2,txtPartno,txtPart,textIsaostand,txtOstand'
+							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtMoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh200,txtAddh266,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_late,txtMi_late,txtHr_sick,txtMi_sick,txtHr_person,txtMi_person,txtHr_nosalary,txtMi_nosalary,txtHr_leave,txtMi_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtMi_sick,txtMi_person,txtMi_nosalary,txtMi_leave,txtAddmoney,txtHplus2,txtBo_born,txtBo_night,txtBo_duty,txtTax_other,txtMeals,txtMemo2,txtPartno,txtPart,txtJobno,txtJob,textIsaostand,txtOstand'
 							, as.length, as
-							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,day,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,mi_sick,mi_person,mi_nosalary,mi_leave,addmoney,hplus2,bo_born,bo_night,bo_day,tax_other,meals,memo2,partno,part,ismanua,ostand'
+							, 'sssno,namea,salary,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,day,mi_saliday,addh1,addh2,addh100,addh200,addh266,addh3,addh4,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_late,mi_late,hr_sick,mi_sick,hr_person,mi_person,hr_nosalary,mi_nosalary,hr_leave,mi_leave,memo,plus,minus,borrow,bo_full,mi_sick,mi_person,mi_nosalary,mi_leave,addmoney,hplus2,bo_born,bo_night,bo_day,tax_other,meals,memo2,partno,part,jobno,job,ismanua,ostand'
 							, '');
 						}
 						for(var j = 0; j < q_bbsCount; j++) {
@@ -3150,6 +3150,8 @@
 						<input type="button" id="btnPartno.*" style="width:1%;float:left;" value=".">
 						<input class="txt c4" id="txtPartno.*" type="text" />
 						<input class="txt c3" id="txtPart.*" type="text" />
+						<input class="txt c4" id="txtJobno.*" type="hidden" />
+						<input class="txt c3" id="txtJob.*" type="hidden" />
 					</td>
 	                <td class='hid_money'><input class="txt num c1" id="txtMoney.*" type="text" /></td>
 	                <td class='hid_daymoney'><input class="txt num c1" id="txtDaymoney.*" type="text" /></td>
@@ -3256,6 +3258,8 @@
 					<td>
 						<input class="txt c4" id="textPartno" type="text" />
 						<input class="txt c3" id="textPart" type="text" />
+						<input class="txt c4" id="textJobno" type="hidden" />
+						<input class="txt c3" id="textJob" type="hidden" />
 					</td>
 				</tr>
 				<tr>
