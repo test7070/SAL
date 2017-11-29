@@ -1,7 +1,9 @@
 ﻿z_salaryp_ln01:--z_salaryp_ln01
 declare @t_xmon nvarchar(20)
+declare @t_xnoa nvarchar(20)
 
 set @t_xmon = case when '#non' = [1] then '' else [1] end
+set @t_xnoa = case when '#non' = [12] then '' else [12] end
 
 declare @tmp table( 
 	gno nvarchar(1), 
@@ -69,6 +71,7 @@ from salary a
 left join salarys b on a.noa = b.noa 
 left join sss c on b.sno=c.noa
 where a.mon=@t_xmon
+and (len(@t_xnoa)=0 or a.noa=@t_xnoa)
 
 if((select count(*) from @tmp)>0)
 begin
@@ -106,16 +109,18 @@ dbo.getComma(minus,-1) minus,
 dbo.getComma(total4,-1) total4, 
 dbo.getComma(total5,-1) total5,
 dbo.getComma(pcount,-1) pcount,
-(select worker from salary where @t_xmon = mon ) worker 
+(select top 1 worker from salary where @t_xmon = mon and (len(@t_xnoa)=0 or noa=@t_xnoa) ) worker 
 from @tmp order by partno,gno,jobno,sssno;
 ----------------------------------------------------------------------------------------------
 z_salaryp_ln02:--z_salaryp_ln02
 declare @t_xmon nvarchar(20)
 declare @t_bsssno nvarchar(20)
 declare @t_esssno nvarchar(20)
+declare @t_xnoa nvarchar(20)
 set @t_xmon = case when '#non' = [1] then '' else [1] end
 set @t_bsssno = case when '#non' = [4] then '' else [4] end
 set @t_esssno = case when '#non' = [5] then CHAR(255) else [5] end
+set @t_xnoa = case when '#non' = [12] then '' else [12] end
 --**************************************************************
 declare @tmp table( 
 	gno nvarchar(1), 
@@ -184,7 +189,7 @@ left join salarys b on a.noa = b.noa
 left join sss c on b.sno = c.noa 
 where (LEN(@t_xmon) = 0 or @t_xmon = a.mon) and 
 (b.sno between @t_bsssno and @t_esssno) and 
-(a.person = '本國') 
+(a.person = '本國') and (len(@t_xnoa)=0 or a.noa=@t_xnoa)
 
 select gno,noa,noq,sno,namea,indate,ft_date, (case when plusitem!='' then '('+plusitem+')' else '' end) plusitem, (case when minusitem!='' then '('+minusitem+')' else '' end) minusitem, (case when bomemo!='' then '('+bomemo+')' else '' end) bomemo, 
 dbo.getComma(moneys,-1) moneys, 
@@ -221,7 +226,7 @@ dbo.getComma(total4,-1) total4,
 dbo.getComma(total5,-1) total5,mon,monkind, 
 dbo.getComma(minus,-1) minus, 
 dbo.getComma(plus,-1) plus, 
-(select worker from salary where @t_xmon = mon and person = '本國') worker 
+(select top 1 worker from salary where @t_xmon = mon  and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker 
 ,plusmemo,minusmemo
 ,dbo.getComma(m3,-1) m3
 ,dbo.getComma(m6,-1) m6
@@ -273,10 +278,13 @@ declare @t_xmon nvarchar(20)
 declare @t_bsssno nvarchar(20)
 declare @t_esssno nvarchar(20)
 declare @t_order nvarchar(20)
+declare @t_xnoa nvarchar(20)
+
 set @t_xmon = case when '#non' = [1] then '' else [1] end
 set @t_bsssno = case when '#non' = [4] then '' else [4] end
 set @t_esssno = case when '#non' = [5] then CHAR(255) else [5] end
 set @t_order = case when '#non' = [11] then '' else [11] end
+set @t_xnoa = case when '#non' = [12] then '' else [12] end
 
 declare @tmp table(
 		gno nvarchar(1),
@@ -302,6 +310,7 @@ left join sss c on b.sno = c.noa
 where (LEN(@t_xmon) = 0 or @t_xmon = a.mon) and 
 (b.sno between @t_bsssno and @t_esssno) and 
 (a.person = '本國') 
+and (len(@t_xnoa)=0 or a.noa=@t_xnoa)
 
 if((select count(*) from @tmp)>0)
 begin
@@ -322,7 +331,7 @@ select gno,noq,mon,namea,account,sssno,part,job,
 dbo.getComma(total3,-1) total3,
 dbo.getComma(total4,-1) total4,
 dbo.getComma(total5,-1) total5,
-(select worker from salary where @t_xmon = mon and person = '本國') worker
+(select top 1 worker from salary where @t_xmon = mon and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker
 from @tmp order by gno,partno,jobno
 
 if(@t_order='員工編號')
@@ -330,7 +339,7 @@ select gno,noq,mon,namea,account,sssno,part,job,
 dbo.getComma(total3,-1) total3,
 dbo.getComma(total4,-1) total4,
 dbo.getComma(total5,-1) total5,
-(select worker from salary where @t_xmon = mon and person = '本國') worker
+(select top 1 worker from salary where @t_xmon = mon and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker
 from @tmp order by gno,noa
 
 if(@t_order='帳號')
@@ -338,7 +347,7 @@ select gno,noq,mon,namea,account,sssno,part,job,
 dbo.getComma(total3,-1) total3,
 dbo.getComma(total4,-1) total4,
 dbo.getComma(total5,-1) total5,
-(select worker from salary where @t_xmon = mon and person = '本國') worker
+(select top 1 worker from salary where @t_xmon = mon and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker
 from @tmp order by gno,account
 
 if(@t_order='金額')
@@ -346,7 +355,7 @@ select gno,noq,mon,namea,account,sssno,part,job,
 dbo.getComma(total3,-1) total3,
 dbo.getComma(total4,-1) total4,
 dbo.getComma(total5,-1) total5,
-(select worker from salary where @t_xmon = mon and person = '本國') worker
+(select top 1 worker from salary where @t_xmon = mon and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker
 from @tmp order by gno,cast(total5 as int) desc;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -395,7 +404,7 @@ declare @list table(
 insert into @list (recno,namea,list) values(1,'本俸','b.money') 
 insert into @list (recno,namea,list) values(2,'職務津貼','b.bo_admin') 
 insert into @list (recno,namea,list) values(3,'交通津貼','b.bo_traffic') 
-insert into @list (recno,namea,list) values(4,'工作津貼','b.bo_special') 
+insert into @list (recno,namea,list) values(4,'獎金','b.bo_special') --工作津貼
 insert into @list (recno,namea,list) values(5,'房屋津貼','b.bo_oth') 
 insert into @list (recno,namea,list) values(6,'拖櫃工資','b.money3') 
 insert into @list (recno,namea,list) values(7,'其他加項','b.plus') 

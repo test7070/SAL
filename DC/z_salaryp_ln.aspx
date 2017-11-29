@@ -58,6 +58,9 @@
                         type : '5',
                         name : 'xorder',
                         value : (('').concat(new Array("職稱", "員工編號", "帳號", "金額"))).split(',')
+                    }, {
+                        type : '6',
+                        name : 'xnoa'
                     }]
                 });
                 q_popAssign();

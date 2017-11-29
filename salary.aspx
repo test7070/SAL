@@ -82,7 +82,7 @@
 	            	q_cmbParse("cmbMonkind", ('').concat(new Array( '本月','上期', '下期')));
 	            }
 	            
-	            if(q_getPara('sys.project').toUpperCase()=='NV')
+	            if(q_getPara('sys.project').toUpperCase()=='NV' || q_getPara('sys.project').toUpperCase()=='LN')
 	            	q_cmbParse("cmbTypea", ('').concat(new Array('薪資','獎金')));
 	            else
 	            	q_cmbParse("cmbTypea", ('').concat(new Array('薪資')));
@@ -104,17 +104,14 @@
 	            
 	            $('#cmbPerson').change(function () {
 	            	 table_change();
-	            	 check_insed();
 	            });
 	            
 	            $('#cmbMonkind').change(function () {
 	            	getdtmp();
-	            	check_insed();
 	            });
 	            
 	            $('#cmbTypea').change(function () {
 	            	getdtmp();
-	            	check_insed();
 	            });
 	            
 				$('#txtMon').blur(function () {
@@ -129,7 +126,6 @@
 	            			return;
 	            		}
 	            		getdtmp();
-	            		check_insed();
 	            	}
 	            });
 	            
@@ -241,9 +237,19 @@
 	            
 	            $('#btnPost').hide(); 
 	            $('#btnPost').click(function() {
-	            	if(!emp($('#txtNoa').val()) &&!(q_cur==1 || q_cur==2))
-	            		q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media,' +$('#txtNoa').val());
+	            	if(!emp($('#txtNoa').val()) &&!(q_cur==1 || q_cur==2)){
+	            		if(q_getPara('sys.project').toUpperCase()=='NV'){
+	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media5665,' +$('#txtNoa').val())+';NV;'+$('#txtDatea').val();
+	            		}else{
+	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media,' +$('#txtNoa').val());
+	            		}
+	            	}
 	            });
+	            
+	            //106/12/01開放
+	            if(q_getPara('sys.project').toUpperCase()=='NV'){
+	            	$('#btnPost').val('雲林合庫電子檔');
+	            }
 	            
 	            //隱藏控制
 	            $('#btnHidesalary').click(function() {
@@ -952,12 +958,6 @@
 	                    break;
 	
 	                case q_name:
-	                	var as = _q_appendData("salary", "", true);
-	                	if(as[0]!=undefined)
-	                 		insed=true;
-	                 	else
-	                 		insed=false;
-	                 		
 	                	if (q_cur == 4)  
 	                        q_Seek_gtPost();
 	                    break;
@@ -972,7 +972,24 @@
 	                return;
 	            }
 	            
-	            if(insed&&q_cur==1&&!(q_getPara('sys.project').toUpperCase()=='IT' || q_getPara('sys.project').toUpperCase()=='AMD' || q_getPara('sys.project').toUpperCase()=='RB' )){
+	            var insed=false;
+	        	if(q_cur==1){
+	        	 //判斷是否已新增過
+	           		var t_where = "where=^^ mon='"+$('#txtMon').val()+"' and person='"+$('#cmbPerson').find("option:selected").text()+"' and monkind='"+$('#cmbMonkind').find("option:selected").text()+"' and typea='"+$('#cmbTypea').val()+"' ^^";
+			    	q_gt('salary', t_where , 0, 0, 0, "getinsed", r_accy,1);
+			    	var as = _q_appendData("salary", "", true);
+					if(as[0]!=undefined)
+						insed=true;
+					else
+						insed=false;
+			    }
+	            
+	            //當月多張薪資
+	            if(insed && q_cur==1 
+	            	&& !(q_getPara('sys.project').toUpperCase()=='IT' || q_getPara('sys.project').toUpperCase()=='AMD' 
+	            	|| q_getPara('sys.project').toUpperCase()=='RB'
+	            	|| q_getPara('sys.project').toUpperCase()=='LN')
+	            ){
 	            	alert('該薪資作業已做過!!!');
 	                return;
 	            }
@@ -1181,6 +1198,8 @@
 	            	$('#lblBo_oths').text('房屋津貼');
 	            	$('#lblMoney3s').text('拖櫃工資');
 	            	$('#lblMoney6s').text('團保費');
+	            	$('#lblBo_special').text('獎金'); //106/11/29
+	            	$('#lblBo_specials').text('獎金');//106/11/29
 	            }else{
 	            	$('.isvu').hide();
 	            }
@@ -1348,16 +1367,6 @@
 	            }
 	            $('#cmbTypea').val("薪資");
 	            table_change();
-	            check_insed();
-	        }
-	        
-	        var insed=false;
-	        function check_insed() {
-	        	if(q_cur==1){
-	        	 //判斷是否已新增過
-	           		var t_where = "where=^^ mon='"+$('#txtMon').val()+"' and person='"+$('#cmbPerson').find("option:selected").text()+"' and monkind='"+$('#cmbMonkind').find("option:selected").text()+"' and typea='"+$('#cmbTypea').val()+"' ^^";
-			    	q_gt('salary', t_where , 0, 0, 0, "", r_accy);
-			    }
 	        }
 	        
 	        function btnModi() {
