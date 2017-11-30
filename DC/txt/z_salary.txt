@@ -1625,10 +1625,16 @@ declare @t_xmon nvarchar(20)
 declare @t_xkind nvarchar(20)
 declare @t_bsssno nvarchar(20)
 declare @t_esssno nvarchar(20)
+declare @t_bxpartno nvarchar(20) 
+declare @t_expartno nvarchar(20) 
+declare @t_acompno nvarchar(20) 
 set @t_xmon = case when '#non' = [1] then '' else [1] end
 set @t_xkind = case when '#non' = [3] then '' else [3] end
 set @t_bsssno = case when '#non' = [4] then '' else [4] end
 set @t_esssno = case when '#non' = [5] then CHAR(255) else [5] end
+set @t_bxpartno = case when '#non' = [9] then '' else [9] end
+set @t_expartno = case when '#non' = [10] then CHAR(255) else [10] end
+set @t_acompno = case when '#non' = [12] then '' else [12] end
 --**************************************************************
 declare @tmp table( 
 	gno nvarchar(1), 
@@ -1704,6 +1710,8 @@ where (LEN(@t_xmon) = 0 or @t_xmon = a.mon) and
 (LEN(@t_xkind) = 0 or @t_xkind = a.monkind) and 
 (b.sno between @t_bsssno and @t_esssno) and 
 (a.person = '本國') 
+and b.partno between @t_bxpartno and @t_expartno 
+and (c.cno=@t_acompno or len(@t_acompno)=0) 
 
 --gno=1
 insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
