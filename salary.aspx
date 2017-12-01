@@ -248,6 +248,7 @@
 	            
 	            //106/12/01開放
 	            if(q_getPara('sys.project').toUpperCase()=='NV'){
+	            	$('#btnPost').show(); 
 	            	$('#btnPost').val('雲林合庫電子檔');
 	            }
 	            
