@@ -250,6 +250,7 @@
 	            if(q_getPara('sys.project').toUpperCase()=='NV'){
 	            	$('#btnPost').show(); 
 	            	$('#btnPost').val('雲林合庫電子檔');
+	            	$('#btnBank').hide();
 	            }
 	            
 	            //隱藏控制
