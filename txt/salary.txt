@@ -3060,6 +3060,12 @@ begin
 	from #tmpa where sssno=a.sssno and noa between @date1 and @date2)c
 end
 -------------------------------------------------------------------------------------------------
+--106/12/04 司機薪資不計算
+if(@proj='NV')
+begin
+	delete #tmp where left(sssno,1)='5'
+end
+-------------------------------------------------------------------------------------------------
 select sssno,namea,partno,part,jobno,job,person,indate,outdate,iswelfare,typea
 ,ISNULL(salary,0) salary,ISNULL(bo_admin,0) bo_admin,ISNULL(bo_traffic,0) bo_traffic
 ,ISNULL(bo_special,0) bo_special,ISNULL(bo_oth,0) bo_oth,ISNULL(bo_full,0) bo_full
