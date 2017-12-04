@@ -26,7 +26,7 @@
 				,['txtSa_labor',10,0,1],['txtLa_comp',10,0,1],['txtLa_person',10,0,1],['txtAs_labor',10,0,1]
 				,['txtSa_health',10,0,1],['txtHe_comp',10,0,1],['txtHe_person',10,0,1],['txtAs_health',10,0,1],['txtHplus2',10,0,1]
 				,['txtSa_retire',10,0,1],['txtRe_rate',10,2,1],['txtRe_comp',10,0,1],['txtRe_person',10,0,1]
-				,['txtTax',10,0,1],['txtMount',10,0,1]
+				,['txtTax',10,0,1],['txtMount',10,0,1],['txtUnfix',10,0,1]
 			];
 			var bbmMask = [];
 			var bbsMask = [];
@@ -58,6 +58,15 @@
 				q_getFormat();
 				if (q_getPara('sys.project').toUpperCase()=='VU' || q_getPara('sys.project').toUpperCase()=='VU2'){
 					bbsNum = [['txtMoney',10,0,1],['txtBo_admin',10,0,1],['txtBo_traffic',10,0,1],['txtBo_special',10,0,1],['txtBo_oth',10,0,1],['txtBo_full',10,0,1],['txtSalary',10,0,1],['txtMeals',10,0,1],['txtBo_money1',10,3,1]];
+				}
+				
+				if (q_getPara('sys.project').toUpperCase()=='LN'){
+					bbsNum = [['txtMoney',10,0,1],['txtBo_admin',10,0,1],['txtBo_traffic',10,0,1],['txtBo_special',10,0,1],['txtBo_oth',10,0,1],['txtBo_full',10,0,1],['txtSalary',10,0,1],['txtMeals',10,0,1],['txtBo_money3',10,0,1]
+					,['txtSa_labor',10,0,1],['txtLa_comp',10,0,1],['txtLa_person',10,0,1],['txtAs_labor',10,0,1]
+					,['txtSa_health',10,0,1],['txtHe_comp',10,0,1],['txtHe_person',10,0,1],['txtAs_health',10,0,1],['txtHplus2',10,0,1]
+					,['txtSa_retire',10,0,1],['txtRe_rate',10,2,1],['txtRe_comp',10,0,1],['txtRe_person',10,0,1]
+					,['txtTax',10,0,1],['txtMount',10,0,1],['txtUnfix',10,0,1]
+					];
 				}
 				
 				bbsMask = [['txtDatea', r_picd]];
@@ -147,6 +156,11 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
+							
 						});
 						
 						$('#txtBo_admin_'+j).change(function () {
@@ -154,6 +168,10 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
 						});
 						
 						$('#txtBo_traffic_'+j).change(function () {
@@ -161,6 +179,10 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
 						});
 						
 						$('#txtBo_special_'+j).change(function () {
@@ -168,6 +190,10 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
 						});
 						
 						$('#txtBo_oth_'+j).change(function () {
@@ -175,6 +201,10 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
 						});
 						
 						$('#txtBo_full_'+j).change(function () {
@@ -182,11 +212,25 @@
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
 							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
+						});
+						
+						$('#txtBo_money3_'+j).change(function () {
+							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
+							q_bodyId($(this).attr('id'));
+							b_seq = t_IdSeq;
+							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
+							
+							if (q_getPara('sys.project').toUpperCase()=='LN'){
+								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
+							}
 						});
 					}
 				}
 				_bbsAssign();
-				$('.vu').hide();
 				if (q_getPara('sys.project').toUpperCase()=='DJ'){
 					$('#lblMoney').text('底薪');
 		            $('#lblBo_admin').text('責任加給');
@@ -203,6 +247,20 @@
 	            	$('#lblBo_money1').text('獎金基數');
 	            	$('.vu').show();
 	            	$('.vuhide').hide();
+	            }
+	            
+	            if (q_getPara('sys.project').toUpperCase()=='LN'){
+	            	$('#lblMoney').text('本俸');
+	            	$('#lblBo_admin').text('職務津貼');
+	            	$('#lblBo_special').text('獎金');
+	            	$('#lblBo_oth').text('房屋津貼');
+	            	$('#lblBo_money3').text('拖櫃工資');
+	            	$('#lblBo_full').text('全勤');
+	            	$('#lblUnfix').text('團保費');
+	            	$('.money3').show();
+	            	$('.level1').hide();
+	            	$('.level2').hide();
+	            	$('.unfix').show();
 	            }
 	            
 	            var t_proj='DC,SF,VU,VU2,DJ,RB,XY,FE,IT,ST2,AMD,RK,TN,NV'.split(',');
@@ -363,15 +421,16 @@
 					<td align="center" style="width: 80px;"><a id='lblDatea'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblJobno'> </a></td>
 					<td align="center" style="width: 100px;"><a id='lblJob'> </a></td>
-					<td align="center" style="width: 40px;"><a id='lblLevel1'> </a></td>
-					<td align="center" style="width: 40px;"><a id='lblLevel2'> </a></td>
+					<td align="center" style="width: 40px;" class="level1"><a id='lblLevel1'> </a></td>
+					<td align="center" style="width: 40px;" class="level2"><a id='lblLevel2'> </a></td>
 					<!--<td align="center" class="td1"><a id='lblLevel3'></a></td>-->
 					<td align="center" style="width: 80px;"><a id='lblMoney'> </a></td>
-					<td align="center" style="width: 80px;" class="vu"><a id='lblBo_money1'> </a></td>
+					<td align="center" style="width: 80px;display: none;" class="vu"><a id='lblBo_money1'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_admin'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_traffic'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_special'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_oth'> </a></td>
+					<td align="center" style="width: 80px;display: none;" class="money3"><a id='lblBo_money3'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_full'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblSalary'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblMeals'> </a></td>
@@ -393,6 +452,7 @@
 					<td align="center" style="width: 80px;" class="labor"><a id='lblTax'>所得稅</a></td>
 					<td align="center" style="width: 80px;" class="labor"><a id='lblMount'>扶養人數</a></td>
 					<!------------------------------------------------------------->
+					<td align="center" style="width: 80px;display: none;" class="unfix"><a id='lblUnfix'> </a></td>
 					<td align="center" style="width: 100px;"><a id='lblMemo'> </a></td>
 				</tr>
 				<tr style='background:#cad3ff;'>
@@ -404,15 +464,16 @@
 					</td>
 					<td ><input class="txt c1" id="txtJobno.*" type="text"  /></td>
 					<td ><input class="txt c1" id="txtJob.*" type="text"  /></td>
-					<td ><input class="txt c1" id="txtLevel1.*" type="text" /></td>
-					<td ><input class="txt c1" id="txtLevel2.*" type="text" /></td>
+					<td class="level1"><input class="txt c1" id="txtLevel1.*" type="text" /></td>
+					<td class="level2"><input class="txt c1" id="txtLevel2.*" type="text" /></td>
 					<!--<td ><input class="txt c1" id="txtLevel3.*" type="text" /></td>-->
 					<td ><input class="txt num c1" id="txtMoney.*" type="text" /></td>
-					<td class="vu"><input class="txt num c1" id="txtBo_money1.*" type="text"/></td>
+					<td style="display: none;" class="vu"><input class="txt num c1" id="txtBo_money1.*" type="text"/></td>
 					<td ><input class="txt num c1" id="txtBo_admin.*" type="text"/></td>
 					<td ><input class="txt num c1" id="txtBo_traffic.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_special.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_oth.*" type="text" /></td>
+					<td style="display: none;" class="money3"><input class="txt num c1" id="txtBo_money3.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_full.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtSalary.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtMeals.*" type="text" /></td>
@@ -437,6 +498,7 @@
 					<td class="labor"><input class="txt num c1" id="txtTax.*" type="text" /></td>
 					<td class="labor"><input class="txt num c1" id="txtMount.*" type="text" /></td>
 					<!------------------------------------------------------------->
+					<td style="display: none;" class="unfix"><input class="txt num c1" id="txtUnfix.*" type="text" /></td>
 					<td ><input class="txt c1" id="txtMemo.*" type="text" /></td>
 				</tr>
 			</table>

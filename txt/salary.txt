@@ -1266,6 +1266,7 @@ create table #tmp(
 	bo_money3 float,
 	bo_money4 float,
 	bo_money5 float,
+	unfix float,
 	
 	ch_labor1 float, --勞保投保薪資
 	ch_labor2 float, --勞退投保薪資
@@ -1320,7 +1321,7 @@ create table #tmp(
 
 insert #tmp(sssno,namea,partno,part,jobno,job,person,indate,outdate,iswelfare,typea
 ,salary,bo_admin,bo_traffic,bo_special,bo_oth,bo_full,meals
-,bo_money1,bo_money2,bo_money3,bo_money4,bo_money5
+,bo_money1,bo_money2,bo_money3,bo_money4,bo_money5,unfix
 ,ch_labor1,ch_labor2,ch_health_insure,raise_num
 ,ch_health,as_health,he_comp,hplus2
 ,ch_labor,as_labor,la_comp
@@ -1336,7 +1337,7 @@ select a.noa sssno,a.namea,a.partno,a.part,a.jobno,a.job,a.person,a.indate,a.out
 ,isnull(b.bo_special,0)bo_special,isnull(b.bo_oth,0)bo_oth,isnull(b.bo_full,0) bo_full
 ,ISNULL(c.mealsmoney,0)
 ,isnull(b.bo_money1,0)bo_money1,isnull(b.bo_money2,0)bo_money2
-,isnull(b.bo_money3,0)bo_money3,isnull(b.bo_money4,0)bo_money4,isnull(b.bo_money5,0)bo_money5
+,isnull(b.bo_money3,0)bo_money3,isnull(b.bo_money4,0)bo_money4,isnull(b.bo_money5,0)bo_money5,isnull(b.unfix,0)unfix
 ,case when lab.noa is not null then isnull(b2.sa_labor,0) else isnull(b.sa_labor,0)end ch_labor1
 ,case when lab.noa is not null then isnull(b2.sa_retire,0) else isnull(b.sa_retire,0)end ch_labor2
 ,case when lab.noa is not null then isnull(b2.sa_health,0) else isnull(b.sa_health,0)end ch_health_insure
@@ -3070,7 +3071,7 @@ select sssno,namea,partno,part,jobno,job,person,indate,outdate,iswelfare,typea
 ,ISNULL(salary,0) salary,ISNULL(bo_admin,0) bo_admin,ISNULL(bo_traffic,0) bo_traffic
 ,ISNULL(bo_special,0) bo_special,ISNULL(bo_oth,0) bo_oth,ISNULL(bo_full,0) bo_full
 ,ISNULL(meals,0) meals,ISNULL(bo_money1,0) bo_money1,ISNULL(bo_money2,0) bo_money2
-,ISNULL(bo_money3,0) bo_money3,ISNULL(bo_money4,0) bo_money4,ISNULL(bo_money5,0) bo_money5
+,ISNULL(bo_money3,0) bo_money3,ISNULL(bo_money4,0) bo_money4,ISNULL(bo_money5,0) bo_money5,ISNULL(unfix,0) unfix
 ,ISNULL(ch_labor1,0) ch_labor1,ISNULL(ch_labor2,0) ch_labor2,ISNULL(ch_health_insure,0) ch_health_insure
 ,ISNULL(raise_num,0) raise_num,ISNULL(ch_health,0) ch_health
 ,ISNULL(as_health,0) as_health,ISNULL(he_comp,0) he_comp,ISNULL(hplus2,0) hplus2
