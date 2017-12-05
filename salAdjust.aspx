@@ -61,7 +61,7 @@
 				}
 				
 				if (q_getPara('sys.project').toUpperCase()=='LN'){
-					bbsNum = [['txtMoney',10,0,1],['txtBo_admin',10,0,1],['txtBo_traffic',10,0,1],['txtBo_special',10,0,1],['txtBo_oth',10,0,1],['txtBo_full',10,0,1],['txtSalary',10,0,1],['txtMeals',10,0,1],['txtBo_money3',10,0,1]
+					bbsNum = [['txtMoney',10,0,1],['txtBo_admin',10,0,1],['txtBo_traffic',10,0,1],['txtBo_special',10,0,1],['txtBo_oth',10,0,1],['txtBo_full',10,0,1],['txtSalary',10,0,1],['txtMeals',10,0,1],['txtBo_money3',10,0,1],['txtBo_money4',10,0,1]
 					,['txtSa_labor',10,0,1],['txtLa_comp',10,0,1],['txtLa_person',10,0,1],['txtAs_labor',10,0,1]
 					,['txtSa_health',10,0,1],['txtHe_comp',10,0,1],['txtHe_person',10,0,1],['txtAs_health',10,0,1],['txtHplus2',10,0,1]
 					,['txtSa_retire',10,0,1],['txtRe_rate',10,2,1],['txtRe_comp',10,0,1],['txtRe_person',10,0,1]
@@ -155,78 +155,64 @@
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
-							
+							sum(b_seq);
 						});
 						
 						$('#txtBo_admin_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
 						});
 						
 						$('#txtBo_traffic_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
 						});
 						
 						$('#txtBo_special_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
 						});
 						
 						$('#txtBo_oth_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
 						});
 						
 						$('#txtBo_full_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
 						});
 						
 						$('#txtBo_money3_'+j).change(function () {
 							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
 							q_bodyId($(this).attr('id'));
 							b_seq = t_IdSeq;
-							q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq));
 							
-							if (q_getPara('sys.project').toUpperCase()=='LN'){
-								q_tr('txtSalary_'+b_seq,q_float('txtMoney_'+b_seq)+q_float('txtBo_admin_'+b_seq)+q_float('txtBo_traffic_'+b_seq)+q_float('txtBo_special_'+b_seq)+q_float('txtBo_oth_'+b_seq)+q_float('txtBo_full_'+b_seq)+q_float('txtBo_money3_'+b_seq));
-							}
+							sum(b_seq);
+						});
+						
+						$('#txtBo_money4_'+j).change(function () {
+							t_IdSeq = -1;  /// 要先給  才能使用 q_bodyId()
+							q_bodyId($(this).attr('id'));
+							b_seq = t_IdSeq;
+							
+							sum(b_seq);
 						});
 					}
 				}
@@ -253,11 +239,12 @@
 	            	$('#lblMoney').text('本俸');
 	            	$('#lblBo_admin').text('職務津貼');
 	            	$('#lblBo_special').text('獎金');
-	            	$('#lblBo_oth').text('房屋津貼');
-	            	$('#lblBo_money3').text('拖櫃工資');
+	            	$('#lblBo_money3').text('房屋津貼');
+	            	$('#lblBo_money4').text('拖櫃工資');
 	            	$('#lblBo_full').text('全勤');
-	            	$('#lblUnfix').text('團保費');
+	            	$('#lblUnfix').text('團保費自付額');
 	            	$('.money3').show();
+	            	$('.money4').show();
 	            	$('.level1').hide();
 	            	$('.level2').hide();
 	            	$('.unfix').show();
@@ -327,7 +314,13 @@
 				}
 			}
 			
-			function sum() { }
+			function sum(i) {
+				q_tr('txtSalary_'+i,q_float('txtMoney_'+i)+q_float('txtBo_admin_'+i)+q_float('txtBo_traffic_'+i)+q_float('txtBo_special_'+i)+q_float('txtBo_oth_'+i)+q_float('txtBo_full_'+i));
+							
+				if (q_getPara('sys.project').toUpperCase()=='LN'){
+					q_tr('txtSalary_'+i,q_float('txtMoney_'+i)+q_float('txtBo_admin_'+i)+q_float('txtBo_traffic_'+i)+q_float('txtBo_special_'+i)+q_float('txtBo_oth_'+i)+q_float('txtBo_full_'+i)+q_float('txtBo_money3_'+i)+q_float('txtBo_money4_'+i));
+				}
+			}
 			
 			var salrank=[];
 			var salranks=[];
@@ -429,8 +422,9 @@
 					<td align="center" style="width: 80px;"><a id='lblBo_admin'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_traffic'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_special'> </a></td>
-					<td align="center" style="width: 80px;"><a id='lblBo_oth'> </a></td>
 					<td align="center" style="width: 80px;display: none;" class="money3"><a id='lblBo_money3'> </a></td>
+					<td align="center" style="width: 80px;display: none;" class="money4"><a id='lblBo_money4'> </a></td>
+					<td align="center" style="width: 80px;"><a id='lblBo_oth'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_full'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblSalary'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblMeals'> </a></td>
@@ -472,8 +466,9 @@
 					<td ><input class="txt num c1" id="txtBo_admin.*" type="text"/></td>
 					<td ><input class="txt num c1" id="txtBo_traffic.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_special.*" type="text" /></td>
-					<td ><input class="txt num c1" id="txtBo_oth.*" type="text" /></td>
 					<td style="display: none;" class="money3"><input class="txt num c1" id="txtBo_money3.*" type="text" /></td>
+					<td style="display: none;" class="money4"><input class="txt num c1" id="txtBo_money4.*" type="text" /></td>
+					<td ><input class="txt num c1" id="txtBo_oth.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_full.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtSalary.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtMeals.*" type="text" /></td>
