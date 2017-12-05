@@ -261,7 +261,7 @@
 			}
 			
 			function btnOk() {
-				sum();
+				//sum();
 				
 				for(var j = 0; j < q_bbsCount; j++) {
 					if($('#combClass5_'+j).val()!=null)
@@ -359,7 +359,7 @@
 
 			function btnMinus(id) {
 				_btnMinus(id);
-				sum();
+				//sum();
 			}
 
 			function btnPlus(org_htm, dest_tag, afield) {
