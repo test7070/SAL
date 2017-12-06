@@ -145,7 +145,7 @@
 									as[i]._day = (15 + Math.floor(as[i]._year) - 9)*8;
                             }*/
 							//新制
-							if(((r_len==3 && $('#txtNoa').val()>='106') || (r_len==4 && $('#txtNoa').val()>='2017')) && q_getPara('sys.project').toUpperCase()!='DJ'){//DJ採舊制			
+							if((r_len==3 && $('#txtNoa').val()>='106') || (r_len==4 && $('#txtNoa').val()>='2017')){
 								if (as[i]._date < 1) //到職未滿1年 前半期不計算
 									as[i]._day = 0;
 								else if (as[i]._date-as[i]._date2 < 1){ //去年到職今年滿半年
