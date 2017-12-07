@@ -6,6 +6,8 @@ set @t_xyears = case when '#non' = [1] then '' else [1] end
 set @t_bsno = case when '#non' = [5] then '' else [5] end
 set @t_esno = case when '#non' = [6] then CHAR(255) else [6] end
 
+declare @tlen int=[8]
+
 --統一製單編號 故所得資料與媒體產生的暫存檔相同
 declare @tmpa table(
 	ishouse nvarchar(20),--居住*
@@ -72,7 +74,7 @@ else ' ' end)
 ,right('0000'+REPLACE(REPLACE(dbo.getComma(a.rate,2),'.',''),',',''),4)
 ,isnull(a.distribution,0),isnull(a.exdate,''),isnull(a.retire,0),isnull(a.tax2,0)
 ,isnull(a.smount,0),isnull(a.price,0),isnull(a.cash,0),isnull(a.capital,0),isnull(a.stock,0),'',e.issued
-from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
+from (select LEFT(mon,@tlen)years,MIN(mon)bmon,MAX(mon) emon
 ,cno,sssno,typea,typeb,typec,SUM(money)money,SUM(tax)tax,SUM(tax2)tax2,SUM(retire)retire
 ,MAX(distribution)distribution	--分配次數
 ,MAX(exdate)exdate	--除權（息）基準年月日
@@ -83,7 +85,7 @@ from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
 ,SUM(stock)stock	--股票股利淨額
 ,MAX(datea)datea	--支付日期 交付股票日日期
 ,MAX(rate)rate		--稅額扣抵比率
-from salbs where LEFT(mon,3)=@t_xyears group by LEFT(mon,3),sssno,typea,typeb,typec,cno) a 
+from salbs where LEFT(mon,@tlen)=@t_xyears group by LEFT(mon,@tlen),sssno,typea,typeb,typec,cno) a 
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join acompu d on a.cno=d.noa
@@ -169,6 +171,13 @@ and a.sssno between @t_bsno and @t_esno and a.serial!=''
 update @tmp set m1=RIGHT(m1,2),m2=RIGHT(m2,2)
 --update @tmp set m1='01',m2='12'
 
+if(@tlen=4)
+begin
+	update @tmp
+	set years=CAST(years as int)-1911
+	,y1=CAST(years as int)-1911,y2=CAST(years as int)-1911
+end
+
 select 
 case when retire=0 then null else dbo.getComma(retire,0) end retire,
 case when rate=0 then null else dbo.getComma(rate,0)+'%' end rate,
@@ -182,6 +191,8 @@ from @tmp where gno='0' order by cno,typea,typeb,typec,sssno
 z_salbb2:--z_salbb2
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
+
+declare @tlen int=[8]
 
 --所得資料暫存
 declare @tmpa table(
@@ -249,7 +260,7 @@ else ' ' end)
 ,right('0000'+REPLACE(REPLACE(dbo.getComma(a.rate,2),'.',''),',',''),4)
 ,isnull(a.distribution,0),isnull(a.exdate,''),isnull(a.retire,0),isnull(a.tax2,0)
 ,isnull(a.smount,0),isnull(a.price,0),isnull(a.cash,0),isnull(a.capital,0),isnull(a.stock,0),'',e.issued
-from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
+from (select LEFT(mon,@tlen)years,MIN(mon)bmon,MAX(mon) emon
 ,cno,sssno,typea,typeb,typec,SUM(money)money,SUM(tax)tax,SUM(tax2)tax2,SUM(retire)retire
 ,MAX(distribution)distribution	--分配次數
 ,MAX(exdate)exdate	--除權（息）基準年月日
@@ -260,7 +271,7 @@ from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
 ,SUM(stock)stock	--股票股利淨額
 ,MAX(datea)datea	--支付日期 交付股票日日期
 ,MAX(rate)rate		--稅額扣抵比率
-from salbs where LEFT(mon,3)=@t_xyears group by LEFT(mon,3),sssno,typea,typeb,typec,cno) a 
+from salbs where LEFT(mon,@tlen)=@t_xyears group by LEFT(mon,@tlen),sssno,typea,typeb,typec,cno) a 
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join acompu d on a.cno=d.noa
@@ -271,6 +282,9 @@ and isnull(e.ptype,'')!='' --證號別
 and (e.ptype not in ('0','1','3','4','9') or c.id!='') --身份證輸入
 and a.money>=0 and a.tax>=0--給付,稅額不可為負
 and b.serial!=''
+
+--106/12/07 扣除無法帶入申報書的項目 避免多產生一個申報書項目(該為股利憑單申報書)
+delete @tmpa where ttypeb='C'
 
 update a
 set noa=nownoa
@@ -482,7 +496,7 @@ select '0','',(select taxport from taxport where noa=a.taxport)
 ,SUM(a.retire),SUM(a.smount),SUM(a.price*a.smount)
 ,years,years,'',MIN(bmon),MAX(emon),'','01','31',''
 ,case when ishouse='1' then '1.&#9745有' else '1.&#9744有' end
-,case when ishouse='2' then '2.&#9745無' else '2.&#9744無' end
+,case when ishouse='0' then '2.&#9745無' else '2.&#9744無' end
 from @tmpa a 
 group by a.taxport,a.ishouse,a.recno,a.ishouse,a.serial,a.personal,a.taxno,a.houseno,a.years,a.cno
 
@@ -528,11 +542,22 @@ set ct1=c31+c211+c221+c41+c511+c521+c111+c121+c131+c81+c91+ca1
 ,m1=RIGHT(m1,2)
 ,m2=RIGHT(m2,2)
 
+if(@tlen=4)
+begin
+	update @tmp
+	set years=CAST(years as int)-1911
+	,y1=CAST(years as int)-1911,y2=CAST(years as int)-1911
+end
+
+
 select * from @tmp order by cno;
 ---------------------------------------------------------------------------------------------------------------------------------------
 z_salbb3:--z_salbb3
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
+
+declare @tlen int=[8]
+
 --統一製單編號 故所得資料與媒體產生的暫存檔相同
 declare @tmpa table(
 	ishouse nvarchar(20),--居住*
@@ -591,15 +616,15 @@ when f.typea='5' and a.typea='53' then '2'
 else ' ' end)
 ,a.typea,a.typeb,a.typec
 ,e.ptype,a.sssno,isnull(c.id,''),a.datea,a.years
-,case when right(a.bmon,2)='00' then left(a.bmon,3)+'/01' else a.bmon end
-,case when right(a.emon,2)='00' then left(a.bmon,3)+'/12' else a.emon end
+,case when right(a.bmon,2)='00' then left(a.bmon,@tlen)+'/01' else a.bmon end
+,case when right(a.emon,2)='00' then left(a.bmon,@tlen)+'/12' else a.emon end
 ,isnull(a.money,0)
 ,isnull(a.tax,0)
 ,d.taxno,d.houseno
 ,right('0000'+REPLACE(REPLACE(dbo.getComma(a.rate,2),'.',''),',',''),4)
 ,isnull(a.distribution,0),isnull(a.exdate,''),isnull(a.retire,0),isnull(a.tax2,0)
 ,isnull(a.smount,0),isnull(a.price,0),isnull(a.cash,0),isnull(a.capital,0),isnull(a.stock,0),'',e.issued
-from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
+from (select LEFT(mon,@tlen)years,MIN(mon)bmon,MAX(mon) emon
 ,cno,sssno,typea,typeb,typec,SUM(money)money,SUM(tax)tax,SUM(tax2)tax2,SUM(retire)retire
 ,MAX(distribution)distribution	--分配次數
 ,MAX(exdate)exdate	--除權（息）基準年月日
@@ -610,7 +635,7 @@ from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
 ,SUM(stock)stock	--股票股利淨額
 ,MAX(datea)datea	--支付日期 交付股票日日期
 ,MAX(rate)rate		--稅額扣抵比率
-from salbs where LEFT(mon,3)=@t_xyears group by LEFT(mon,3),sssno,typea,typeb,typec,cno) a 
+from salbs where LEFT(mon,@tlen)=@t_xyears group by LEFT(mon,@tlen),sssno,typea,typeb,typec,cno) a 
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join acompu d on a.cno=d.noa
@@ -706,6 +731,8 @@ z_salbb4:--z_salbb4
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
 
+declare @tlen int=[8]
+
 --所得資料暫存
 declare @tmpa table(
 	ishouse nvarchar(20),--居住*
@@ -764,15 +791,15 @@ when f.typea='5' and a.typea='53' then '2'
 else ' ' end)
 ,a.typea,a.typeb,a.typec
 ,e.ptype,a.sssno,isnull(c.id,'')+isnull(c.passportno,''),a.datea,a.years
-,case when right(a.bmon,2)='00' then left(a.bmon,3)+'/01' else a.bmon end
-,case when right(a.emon,2)='00' then left(a.bmon,3)+'/12' else a.emon end
+,case when right(a.bmon,2)='00' then left(a.bmon,@tlen)+'/01' else a.bmon end
+,case when right(a.emon,2)='00' then left(a.bmon,@tlen)+'/12' else a.emon end
 ,isnull(a.money,0)
 ,isnull(a.tax,0)
 ,isnull(d.taxno,''),isnull(d.houseno,'')
 ,right('0000'+REPLACE(REPLACE(dbo.getComma(a.rate,2),'.',''),',',''),4)
 ,isnull(a.distribution,0),isnull(a.exdate,''),isnull(a.retire,0),isnull(a.tax2,0)
 ,isnull(a.smount,0),isnull(a.price,0),isnull(a.cash,0),isnull(a.capital,0),isnull(a.stock,0),'',e.issued
-from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
+from (select LEFT(mon,@tlen)years,MIN(mon)bmon,MAX(mon) emon
 ,cno,sssno,typea,typeb,typec,SUM(money)money,SUM(tax)tax,SUM(tax2)tax2,SUM(retire)retire
 ,MAX(distribution)distribution	--分配次數
 ,MAX(exdate)exdate	--除權（息）基準年月日
@@ -783,7 +810,7 @@ from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
 ,SUM(stock)stock	--股票股利淨額
 ,MAX(datea)datea	--支付日期 交付股票日日期
 ,MAX(rate)rate		--稅額扣抵比率
-from salbs where LEFT(mon,3)=@t_xyears group by LEFT(mon,3),sssno,typea,typeb,typec,cno) a 
+from salbs where LEFT(mon,@tlen)=@t_xyears group by LEFT(mon,@tlen),sssno,typea,typeb,typec,cno) a 
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join acompu d on a.cno=d.noa
@@ -835,7 +862,7 @@ from @tmpa a
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join sssu d on a.sssno=d.noa
-left join (select noa from labased where @t_xyears between left(labor_bdate,3) and left(labor_edate,3) group by noa) e on a.sssno=e.noa
+left join (select noa from labased where @t_xyears between left(labor_bdate,@tlen) and left(labor_edate,@tlen) group by noa) e on a.sssno=e.noa
 left join paytype f on a.ptype=f.noa
 left join payform g on a.typea=g.noa
 left join paymark h on a.typec=h.noa
@@ -845,6 +872,8 @@ select * from @tmp;
 z_salbb5:--z_salb5
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
+
+declare @tlen int=[8]
 
 --統一製單編號 故所得資料與媒體產生的暫存檔相同
 declare @tmpa table(
@@ -904,15 +933,15 @@ when f.typea='5' and a.typea='53' then '2'
 else ' ' end)
 ,a.typea,a.typeb,a.typec
 ,e.ptype,a.sssno,isnull(c.id,''),a.datea,a.years
-,case when right(a.bmon,2)='00' then left(a.bmon,3)+'/01' else a.bmon end
-,case when right(a.emon,2)='00' then left(a.bmon,3)+'/12' else a.emon end
+,case when right(a.bmon,2)='00' then left(a.bmon,@tlen)+'/01' else a.bmon end
+,case when right(a.emon,2)='00' then left(a.bmon,@tlen)+'/12' else a.emon end
 ,isnull(a.money,0)
 ,isnull(a.tax,0)
 ,d.taxno,d.houseno
 ,right('0000'+REPLACE(REPLACE(dbo.getComma(a.rate,2),'.',''),',',''),4)
 ,isnull(a.distribution,0),isnull(a.exdate,''),isnull(a.retire,0),isnull(a.tax2,0)
 ,isnull(a.smount,0),isnull(a.price,0),isnull(a.cash,0),isnull(a.capital,0),isnull(a.stock,0),'',e.issued
-from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
+from (select LEFT(mon,@tlen)years,MIN(mon)bmon,MAX(mon) emon
 ,cno,sssno,typea,typeb,typec,SUM(money)money,SUM(tax)tax,SUM(tax2)tax2,SUM(retire)retire
 ,MAX(distribution)distribution	--分配次數
 ,MAX(exdate)exdate	--除權（息）基準年月日
@@ -923,7 +952,7 @@ from (select LEFT(mon,3)years,MIN(mon)bmon,MAX(mon) emon
 ,SUM(stock)stock	--股票股利淨額
 ,MAX(datea)datea	--支付日期 交付股票日日期
 ,MAX(rate)rate		--稅額扣抵比率
-from salbs where LEFT(mon,3)=@t_xyears group by LEFT(mon,3),sssno,typea,typeb,typec,cno) a 
+from salbs where LEFT(mon,@tlen)=@t_xyears group by LEFT(mon,@tlen),sssno,typea,typeb,typec,cno) a 
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
 left join acompu d on a.cno=d.noa
@@ -1021,6 +1050,8 @@ declare @t_edate nvarchar(20)
 set @t_bdate = case when '#non' = [3] then '' else [3] end
 set @t_edate = case when '#non' = [4] then CHAR(255) else [4] end
 
+declare @tlen int=[8]
+
 declare @tmp table(
 	gno nvarchar(1),
 	cno nvarchar(50),
@@ -1092,6 +1123,8 @@ z_salbb7:--z_salb7
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
 
+declare @tlen int=[8]
+
 declare @tmp table(
 	gno nvarchar(1),
 	sssno nvarchar(50),
@@ -1133,12 +1166,12 @@ declare @tmpb table(
 
 insert @tmpa
 select ROW_NUMBER() over(partition by sssno order by sssno,mon),sssno,MAX(namea),mon,sum(isnull(money,0)),sum(isnull(tax,0)),sum(isnull(money,0)-isnull(tax,0)),sum(isnull(retire,0))
-from salbs where left(mon,3)=@t_xyears
+from salbs where left(mon,@tlen)=@t_xyears
 group by sssno,mon
 
 insert @tmpb
 select ROW_NUMBER() over(partition by sno order by sno,mon),sno,MAX(namea),mon,sum(isnull(total5,0)),sum(isnull(tax,0)+isnull(tax5,0)+isnull(tax6,0)+isnull(tax12,0)+isnull(tax18,0)),sum(isnull(ch_labor_self,0))
-from salarys where left(mon,3)=@t_xyears
+from salarys where left(mon,@tlen)=@t_xyears
 group by sno,mon
 
 

@@ -41,6 +41,10 @@
 						type : '0', //[7]
 						name : 'xusername',
 						value : r_name
+					}, {
+						type : '0', //[8]
+						name : 'rlen',
+						value : r_len
 					}]
 				});
 				q_popAssign();
