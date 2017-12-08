@@ -126,10 +126,10 @@
 				$('#btnDividend').click(function() {
 					if($('#btnDividend').val().indexOf('隱藏')>-1){
 						$('.dividend').hide();
-						$('.dbbs').css('width','1260px');
+						$('.dbbs').css('width','1450px');
 						$('#btnDividend').val('股利顯示');
 					}else{
-						$('.dbbs').css('width','2300px');
+						$('.dbbs').css('width','2670px');
 						$('.dividend').show();
 						$('#btnDividend').val('股利隱藏');
 					}
@@ -376,13 +376,11 @@
 				btnTypechange();
 				
 				if($('#btnDividend').val().indexOf('隱藏')>-1){
-					$('.dividend').hide();
-					$('.dbbs').css('width','1260px');
-					$('#btnDividend').val('股利顯示');
-				}else{
-					$('.dbbs').css('width','2300px');
+					$('.dbbs').css('width','2670px');
 					$('.dividend').show();
-					$('#btnDividend').val('股利隱藏');
+				}else{
+					$('.dividend').hide();
+					$('.dbbs').css('width','1450px');
 				}
 			}
 
@@ -777,9 +775,9 @@
 						<td class="td6"><input id="btnIndata" type="button"/></td>
 					</tr>
 					<tr>
-						<td class="td1"><span> </span><a id="lblMoney" class="lbl"> </a></td>
+						<td class="td1"><span> </span><a id="lablMoney" class="lbl">給付總額</a></td>
 						<td class="td2"><input id="txtMoney" type="text" class="txt num c1" /></td>
-						<td class="td3"><span> </span><a id="lblTax" class="lbl"> </a></td>
+						<td class="td3"><span> </span><a id="lablTax" class="lbl">扣繳稅額</a></td>
 						<td class="td4"><input id="txtTax" type="text" class="txt num c1" /></td>
 						<td class="td5"><input id="btnDividend" type="button" value="股利隱藏" /></td>
 						<td class="td6">
@@ -787,48 +785,49 @@
 							<input id="btnMedia" type="button" />
 						</td>
 					</tr>
+					<tr>
+						<td> </td>
+						<td colspan="5" style="color:red; ">【扣繳稅額】=【應扣繳稅額】-【股利或盈餘抵繳稅額】，故【應扣繳稅額】系統會自動計算。</td>
+					</tr>
 				</table>
 			</div>
 		</div>
+		<!--106/12/08固定名稱避免有爭議 依國稅局文件-->
 		<div class='dbbs'>
 			<table id="tbbs" class='tbbs' border="1" cellpadding='2' cellspacing='1' >
 				<tr style='color:White; background:#003366;' >
-					<td align="center">
-						<input class="btn" id="btnPlus" type="button" value='+' style="font-weight: bold;" />
-					</td>
-					<td align="center"><a id='lblSssno'> </a></td>
-					<td align="center"><a id='lblNamea'> </a></td>
+					<td align="center" style="width: 35px;"><input class="btn" id="btnPlus" type="button" value='+' style="font-weight: bold;" /></td>
+					<td align="center" style="width: 120px;"><a id='lblSssno'> </a></td>
+					<td align="center" style="width: 200px;"><a id='lblNamea'> </a></td>
 					<td align="center" style="display: none;"><a id='lblId'> </a></td>
-					<td align="center" style="width: 20px;"><a id='vewIsclerk'> </a></td>
-					<td align="center" style="width: 90px;"><a id='lblTypea'> </a></td>
-					<td align="center" style="width: 90px;"><a id='lblTypeb'> </a></td>
-					<td align="center" style="width: 90px;"><a id='lblTypec'> </a></td>
+					<td align="center" style="width: 26px;"><a id='vewIsclerk'> </a></td>
+					<td align="center" style="width: 90px;"><a id='lablTypea'>所得格式</a></td>
+					<td align="center" style="width: 90px;"><a id='lablTypeb'>所得註記</a></td>
+					<td align="center" style="width: 90px;"><a id='lablTypec'>項目代號</a></td>
 					<!--<td align="center"><a id='lblWtno'> </a></td>-->
 					<td align="center" style="display: none;"><a id='lblMount'> </a></td>
 					<td align="center" style="display: none;"><a id='lblAd_money'> </a></td>
 					<td align="center" style="display: none;"><a id='lblCh_meal'> </a></td>
-					<td align="center"><a id='lblMoneys'> </a></td>
-					<td align="center"><a id='lblRetire'> </a></td>
-					<td align="center" class="dividend"><a id='lblSmount'> </a></td>
-					<td align="center" class="dividend"><a id='lblPrice'> </a></td>
-					<td align="center" class="dividend"><a id='lblExdate'> </a></td>
-					<td align="center" class="dividend"><a id='lblDistribution'> </a></td>
-					<td align="center" class="dividend"><a id='lblRate'> </a></td>
-					<td align="center" class="dividend"><a id='lblCash'> </a></td>
-					<td align="center" class="dividend"><a id='lblCapital'> </a></td>
-					<td align="center" class="dividend"><a id='lblStock'> </a></td>
-					<td align="center"><a id='lblTaxs'> </a></td>
-					<td align="center" class="dividend"><a id='lblTax2s'> </a></td>
+					<td align="center" style="width: 145px;"><a id='lablMoneys'>扣繳憑單給付總額/<BR>股利憑單股利總額</a></td>
+					<td align="center" style="width: 110px;"><a id='lablRetire'>自提退休金額</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablSmount'>股數/<BR>股票股利股數</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablPrice'>交付股票日<BR>之每股時價</a></td>
+					<td align="center" style="width: 120px;" class="dividend"><a id='lablExdate'>除權(息)基準日</a></td>
+					<td align="center" style="width: 100px;" class="dividend"><a id='lablDistribution'>分配次數</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablRate'>稅額扣抵比率</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablCash'>現金股利淨額</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablCapital'>資本公積股利<BR>淨額</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablStock'>股票股利淨額</a></td>
+					<td align="center" style="width: 165px;"><a id='lablTaxs'>扣繳憑單扣繳稅額/<BR>股利憑單可扣抵稅額</a></td>
+					<td align="center" style="width: 130px;" class="dividend"><a id='lablTax2s'>股利或盈餘<BR>抵繳稅額</a></td>
 					<!--<td align="center"><a id='lblMi_moneys'> </a></td>-->
 					<td align="center" style="width: 40px;"><a id='lblSex'> </a></td>
-					<td align="center"><a id='lblComp'> </a></td>
+					<td align="center" style="width: 100px;"><a id='lblComp'> </a></td>
 					<td align="center" style="width: 250px;display: none;"><a id='lblAddr'> </a></td>
 					<td align="center" style="width: 200px;"><a id='lblMemo_s'> </a><BR><a>(二代健保請註明獎金/兼職)</a></td>
 				</tr>
 				<tr style='background:#cad3ff;'>
-					<td style="width:1%;">
-						<input class="btn" id="btnMinus.*" type="button" value='-' style=" font-weight: bold;" />
-					</td>
+					<td align="center"><input class="btn" id="btnMinus.*" type="button" value='-' style=" font-weight: bold;" /></td>
 					<td>
 						<input id="btnSssno.*" type="button" style="width:10%;" value="." />
 						<input id="txtSssno.*" type="text" class="txt" style="width:70%;"/>
