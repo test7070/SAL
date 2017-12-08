@@ -398,7 +398,9 @@
 			}
 
 			function btnPrint() {
-				q_box('z_salb.aspx', '', "95%", "95%", q_getMsg("popPrint"));
+				if(q_getPara('sys.project').toUpperCase()!='LN'){
+					q_box('z_salb.aspx', '', "95%", "95%", q_getMsg("popPrint"));
+				}
 			}
 
 			function wrServer(key_value) {
@@ -786,8 +788,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td> </td>
-						<td colspan="5" style="color:red; ">【扣繳稅額】=【應扣繳稅額】-【股利或盈餘抵繳稅額】，故【應扣繳稅額】系統會自動計算。</td>
+						<td colspan="6" style="color:red; ">　　【扣繳稅額】=【應扣繳稅額】-【股利或盈餘抵繳稅額】，故所得註記54F【應扣繳稅額】系統會自動計算。</td>
 					</tr>
 				</table>
 			</div>
