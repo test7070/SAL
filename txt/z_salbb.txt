@@ -151,10 +151,10 @@ declare @tmp table(
 --order by b.cno,b.sssno
 
 insert @tmp
-select '0',a.cno,sssno,years,'',a.taxno,e.addr_rent,a.serial,a.taxport,a.noa
+select '0',a.cno,sssno,years,'',a.taxno,case when a.typea='51' then e.addr_rent else '' end,a.serial,a.taxport,a.noa
 ,a.typea,a.typeb,a.typec,a.id,passportno,case when a.ishouse='1' then 'V' else '' end,case when a.ishouse='0' then 'V' else '' end
 ,years,years,bmon,emon
-,namea,addr_home,retire,money,rate,tax,money-tax,b.acomp,b.addr_invo,b.boss,e.taxno
+,namea,addr_home,retire,money,rate,tax,money-tax,b.acomp,b.addr_invo,b.boss,case when a.typea='51' then e.taxno else '' end
 from @tmpa a
 left join acomp b on a.cno=b.noa
 left join sss c on a.sssno=c.noa
@@ -557,7 +557,9 @@ select * from @tmp order by cno;
 ---------------------------------------------------------------------------------------------------------------------------------------
 z_salbb3:--z_salbb3
 declare @t_xyears nvarchar(10)
+declare @t_typea nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
+set @t_typea = case when '#non' = [9] then '' else [9] end
 
 declare @tlen int=[8]
 
@@ -655,6 +657,11 @@ set noa=nownoa
 from (select (case when isnull(a.ishouse,0)=1
 then right('00'+cast(DENSE_RANK() over ( order by a.serial,a.personal,a.ttypea,a.ttypeb)as nvarchar(2)),2)+right('0000000'+cast(ROW_NUMBER() over (partition by isnull(a.ishouse,0),a.serial,a.personal,a.ttypea,a.ttypeb order by a.sssno) as nvarchar(10)),6)
 else '00'+right('00'+cast(DENSE_RANK() over ( order by a.serial,a.personal,a.ttypea,a.ttypeb)as nvarchar(2)),2)+right('00000'+cast(ROW_NUMBER() over (partition by isnull(a.ishouse,0),a.serial,a.personal,a.ttypea,a.ttypeb order by a.sssno)as nvarchar(10)),4) end )nownoa,* from @tmpa a ) a
+
+if(len(@t_typea)>0)
+begin
+	delete @tmpa where typea!=@t_typea
+end
 
 declare @tmp table(
 	gno nvarchar(1),
@@ -1384,7 +1391,7 @@ select '0',a.cno,sssno,years,'',a.taxno,a.personal,e.addr_rent,a.serial,a.taxpor
 ,a.typea,a.typeb,a.typec,a.id,passportno,case when a.ishouse='1' then 'V' else '' end,case when a.ishouse='0' then 'V' else '' end
 ,years,years,bmon,emon
 ,namea,addr_home,retire
-,a.distribution,a.exdate,a.smount,a.price,a.capital,a.capital,a.stock
+,a.distribution,a.exdate,a.smount,a.price,a.cash,a.capital,a.stock
 ,money,rate,tax,money-tax,b.acomp,b.addr_invo,b.boss,e.taxno
 from @tmpa a
 left join acomp b on a.cno=b.noa
@@ -1556,28 +1563,28 @@ declare @tmp table(
 
 insert @tmp
 select '0','',(select taxport from taxport where noa=a.taxport)
-,a.years,a.cno,a.taxport,a.taxno,a.houseno,a.serial,(select acomp from acomp where noa=a.cno)
+,a.years,a.cno,a.taxport,a.taxno,'',a.serial,(select acomp from acomp where noa=a.cno)
 ,(select tel from acomp where noa=a.cno),(select addr_invo from acomp where noa=a.cno)
 ,(select boss from acomp where noa=a.cno),(select conn from acomp where noa=a.cno),(select tel from acomp where noa=a.cno)
 ,a.distribution
 --股利
-,(select count(*) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,(select MIN(noa) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,(select MAX(noa) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,isnull((select SUM(money) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
-,isnull((select MAX(rate) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
-,isnull((select SUM(tax) from @tmpa where personal='1' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
-,(select count(*) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,(select MIN(noa) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,(select MAX(noa) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno)
-,isnull((select SUM(money) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
-,isnull((select MAX(rate) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
-,isnull((select SUM(tax) from @tmpa where personal='2' and a.taxport=taxport and a.ishouse=ishouse and a.recno=recno and a.serial=serial and a.taxno=taxno and a.houseno=houseno),0)
+,(select count(*) from @tmpa where personal='1' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,(select MIN(noa) from @tmpa where personal='1' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,(select MAX(noa) from @tmpa where personal='1' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,isnull((select SUM(money) from @tmpa where personal='1' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
+,isnull((select MAX(rate) from @tmpa where personal='1' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
+,isnull((select SUM(tax) from @tmpa where personal='1' and a.taxport=taxport  and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
+,(select count(*) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,(select MIN(noa) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,(select MAX(noa) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno)
+,isnull((select SUM(money) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
+,isnull((select MAX(rate) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
+,isnull((select SUM(tax) from @tmpa where personal='2' and a.taxport=taxport and a.recno=recno and a.serial=serial and a.taxno=taxno),0)
 --合計
 ,SUM(a.cash),SUM(a.smount),SUM(a.price*a.smount)
 ,years,years,'',MIN(bmon),MAX(emon),'','01','31',''
 from @tmpa a 
-group by a.taxport,a.ishouse,a.recno,a.ishouse,a.serial,a.personal,a.taxno,a.houseno,a.years,a.cno,a.distribution
+group by a.taxport,a.recno,a.serial,a.taxno,a.years,a.cno,a.distribution
 
 delete @tmp where m1='' and m2=''
 
