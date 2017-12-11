@@ -57,10 +57,9 @@
 			}
 
 			function mainPost() {
-				//強制民國年
 				q_getFormat();
-				bbmMask = [['txtDatea', '999/99/99'], ['txtMon', '999/99'], ['textYear', '999']];
-				bbsMask = [['txtExdate', '999/99/99']];
+				bbmMask = [['txtDatea', r_picd], ['txtMon', r_picm], ['textYear', r_pic]];
+				bbsMask = [['txtExdate', r_picd]];
 				q_mask(bbmMask);
 				q_cmbParse("cmbSex", q_getPara('sss.sex'),'s');
 				
@@ -87,7 +86,7 @@
 					$('#divMedia').css('top', $('#btnMedia').offset().top+25);
 					$('#divMedia').css('left', $('#btnMedia').offset().left-dec($('#divMedia').css('width')));
 					$('#divMedia').show();
-					$('#textYear').val(dec(q_date().substr(0,3))-1);
+					$('#textYear').val(dec(q_date().substr(0,r_len))-1);
 				});
 				
 				$('#btnProduceMedia').click(function() {
@@ -351,7 +350,7 @@
 							
 							for (i=0;i<t_typeb.length;i++){
 								if(t_typeb[i].noa==$('#cmbTypea_'+b_seq).val())
-									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].kind;
+									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].inote+'.'+t_typeb[i].kind;
 							}
 							q_cmbParse("cmbTypeb_"+b_seq, c_typeb);
 							
@@ -517,7 +516,7 @@
 							
 							for (i=0;i<t_typeb.length;i++){
 								if(t_typeb[i].noa==$('#cmbTypea_'+j).val())
-									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].kind;
+									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].inote+'.'+t_typeb[i].kind;
 							}
 							q_cmbParse("cmbTypeb_"+j, c_typeb);
 							if(abbsNow!=undefined){
@@ -815,7 +814,7 @@
 					<td align="center" style="width: 110px;" class="dividend"><a id='lablPrice'>交付股票日<BR>之每股時價</a></td>
 					<td align="center" style="width: 120px;" class="dividend"><a id='lablExdate'>除權(息)基準日</a></td>
 					<td align="center" style="width: 100px;" class="dividend"><a id='lablDistribution'>分配次數</a></td>
-					<td align="center" style="width: 110px;" class="dividend"><a id='lablRate'>稅額扣抵比率</a></td>
+					<td align="center" style="width: 110px;" class="dividend"><a id='lablRate'>稅額扣抵比率%</a></td>
 					<td align="center" style="width: 110px;" class="dividend"><a id='lablCash'>現金股利淨額</a></td>
 					<td align="center" style="width: 110px;" class="dividend"><a id='lablCapital'>資本公積股利<BR>淨額</a></td>
 					<td align="center" style="width: 110px;" class="dividend"><a id='lablStock'>股票股利淨額</a></td>
