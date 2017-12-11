@@ -381,6 +381,10 @@
 					$('.dividend').hide();
 					$('.dbbs').css('width','1450px');
 				}
+				
+				if(q_getPara('sys.project').toUpperCase()=='LN'){
+					$('.isclerk').hide();
+				}
 			}
 
 			function btnIns() {
@@ -797,10 +801,10 @@
 			<table id="tbbs" class='tbbs' border="1" cellpadding='2' cellspacing='1' >
 				<tr style='color:White; background:#003366;' >
 					<td align="center" style="width: 35px;"><input class="btn" id="btnPlus" type="button" value='+' style="font-weight: bold;" /></td>
-					<td align="center" style="width: 120px;"><a id='lblSssno'> </a></td>
-					<td align="center" style="width: 200px;"><a id='lblNamea'> </a></td>
+					<td align="center" style="width: 120px;"><a id='lablSssno'>所得人代號/<BR>員工編號</a></td>
+					<td align="center" style="width: 200px;"><a id='lablNamea'>所得人姓名</a></td>
 					<td align="center" style="display: none;"><a id='lblId'> </a></td>
-					<td align="center" style="width: 26px;"><a id='vewIsclerk'> </a></td>
+					<td align="center" class="isclerk" style="width: 26px;"><a id='vewIsclerk'> </a></td>
 					<td align="center" style="width: 90px;"><a id='lablTypea'>所得格式</a></td>
 					<td align="center" style="width: 90px;"><a id='lablTypeb'>所得註記</a></td>
 					<td align="center" style="width: 90px;"><a id='lablTypec'>項目代號</a></td>
@@ -834,7 +838,7 @@
 					</td>
 					<td><input id="txtNamea.*" type="text" class="txt c1"/></td>
 					<td style="display: none;"><input id="txtId.*" type="text" class="txt c1" style="display: none;"/></td>
-					<td><input id="chkIsclerk.*" type="checkbox"/></td>
+					<td class="isclerk"><input id="chkIsclerk.*" type="checkbox"/></td>
 					<td><select id="cmbTypea.*" class="txt c1"> </select></td>
 					<td><select id="cmbTypeb.*" class="txt c1"> </select></td>
 					<td><select id="cmbTypec.*" class="txt c1"> </select></td>
