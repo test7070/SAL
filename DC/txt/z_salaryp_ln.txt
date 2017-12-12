@@ -32,6 +32,7 @@ declare @tmp table(
 	heal float, --健保費
 	m6 float, --團保費
 	mtotal float, --事病假
+	borr float, --借支
 	minus float, --其他
 	total4 float, 
 	total5 float,
@@ -63,8 +64,9 @@ select '0' gno,c.noa,b.partno,b.part,b.jobno,b.job,b.namea
 ,isnull(b.ch_health,0)
 ,isnull(b.money6,0)
 ,isnull(b.mi_person,0)+isnull(b.mi_sick,0)+isnull(b.mi_nosalary,0)+isnull(b.mi_leave,0)
+,isnull(b.borrow,0)
 ,isnull(b.welfare,0)
-+isnull(b.minus,0)+isnull(b.borrow,0)+isnull(b.lodging_power_fee,0)+isnull(b.stay_money,0)
++isnull(b.minus,0)+isnull(b.lodging_power_fee,0)+isnull(b.stay_money,0)
 +isnull(b.ch_labor_self,0)
 ,isnull(b.mi_person,0)+isnull(b.mi_sick,0)+isnull(b.mi_nosalary,0)+isnull(b.mi_leave,0)+isnull(b.welfare,0)
 +isnull(b.minus,0)+isnull(b.borrow,0)+isnull(b.tax,0)+isnull(b.tax5,0)+isnull(b.stay_tax,0)+isnull(b.tax12,0)+isnull(b.tax18,0)+isnull(b.lodging_power_fee,0)+isnull(b.stay_money,0)
@@ -80,12 +82,12 @@ if((select count(*) from @tmp)>0)
 begin
 	insert into @tmp 
 	select '1' gno,'',partno,CHAR(255),CHAR(255),CHAR(255),'',SUM(salary),SUM(botr),SUM(bosp),SUM(boad),SUM(bofu),sum(boot),SUM(m3),SUM(m4),SUM(add46),SUM(add2),SUM(meals),SUM(plus),SUM(total1),SUM(total2)
-	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),SUM(minus),sum(total4),SUM(total5),count(*)
+	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),sum(borr),SUM(minus),sum(total4),SUM(total5),count(*)
 	from @tmp where gno='0' group by partno
 
 	insert into @tmp 
 	select '2' gno,'',CHAR(255),CHAR(255),CHAR(255),CHAR(255),'',SUM(salary),SUM(botr),SUM(bosp),SUM(boad),SUM(bofu),sum(boot),SUM(m3),SUM(m4),SUM(add46),SUM(add2),SUM(meals),SUM(plus),SUM(total1),SUM(total2)
-	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),SUM(minus),sum(total4),SUM(total5),count(*)
+	,SUM(tax),SUM(lab),SUM(heal),SUM(m6),SUM(mtotal),sum(borr),SUM(minus),sum(total4),SUM(total5),count(*)
 	from @tmp where gno='0'
 end
 
@@ -108,7 +110,8 @@ dbo.getComma(tax,-1) tax,
 dbo.getComma(lab,-1) lab, 
 dbo.getComma(heal,-1) heal, 
 dbo.getComma(m6,-1) m6, 
-dbo.getComma(mtotal,-1) mtotal, 
+dbo.getComma(mtotal,-1) mtotal,
+dbo.getComma(borr,-1) borr, 
 dbo.getComma(minus,-1) minus, 
 dbo.getComma(total4,-1) total4, 
 dbo.getComma(total5,-1) total5,

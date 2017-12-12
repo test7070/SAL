@@ -15,9 +15,12 @@
 		<script src="css/jquery/ui/jquery.ui.widget.js"></script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
 		<script type="text/javascript">
+		
+			var payform_item = " @ ";
 			$(document).ready(function() {
 				q_getId();
-				q_gf('', 'z_salbb');
+				
+				q_gt('payform', '', 0, 0, 0, "");
 			});
 			function q_gfPost() {
 				$('#q_report').q_report({
@@ -41,9 +44,19 @@
 						type : '0', //[7]
 						name : 'xusername',
 						value : r_name
-					}]
+					}, {
+						type : '0', //[8]
+						name : 'rlen',
+						value : r_len
+					}, {//[9]
+                        type : '5',
+                        name : 'xtypea',
+                        value : [q_getPara('report.all')].concat(payform_item.split(','))
+                    }]
 				});
 				q_popAssign();
+                q_getFormat();
+                q_langShow();
 				
 				if(r_len==4){                	
                 	$.datepicker.r_len=4;
@@ -65,8 +78,18 @@
 
 			function q_boxClose(s2) {
 			}
-
-			function q_gtPost(s2) {
+			
+			function q_gtPost(t_name) {
+				switch (t_name) {
+					case 'payform':
+						var as = _q_appendData("payform", "", true);
+		                payform_item = "";
+						for ( i = 0; i < as.length; i++) {
+							payform_item = payform_item + (payform_item.length > 0 ? ',' : '') + as[i].noa + '@' +as[i].noa+'.'+ as[i].form;
+						}
+						q_gf('', 'z_salbb');
+						break;
+				}
 			}
 		</script>
 		<style type="text/css">
@@ -79,10 +102,10 @@
 	ondragenter="event.dataTransfer.dropEffect='none'; event.stopPropagation(); event.preventDefault();"
 	ondragover="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();">
-		<div id="q_menu"></div>
+		<div id="q_menu"> </div>
 		<div style="position: absolute;top: 10px;left:50px;z-index: 1;width:2000px;">
 			<div id="container">
-				<div id="q_report"></div>
+				<div id="q_report"> </div>
 			</div>
 			<div class="prt" style="margin-left: -40px;">
 				<!--#include file="../inc/print_ctrl.inc"-->
