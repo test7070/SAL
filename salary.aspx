@@ -186,7 +186,7 @@
 				            		+t_mon+';'+t_len+';'+t_person+';'+t_monkind+';'+t_proj+';'
 				            		+t_date1+';'+t_date2+';'+t_date3+';'+t_date4+';'+t_date5+';'+t_date6+';'
 				            		+t_addselect+';'+t_addlimit+';'+t_addmon
-				            	);
+				            	);                                              
 				            }
 	            		}else{
 	            			$('#textMon').val($('#txtMon').val().substr(0,r_lenm));
@@ -601,6 +601,15 @@
 			}
 			
 			function q_funcPost(t_func, result) {
+    			    switch(t_func) {
+                    case 'qtxt.query.driversalary':
+                        var as = _q_appendData("tmp0", "", true, true);
+                        if (as[0] != undefined) {
+                            q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob,txtMoney,txtBo_admin,txtBo_traffic,bo_special,txtBo_oth,txtPlus,txtMi_saliday,txtBo_full,txtAddmoney,txtBorrow,txtCh_labor,txtCh_labor_self,txtWelfare,txtRaise_num,txtMinus,txtCh_labor_comp,txtCh_labor1,txtCh_labor2,txtCh_health_insure', as.length, as,
+                            'driverno,driver,partno,part,jobno,job,money,bo_admin,bo_traffic,bo_special,bo_oth,plus,mi_saliday,bo_full,addmoney,borrow,ch_labor,ch_labor_self,welfare,raise_num,minus,ch_labor_comp,ch_labor1,ch_labor2,ch_health_insure', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob','');
+                        }
+                        break;
+                    }
 			        var s1 = location.href;
 			        var t_path = (s1.substr(7, 5) == 'local' ? xlsPath : s1.substr(0, s1.indexOf('/', 10)) + '/htm/');
 			        if (t_func == 'banktran.gen') {
@@ -650,6 +659,10 @@
 							}
 						}
 						imports=true;
+						if (q_getPara('sys.project').toUpperCase() == 'NV') {
+                              var t_mon = $('#txtMon').val();
+                              q_func('qtxt.query.driversalary', 'salary.txt,driversalary,' + encodeURI(t_mon));
+                        }
 						sum();
 					}
 					
@@ -966,7 +979,7 @@
 			                        }
 		                        }
 	                        }
-	                         sum();
+	                        sum();
 	                    break;
 	
 	                case q_name:
