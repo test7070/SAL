@@ -245,7 +245,7 @@ a.taxport--稽徵機關代號(縣市+機關)
 --then right('00'+cast(DENSE_RANK() over ( order by a.serial,a.personal,a.ttypea,a.ttypeb)as nvarchar(2)),2)+right('0000000'+cast(ROW_NUMBER() over (partition by isnull(a.ishouse,0),a.serial,a.personal,a.ttypea,a.ttypeb order by a.sssno) as nvarchar(10)),6)
 --else '00'+right('00'+cast(DENSE_RANK() over ( order by a.serial,a.personal,a.ttypea,a.ttypeb)as nvarchar(2)),2)+right('00000'+cast(ROW_NUMBER() over (partition by isnull(a.ishouse,0),a.serial,a.personal,a.ttypea,a.ttypeb order by a.sssno)as nvarchar(10)),4) end )--流水號
 +right('00000000'+isnull(a.serial,'00000000'),8)--扣繳單位或營利事業統一編號
-+case when (isnull(a.typec,'')='' or isnull(a.typec,'') not in ('A','B','C','D','E','F','H','I','J','K','L','Y')) then ' ' else a.typec end--註記
++case when (isnull(a.typec,'')='' or isnull(a.typec,'') not in ('A','B','C','D','E','F','H','I','J','K','L','R','Y')) then ' ' else a.typec end--註記
 +a.typea--格式
 +case when a.ptype in ('0','3','7','9','A') and isnull(c.id,'')+isnull(c.passportno,'')!='' then isnull(c.id,'')+isnull(c.passportno,'') --證號別7 沒有英文姓名欄位 所以直接抓ID
 when a.ptype in ('1','4') then isnull(c.id,'')+isnull(c.passportno,'')+'  '
