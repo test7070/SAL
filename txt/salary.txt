@@ -3324,3 +3324,91 @@ BEGIN
 END
 
 ;
+
+
+---------------------------------------------------------------------------------------------------------------------
+driversalary:--driversalary
+SET QUOTED_IDENTIFIER OFF
+declare @mon nvarchar(50)=[1]
+IF OBJECT_ID('tempdb..#tmp')is not null
+BEGIN
+   drop table #tmp
+END
+
+IF OBJECT_ID('tempdb..#tmpa')is not null
+BEGIN
+   drop table #tmpa
+END
+
+create table #tmpa(
+	driverno nvarchar(50),
+	money float
+)
+insert #tmpa
+select driverno,SUM(ISNULL(total2,0))
+from view_trans
+where LEFT(datea,6)=@mon and ISNULL(total2,0)!=0
+group by driverno
+
+create table #tmp(
+	driverno nvarchar(50),
+	driver nvarchar(50),
+	partno nvarchar(50),
+	part nvarchar(50),
+	jobno nvarchar(50),
+	job nvarchar(50),
+	money float,
+	bo_admin float,
+	bo_traffic float,
+	bo_special float,
+	bo_oth float,
+	plus float,
+	mi_total float,
+	addmoney float,
+	borrow float,
+	ch_labor float,
+	ch_labor_self float,
+	welfare float,
+	raise_num float,
+	minus float,
+	ch_labor_comp float,
+	ch_labor1 float,
+	ch_labor2 float,
+	ch_health_insure float
+)
+insert #tmp
+select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),isnull(d.bo_admin,0),isnull(d.bo_traffic,0)
+,isnull(d.bo_special,0),isnull(d.bo_oth,0),isnull(d.plus,0),isnull(d.mi_total,0)
+,isnull(d.addmoney,0),isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
+,isnull(lab.mount,0),isnull(d.minus,0),isnull(lab.re_comp,0),isnull(lab.sa_retire,0),isnull(lab.sa_labor,0),isnull(lab.sa_health,0)
+from driver a
+left join sss b on a.noa=b.noa
+left join #tmpa c on a.noa=c.driverno
+outer apply(select 
+case when plusitem like '%主管津貼%' then sum(isnull(plusmoney,0)) end bo_admin,
+case when  plusitem like '%交通津貼%' then sum(isnull(plusmoney,0)) end bo_traffic,
+case when  plusitem like '%工作津貼%' then sum(isnull(plusmoney,0)) end bo_special,
+case when  plusitem like '%其他津貼%' then sum(isnull(plusmoney,0)) end bo_oth,
+case when  plusitem like '%司機薪資%' then sum(isnull(plusmoney,0)) end plus,
+case when  minusitem like '%司機薪資%' then sum(isnull(minusmoney,0)) end mi_total,
+case when  minusitem like '%加班費%' then sum(isnull(minusmoney,0)) end addmoney,
+case when  minusitem like '%借支%' then sum(isnull(minusmoney,0)) end borrow,
+case when  minusitem like '%福利金%' then sum(isnull(minusmoney,0)) end welfare,
+case when  minusitem like '%其他扣款%' then sum(isnull(minusmoney,0)) end minus
+from carchg where a.noa=driverno and LEFT(datea,6)=@mon
+group by plusitem,minusitem)d
+outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from labase where noa=a.noa)lab
+where cartype='公司車'
+
+select * from #tmp
+
+IF OBJECT_ID('tempdb..#tmp')is not null
+BEGIN
+   drop table #tmp
+END
+
+IF OBJECT_ID('tempdb..#tmpa')is not null
+BEGIN
+   drop table #tmpa
+END
+;

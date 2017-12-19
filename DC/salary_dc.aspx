@@ -424,7 +424,6 @@
 			}
 
 			function q_funcPost(t_func, result) {
-
 				var s1 = location.href;
 				var t_path = (s1.substr(7, 5) == 'local' ? xlsPath : s1.substr(0, s1.indexOf('/', 10)) + '/htm/');
 				if (t_func == 'banktran.gen') {
