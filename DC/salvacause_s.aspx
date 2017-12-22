@@ -37,7 +37,7 @@
                 switch (t_name) {
                     case 'authority':
                         var as = _q_appendData('authority', '', true);
-                        if(q_getPara('sys.project').toUpperCase()=='DC' && (r_rank >= 7 || r_userno=='040136')){//105/10/28 040136 調整
+                        if(q_getPara('sys.project').toUpperCase()=='DC' && (r_rank >= 7 || r_userno=='040136' || r_userno=='020110')){//105/10/28 040136 調整
                         	seekwhere = "";
                         }else if (r_rank >= 7)
                             seekwhere = "";
