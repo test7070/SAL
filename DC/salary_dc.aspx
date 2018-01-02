@@ -630,10 +630,12 @@
 									}
 								}
 								//103/03/04 出勤要顯示加班時數，薪資不要匯入
-								as[i].addh21 = 0;
-								as[i].addh22 = 0;
-								as[i].addh46_1 = 0;
-								as[i].addh46_2 = 0;
+								if (q_getPara('sys.project').toUpperCase()!='SH'){
+    								as[i].addh21 = 0;
+    								as[i].addh22 = 0;
+    								as[i].addh46_1 = 0;
+    								as[i].addh46_2 = 0;
+								}
 								
 								//大昌用--加班費=本薪/30/8*加班時數
 								as[i].addmoney = Math.round(dec(as[i].salary) / 30 / 8 * (dec(as[i].addh21) + dec(as[i].addh22)));
@@ -724,6 +726,9 @@
 						$('#txtBo_special_' + j).change(function() {
 							sum();
 						});
+						$('#txtMoney5_' + j).change(function() {
+                            sum();
+                        });
 						$('#txtBo_oth_' + j).change(function() {
 							sum();
 						});

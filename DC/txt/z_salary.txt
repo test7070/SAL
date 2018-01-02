@@ -1870,24 +1870,24 @@ declare @tmp table(
 		
 	total5 float
 )
-insert @tmp
-select '0',b.mon,sno,a.namea,a.money,a.bo_admin,a.bo_traffic,a.bo_oth,a.money5,a.bo_full,a.plus
-,total1+isnull(a.money5,0)+a.bo_full,addh2_1,addh2_2,addh2_1*1.33,addh2_2*1.66,a.addmoney,cast(late as nvarchar(10))+' 次'
-,hr_leave,a.hr_person,a.hr_sick,mi_leave,mi_person,mi_sick,a.mi_total,a.ch_labor,a.ch_health
-,case when ISNULL(tax5,0)!=0 then tax5 else tax end,hplus2,a.borrow,a.minus,a.total4
-,cast(d.total as nvarchar(10))+' /h',cast(e.hr_used as nvarchar(10))+' /h',a.ch_labor2,a.ch_labor_comp
-,cast(round(a.ch_labor_comp/nullif(a.ch_labor2,0)*100,2) as nvarchar(10))+' %' ,a.total5
-from salarys a
-left join salary b on a.noa=b.noa
-left join sss c on a.sno=c.noa
-left join salvacas d on a.sno=d.sssno and b.noa='104'
-outer apply(select SUM(hr_used)hr_used from salvacause where a.sno=sssno and hname like '%特休假%' and ('104/10' between left(bdate,6) and left(edate,6)))e
+insert @tmp 
+select '0',b.mon,sno,a.namea,a.money,a.bo_admin,a.bo_traffic,a.bo_oth,a.money5,a.bo_full,a.plus 
+,total1+isnull(a.money5,0)+a.bo_full,addh2_1,addh2_2,addh2_1*1.33,addh2_2*1.66,a.addmoney,cast(late as nvarchar(10))+' 次' 
+,hr_leave,a.hr_person,a.hr_sick,mi_leave,mi_person,mi_sick,a.mi_total,a.ch_labor,a.ch_health 
+,case when ISNULL(tax5,0)!=0 then tax5 else tax end,hplus2,a.borrow,a.minus,a.total4 
+,cast(d.total as nvarchar(10))+' /h',cast(e.hr_used as nvarchar(10))+' /h',a.ch_labor2,a.ch_labor_comp 
+,cast(round(a.ch_labor_comp/nullif(a.ch_labor2,0)*100,2) as nvarchar(10))+' %' ,a.total5 
+from salarys a 
+left join salary b on a.noa=b.noa 
+left join sss c on a.sno=c.noa 
+left join salvacas d on a.sno=d.sssno and d.noa=left(@t_xmon,3) 
+outer apply(select SUM(hr_used)hr_used from salvacause where a.sno=sssno and hname like '%特休假%' and (@t_xmon between left(bdate,6) and left(edate,6)))e 
 where (LEN(@t_xmon) = 0 or @t_xmon = a.mon) and 
 (LEN(@t_xkind) = 0 or @t_xkind = b.monkind) and 
 (a.sno between @t_bsssno and @t_esssno) and 
 (b.person = '本國') 
-and a.partno between @t_bxpartno and @t_expartno
-and (c.cno=@t_acompno or len(@t_acompno)=0)
+and a.partno between @t_bxpartno and @t_expartno 
+and (c.cno=@t_acompno or len(@t_acompno)=0) 
 
 select * from @tmp
 ;								

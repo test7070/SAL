@@ -91,6 +91,32 @@
                 if(q_getPara('sys.project').toUpperCase() == 'NV'){
                 	$('.special').show();
                 }
+                
+                $('#txtBtime').blur(function() {
+                    if(q_getPara('sys.project').toUpperCase()=='SH'){
+                        //107/01/02 方先生  30分鐘為級鉅 限制登打只能XX:00 或XX:30
+                        if(!emp($('#txtBtime').val()) && ($('#txtBtime').val().slice(-2)!='00' && $('#txtBtime').val().slice(-2)!='30')){
+                            if($('#txtBtime').val().slice(-2)>='30'){
+                                $('#txtBtime').val($('#txtBtime').val().substr(0,3)+'30');
+                            }else{
+                                $('#txtBtime').val($('#txtBtime').val().substr(0,3)+'00');
+                            }
+                        }
+                    }
+                });
+
+                $('#txtEtime').blur(function() {
+                    if(q_getPara('sys.project').toUpperCase()=='SH'){
+                        //107/01/02 方先生  30分鐘為級鉅 限制登打只能XX:00 或XX:30
+                        if(!emp($('#txtEtime').val()) && ($('#txtEtime').val().slice(-2)!='00' && $('#txtEtime').val().slice(-2)!='30')){
+                            if($('#txtEtime').val().slice(-2)>='30'){
+                                $('#txtEtime').val($('#txtEtime').val().substr(0,3)+'30');
+                            }else{
+                                $('#txtEtime').val($('#txtEtime').val().substr(0,3)+'00');
+                            }
+                        }
+                    }
+                });
             }
             
             function change_typea() {
@@ -260,7 +286,11 @@
             }
 
             function btnPrint() {
-
+                if(q_getPara('sys.project').toUpperCase()=='SH'){
+                    q_box('z_saladd.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "650px", q_getMsg("popPrint"));
+                }else{
+                   q_box('printtable.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "808px", q_getMsg("popPrint")); 
+                }
             }
 
             function q_stPost() {
@@ -314,6 +344,10 @@
 
             function refresh(recno) {
                 _refresh(recno);
+                if (q_getPara('sys.project').toUpperCase()=='SH'){
+                    $('.isNSH').hide();
+                    $('.isSH').show();
+               }
             }
 
             function readonly(t_para, empty) {
@@ -551,7 +585,9 @@
 						<td><span> </span><a id='lblHours' class="lbl"> </a></td>
 						<td><input id="txtHours" type="text" class="txt num c1"/></td>
 						<td><span> </span><a id='lblIsapv' class="lbl"> </a></td>
-						<td><input id="chkIsapv" type="checkbox"/></td>
+						<td class="isNSH"><input id="chkIsapv" type="checkbox"/></td>
+                        <td class="isSH" style="display: none;"><input id="txtApv" type="text" class="txt c1" style="width: 50%"/>
+                                         <input id="btnApv" type="button" style="width: 50%" value="核准"/></td>
 					</tr>
 					<!--加班單換休欄位暫不開放------------------------------------------->
 					<tr class="special" style="display: none;">
