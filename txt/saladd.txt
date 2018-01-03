@@ -163,3 +163,13 @@ select * from @tmp
 --明細
 --select * from @tmpa where a>0 or b+cb!=0 or c!=0 or d!=0 order by sssno
 ;
+------------------------------------------------------------------------------------------
+saladd_apv:--saladd_apv 請假核准
+declare @t_noa nvarchar(max)= case when '#non'=[1] then '' else [1] end
+declare @t_userno nvarchar(max)= case when '#non'=[2] then '' else [2] end
+declare @t_name nvarchar(max)= case when '#non'=[3] then '' else [3] end
+
+update saladd set apv=@t_name,isapv='1' where noa=@t_noa
+
+select noa,apv from saladd where noa=@t_noa
+;

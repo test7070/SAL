@@ -254,6 +254,11 @@
 	            	$('.unfix').show();
 	            }
 	            
+	           if (q_getPara('sys.project').toUpperCase()=='SH'){
+                    $('#lblBo_admin').text('職務津貼');
+                    $('#lblBo_traffic').text('伙食津貼');
+               }
+	            
 	            var t_proj='DC,SF,VU,VU2,DJ,RB,XY,FE,IT,ST2,AMD,RK,TN,NV'.split(',');
 	            for(var i = 0; i < t_proj.length; i++) {
 	            	if (q_getPara('sys.project').toUpperCase()==t_proj[i]){
@@ -316,6 +321,9 @@
 				for(var j = 0; j < q_bbsCount; j++) {
 					$('#combClass5_'+j).val($('#txtClass5_'+j).val().split(','));
 				}
+				if (q_getPara('sys.project').toUpperCase()=='SH'){
+                    $('.isSH').hide();
+               }
 			}
 			
 			function sum(i) {
@@ -425,13 +433,13 @@
 					<td align="center" style="width: 80px;display: none;" class="vu"><a id='lblBo_money1'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_admin'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_traffic'> </a></td>
-					<td align="center" style="width: 80px;"><a id='lblBo_special'> </a></td>
+					<td align="center" style="width: 80px;" class="isSH"><a id='lblBo_special'> </a></td>
 					<td align="center" style="width: 80px;display: none;" class="money3"><a id='lblBo_money3'> </a></td>
 					<td align="center" style="width: 80px;display: none;" class="money4"><a id='lblBo_money4'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_oth'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblBo_full'> </a></td>
 					<td align="center" style="width: 80px;"><a id='lblSalary'> </a></td>
-					<td align="center" style="width: 80px;"><a id='lblMeals'> </a></td>
+					<td align="center" style="width: 80px;" class="isSH"><a id='lblMeals'> </a></td>
 					<td align="center" style="width: 80px;" class="vuhide"><a id='lblClass5'> </a></td>
 					<!--106/05/17 全部客戶開始使用 除非有買勞健保系統才不會抓這裡資料-->
 					<td align="center" style="width: 80px;" class="labor"><a id='lblSa_labor'>勞保投保薪資</a></td>
@@ -469,14 +477,14 @@
 					<td style="display: none;" class="vu"><input class="txt num c1" id="txtBo_money1.*" type="text"/></td>
 					<td ><input class="txt num c1" id="txtBo_admin.*" type="text"/></td>
 					<td ><input class="txt num c1" id="txtBo_traffic.*" type="text" /></td>
-					<td ><input class="txt num c1" id="txtBo_special.*" type="text" /></td>
+					<td class=' isSH'><input class="txt num c1" id="txtBo_special.*" type="text" /></td>
 					<td style="display: none;" class="money3"><input class="txt num c1" id="txtBo_money3.*" type="text" /></td>
 					<td style="display: none;" class="money4"><input class="txt num c1" id="txtBo_money4.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_oth.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtBo_full.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtSalary.*" type="text" /></td>
 					<td ><input class="txt num c1" id="txtMeals.*" type="text" /></td>
-					<td class="vuhide">
+					<td class="vuhide isSH">
 						<select id="combClass5.*" class="txt c1" multiple="multiple" size="3"> </select>
 						<input class="txt c1" id="txtClass5.*" type="hidden" />
 					</td>

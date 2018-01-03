@@ -20,7 +20,7 @@
             }
 
             var q_name = "saladd";
-            var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2', 'txtNamea'];
+            var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2', 'txtNamea','txtApv'];
             var bbmNum = [['txtHours', 10, 1, 1],['txtHr_special', 10, 1, 1]];
             var bbmMask = [];
             q_sqlCount = 6;
@@ -91,6 +91,53 @@
                 if(q_getPara('sys.project').toUpperCase() == 'NV'){
                 	$('.special').show();
                 }
+                
+                $('#txtBtime').blur(function() {
+                    if(q_getPara('sys.project').toUpperCase()=='SH'){
+                        //107/01/02 方先生  30分鐘為級鉅 限制登打只能XX:00 或XX:30
+                        if(!emp($('#txtBtime').val()) && ($('#txtBtime').val().slice(-2)!='00' && $('#txtBtime').val().slice(-2)!='30')){
+                            if($('#txtBtime').val().slice(-2)>='30'){
+                                $('#txtBtime').val($('#txtBtime').val().substr(0,3)+'30');
+                            }else{
+                                $('#txtBtime').val($('#txtBtime').val().substr(0,3)+'00');
+                            }
+                        }
+                    }
+                });
+
+                $('#txtEtime').blur(function() {
+                    if(q_getPara('sys.project').toUpperCase()=='SH'){
+                        //107/01/02 方先生  30分鐘為級鉅 限制登打只能XX:00 或XX:30
+                        if(!emp($('#txtEtime').val()) && ($('#txtEtime').val().slice(-2)!='00' && $('#txtEtime').val().slice(-2)!='30')){
+                            if($('#txtEtime').val().slice(-2)>='30'){
+                                $('#txtEtime').val($('#txtEtime').val().substr(0,3)+'30');
+                            }else{
+                                $('#txtEtime').val($('#txtEtime').val().substr(0,3)+'00');
+                            }
+                        }
+                    }
+                });
+                
+                $('#btnApv').click(function() {
+                    if (!emp($('#txtApv').val())) {
+                        alert('已核准!!');
+                        return;
+                    }
+                    if (!emp($('#txtNoa').val())) {
+                        var t_noa=$('#txtNoa').val();
+                        
+                        q_func('qtxt.query.saladd_apv', 'saladd.txt,saladd_apv,' 
+                            + encodeURI(t_noa)+';'+encodeURI(r_userno)+';'+encodeURI(r_name),r_accy,1);
+                            
+                        var as = _q_appendData("tmp0", "", true, true);
+                        if (as[0] != undefined) {
+                            if($('#txtNoa').val()==as[0].noa){
+                                $('#txtApv').val(as[0].apv);
+                                abbm[q_recno]['apv'] = as[0].apv;
+                            }
+                        }
+                    }
+                });
             }
             
             function change_typea() {
@@ -260,7 +307,11 @@
             }
 
             function btnPrint() {
-
+                if(q_getPara('sys.project').toUpperCase()=='SH'){
+                    q_box('z_saladd.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "650px", q_getMsg("popPrint"));
+                }else{
+                   q_box('printtable.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "808px", q_getMsg("popPrint")); 
+                }
             }
 
             function q_stPost() {
@@ -314,6 +365,16 @@
 
             function refresh(recno) {
                 _refresh(recno);
+                if (q_getPara('sys.project').toUpperCase()=='SH'){
+                    $('.isNSH').hide();
+                    $('.isSH').show();
+                    if(r_rank<8 && !q_authRun(2)){
+                        $("#btnApv").attr("disabled", "disabled");
+                    }else{
+                        $("#btnApv").removeAttr("disabled");
+                    }
+               }
+               
             }
 
             function readonly(t_para, empty) {
@@ -551,7 +612,9 @@
 						<td><span> </span><a id='lblHours' class="lbl"> </a></td>
 						<td><input id="txtHours" type="text" class="txt num c1"/></td>
 						<td><span> </span><a id='lblIsapv' class="lbl"> </a></td>
-						<td><input id="chkIsapv" type="checkbox"/></td>
+						<td class="isNSH"><input id="chkIsapv" type="checkbox"/></td>
+                        <td class="isSH" style="display: none;"><input id="txtApv" type="text" class="txt c1" style="width: 60%"/>
+                                         <input id="btnApv" type="button" style="width: 40%" value="核准"/></td>
 					</tr>
 					<!--加班單換休欄位暫不開放------------------------------------------->
 					<tr class="special" style="display: none;">
