@@ -368,10 +368,14 @@
                 if (q_getPara('sys.project').toUpperCase()=='SH'){
                     $('.isNSH').hide();
                     $('.isSH').show();
-                    if(r_rank<8 && !q_authRun(2)){
-                        $("#btnApv").attr("disabled", "disabled");
+                    if (q_cur == 1 || q_cur == 2) {
+                        if(r_rank<8 && !q_authRun(2)){
+                            $("#btnApv").attr("disabled", "disabled");
+                        }else{
+                            $("#btnApv").removeAttr("disabled");
+                        }
                     }else{
-                        $("#btnApv").removeAttr("disabled");
+                        $("#btnApv").attr("disabled", "disabled");
                     }
                }
                
