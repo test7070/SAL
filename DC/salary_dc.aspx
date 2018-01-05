@@ -646,7 +646,9 @@
 
 						if ($('#cmbPerson').find("option:selected").text().indexOf('日薪') > -1) {
 							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtDaymoney,txtPubmoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtLate,txtHr_sick,txtHr_person,txtHr_nosalary,txtHr_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtAddmoney,txtPartno,txtPart,txtJobno,txtJob', as.length, as, 'sssno,namea,salary,pubmoney,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,day,mi_saliday,addh21,addh22,addh100,addh46_1,addh46_2,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,late,hr_sick,hr_person,hr_nosalary,hr_leave,memo,plus,minus,borrow,bo_full,addmoney,partno,part,jobno,job', '');
-						} else {
+						}else if (q_getPara('sys.project').toUpperCase()=='SH'){
+						    q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtMoney,txtPubmoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtHplus2,txtLate,txtHr_sick,txtHr_person,txtHr_nosalary,txtHr_leave,txtPlus,txtMinus,txtBorrow,txtBo_full,txtMi_sick,txtMi_person,txtMi_nosalary,txtMi_leave,txtAddmoney,txtPartno,txtPart,txtJobno,txtJob', as.length, as, 'sssno,namea,salary,pubmoney,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,day,mi_saliday,addh21,addh22,addh100,addh46_1,addh46_2,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,hplus2,late,hr_sick,hr_person,hr_nosalary,hr_leave,plus,minus,borrow,bo_full,mi_sick,mi_person,mi_nosalary,mi_leave,addmoney,partno,part,jobno,job', '');
+                        } else {
 							q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtMoney,txtPubmoney,txtBo_admin,txtBo_traffic,txtBo_special,txtBo_oth,txtCh_labor1,txtCh_labor2,txtCh_health_insure,txtDay,txtMi_saliday,txtAddh2_1,txtAddh2_2,txtAddh100,txtAddh46_1,txtAddh46_2,txtCh_labor,txtChgcash,txtCh_labor_comp,txtCh_labor_self,txtTax,txtRaise_num,txtCh_health,txtHplus2,txtLate,txtHr_sick,txtHr_person,txtHr_nosalary,txtHr_leave,txtMemo,txtPlus,txtMinus,txtBorrow,txtBo_full,txtMi_sick,txtMi_person,txtMi_nosalary,txtMi_leave,txtAddmoney,txtPartno,txtPart,txtJobno,txtJob', as.length, as, 'sssno,namea,salary,pubmoney,bo_admin,bo_traffic,bo_special,bo_oth,ch_labor1,ch_labor2,ch_health_insure,day,mi_saliday,addh21,addh22,addh100,addh46_1,addh46_2,ch_labor,chgcash,ch_labor_comp,ch_labor_self,tax,raise_num,ch_health,hplus2,late,hr_sick,hr_person,hr_nosalary,hr_leave,memo,plus,minus,borrow,bo_full,mi_sick,mi_person,mi_nosalary,mi_leave,addmoney,partno,part,jobno,job', '');
 						}
 
@@ -1047,8 +1049,12 @@
 						}
 						q_tr('txtTotal2_' + j, Math.round(dec($('#txtTotal1_' + j).val()) - dec($('#txtMi_total_' + j).val()) + dec($('#txtBo_full_' + j).val()) + dec($('#txtBo_born_' + j).val()) + dec($('#txtBo_night_' + j).val()) + dec($('#txtBo_duty_' + j).val()) + dec($('#txtTax_other_' + j).val())));
 						//給付總額
-						q_tr('txtOstand_' + j, Math.round((dec($('#txtMoney_' + j).val()) / inday / 8) * 100) / 100);
-						//加班費基數(取小數點兩位並四捨五入)//103/08/25 將假日加班的金額移到加班費上
+						if(q_getPara('sys.project').toUpperCase() == 'SH'){
+						    q_tr('txtOstand_' + j, Math.round(((dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val()))/ inday / 8) * 100) / 100);
+						}else{
+						    q_tr('txtOstand_' + j, Math.round((dec($('#txtMoney_' + j).val()) / inday / 8) * 100) / 100);
+                            //加班費基數(取小數點兩位並四捨五入)//103/08/25 將假日加班的金額移到加班費上
+						}
 						q_tr('txtAddmoney_' + j, 
 							Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))
 							+ Math.round(dec($('#txtOstand_' + j).val()) * 1.33 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))

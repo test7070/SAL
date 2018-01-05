@@ -133,10 +133,10 @@
                         if (as[0] != undefined) {
                             if($('#txtNoa').val()==as[0].noa){
                                 $('#txtApv').val(as[0].apv);
-                                abbm[q_recno]['apv'] = as[0].apv;
                             }
                         }
                     }
+                    $('#chkIsapv').prop('checked', true);
                 });
             }
             
