@@ -393,6 +393,11 @@
 				$('#lblAccno2').click(function(){
 					q_pop('txtAccno2', "accc.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";accc3='" + $('#txtAccno2').val() + "';" + $('#txtDatea').val().substr(0,3) + '_' + r_cno, 'accc', 'accc3', 'accc2', "95%", "95%", q_getMsg('popAcc2'), true);
 				});
+             
+                if(q_getPara('sys.project').toUpperCase() == 'SH'){
+                    $('#lblBo_admin').text('職務津貼');
+                    $('#lblBo_traffic').text('伙食津貼');
+                }
 			}
 
 			var checkenda = false;
@@ -1049,16 +1054,21 @@
 						}
 						q_tr('txtTotal2_' + j, Math.round(dec($('#txtTotal1_' + j).val()) - dec($('#txtMi_total_' + j).val()) + dec($('#txtBo_full_' + j).val()) + dec($('#txtBo_born_' + j).val()) + dec($('#txtBo_night_' + j).val()) + dec($('#txtBo_duty_' + j).val()) + dec($('#txtTax_other_' + j).val())));
 						//給付總額
+						//加班費基數(取小數點兩位並四捨五入)//103/08/25 將假日加班的金額移到加班費上
 						if(q_getPara('sys.project').toUpperCase() == 'SH'){
-						    q_tr('txtOstand_' + j, Math.round(((dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val())+dec($('#txtMoney_' + j).val()))/ inday / 8) * 100) / 100);
+						    q_tr('txtOstand_' + j, Math.round(((dec($('#txtMoney_' + j).val())+dec($('#txtBo_admin_' + j).val())+dec($('#txtBo_traffic_' + j).val())+dec($('#txtBo_full_' + j).val()))/ inday / 8) * 100) / 100);
+						    q_tr('txtAddmoney_' + j, 
+                                Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val()))*1.33 + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))*1.66
+                                + Math.round(dec($('#txtOstand_' + j).val()) * 1.33 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))
+                            );
 						}else{
 						    q_tr('txtOstand_' + j, Math.round((dec($('#txtMoney_' + j).val()) / inday / 8) * 100) / 100);
-                            //加班費基數(取小數點兩位並四捨五入)//103/08/25 將假日加班的金額移到加班費上
+						    q_tr('txtAddmoney_' + j, 
+                                Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))
+                                + Math.round(dec($('#txtOstand_' + j).val()) * 1.33 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))
+                            );
 						}
-						q_tr('txtAddmoney_' + j, 
-							Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))
-							+ Math.round(dec($('#txtOstand_' + j).val()) * 1.33 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))
-						);
+					
 						//加班費//103/08/25 將假日加班的金額移到加班費上
 						//q_tr('txtTax6_'+j,Math.round((dec($('#txtTotal2_'+j).val())+Math.round(dec($('#txtOstand_'+j).val())*1.33*dec($('#txtAddh46_1_'+j).val()))+Math.round(dec($('#txtOstand_'+j).val())*1.67*dec($('#txtAddh46_2_'+j).val())))*0.06));//所得稅
 						q_tr('txtTotal3_' + j, Math.round(dec($('#txtTotal2_' + j).val()) + dec($('#txtAddmoney_' + j).val()) + dec($('#txtTax_other2_' + j).val()) ));
@@ -1077,7 +1087,7 @@
 				}
 				imports = false;
 				//bbm計算
-				var monkind = 0, t_money = 0, t_daymoney = 0, t_pubmoney = 0, t_bo_admin = 0, t_bo_traffic = 0, t_bo_special = 0, t_bo_oth = 0, t_bo_full = 0, t_tax_other = 0, t_mtotal = 0, t_mitotal = 0, t_addmoney = 0, t_borrow = 0, t_ch_labor = 0, t_ch_health = 0, t_ch_labor_comp = 0, t_ch_labor_self = 0, t_welfare = 0, t_total3 = 0, t_total4 = 0, t_total5 = 0, t_minus = 0, t_plus = 0;
+				var monkind = 0, t_money = 0, t_daymoney = 0, t_pubmoney = 0, t_bo_admin = 0, t_bo_traffic = 0, t_bo_special = 0, t_bo_oth = 0, t_bo_full = 0, t_tax_other = 0, t_mtotal = 0, t_mitotal = 0, t_addmoney = 0, t_borrow = 0, t_ch_labor = 0, t_ch_health = 0, t_ch_labor_comp = 0, t_ch_labor_self = 0, t_welfare = 0, t_total3 = 0, t_total4 = 0, t_total5 = 0, t_minus = 0, t_plus = 0,t_money5=0;
 				//結算方式，因為一個月結算，所以*1，以上下期計算薪資，因此*0.5
 				if ($('#cmbMonkind').find("option:selected").text().indexOf('本月') > -1)
 					monkind = 1;
@@ -1096,6 +1106,8 @@
 					t_bo_traffic += dec($('#txtBo_traffic_' + j).val()) * monkind;
 					//交通津貼
 					t_bo_full += dec($('#txtBo_full_' + j).val());
+					//業績獎金
+                    t_money5 += dec($('#txtMoney5_' + j).val());
 					//全勤
 					t_bo_special += dec($('#txtBo_special_' + j).val()) * monkind;
 					//特別津貼
@@ -1144,6 +1156,8 @@
 				q_tr('txtBo_traffic', t_bo_traffic);
 				//交通津貼
 				q_tr('txtBo_full', t_bo_full);
+				//業績獎金
+                q_tr('txtMoney5', t_money5);
 				//全勤
 				q_tr('txtBo_special', t_bo_special);
 				//特別津貼
@@ -1193,9 +1207,14 @@
 				if (q_getPara('sys.project').toUpperCase()=='SH'){
 				    $('#lblBo_special').hide();
 				    $('#txtBo_special').hide();
+				    $('#lblMoney5').show();
+                    $('#txtMoney5').show();
                     $('.isSH').hide();
                     $('.isNSH').show();
-                }
+                }else{
+                    $('#lblMoney5').hide();
+                    $('#txtMoney5').hide();
+                } 
 			}
 
 			function readonly(t_para, empty) {
@@ -1769,6 +1788,10 @@
 				overflow-y: auto;
 				position: relative;
 			}
+			.readonly{
+                color: green;
+                background: rgb(237, 237, 238);
+            }
 		</style>
 	</head>
 	<body ondragstart="return false" draggable="false"
@@ -1829,8 +1852,12 @@
 						<td class="td10"><input id="txtPubmoney"  type="text" class="txt num c1" /></td>
 					</tr>
 					<tr>
-						<td class="td1"><span> </span><a id="lblBo_special" class="lbl"> </a></td>
-						<td class="td2"><input id="txtBo_special"  type="text" class="txt num c1"/></td>
+						<td class="td1"><span> </span><a id="lblBo_special" class="lbl"> </a>
+						                              <a id="lblMoney5" class="lbl">業績獎金</a>
+						</td>
+						<td class="td2"><input id="txtBo_special"  type="text" class="txt num c1"/>
+						                <input id="txtMoney5"  type="text" class="txt num c1"/>   
+						</td>
 						<td class="td3"><span> </span><a id="lblBo_oth" class="lbl"> </a></td>
 						<td class="td4"><input id="txtBo_oth"  type="text" class="txt num c1"/></td>
 						<td class="td5"><span> </span><a id="lblTax_other" class="lbl"> </a></td>

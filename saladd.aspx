@@ -383,11 +383,12 @@
 
             function readonly(t_para, empty) {
                 _readonly(t_para, empty);
-
+            
                 if (q_cur == 1 || q_cur == 2) {
                     if (!q_authRun(3) && r_rank < 8) {
                         $('#chkIsapv').attr('disabled', 'disabled');
                     }
+                    $('#txtApv').css('color', 'green').css('background', 'RGB(237,237,237)').attr('readonly', 'readonly');
                 }
             }
 
