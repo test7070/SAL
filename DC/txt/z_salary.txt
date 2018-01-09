@@ -1873,7 +1873,7 @@ declare @tmp table(
 )
 insert @tmp 
 select '0',b.mon,sno,a.namea,a.money,a.bo_admin,a.bo_traffic,a.bo_oth,a.money5,a.bo_full,a.plus 
-,total1+a.bo_full,addh2_1,addh2_2,addh2_1*1.33,addh2_2*1.66,a.addmoney,cast(late as nvarchar(10))+' 次' 
+,total1+a.bo_full,addh2_1,addh2_2,round(addh2_1*1.33*a.ostand,0),round(addh2_2*1.66*a.ostand,0),round(a.addmoney,0),cast(late as nvarchar(10))+' 次' 
 ,hr_leave,a.hr_person,a.hr_sick,mi_leave,mi_person,mi_sick,a.mi_total,a.ch_labor,a.ch_health 
 ,case when ISNULL(tax5,0)!=0 then tax5 else tax end,hplus2,a.borrow,a.minus,a.total4 
 ,cast(d.total as nvarchar(10))+' /h',cast(e.hr_used as nvarchar(10))+' /h',a.ch_labor2,a.ch_labor_comp 
