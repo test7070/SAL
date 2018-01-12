@@ -97,6 +97,18 @@
 	            if(q_getPara('sys.project').toUpperCase()=='LN'){
 	            	$('#btnBank').hide();
 	            }
+	            
+	            if(q_getPara('sys.project').toUpperCase()=='NV'){
+	            	q_gt('bank', "where=^^1=1^^" , 0, 0, 0, "getbank", r_accy,1);
+			    	var as = _q_appendData("bank", "", true);
+			    	var t_item='#non@全部';
+			    	for(var i=0 ;i<as.length;i++){
+			    		t_item=t_item+','+as[i].noa+"@公司:"+as[i].acomp+" 匯款帳號:"+as[i].account;
+			    	}
+			    	
+			    	q_cmbParse("combBank", t_item);
+	            	$('#combBank').show();
+	            }
 				
 				$('#txtDatea').focusout(function () {
 					q_cd( $(this).val() ,$(this));
@@ -239,7 +251,11 @@
 	            $('#btnPost').click(function() {
 	            	if(!emp($('#txtNoa').val()) &&!(q_cur==1 || q_cur==2)){
 	            		if(q_getPara('sys.project').toUpperCase()=='NV'){
-	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media5665,' +$('#txtNoa').val())+';NV;'+$('#txtDatea').val();
+	            			var tbank=$('#combBank').val();
+	            			if(tbank==null){
+	            				tbank='#non';
+	            			}
+	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media5665,' +$('#txtNoa').val()+';NV;'+$('#txtDatea').val()+';'+tbank);
 	            		}else{
 	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media,' +$('#txtNoa').val());
 	            		}
@@ -3063,7 +3079,7 @@
 		            <td ><input id="txtPlus"  type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblMinus" class="lbl"> </a></td>
 		            <td ><input id="txtMinus"  type="text" class="txt num c1"/></td>
-		            <td  colspan="2"><input id="btnPost" type="button" style="float: right;"/></td>
+		            <td colspan="2"><input id="btnPost" type="button" style="float: right;"/></td>
 		        </tr>
 		        <tr>
 		           	<td ><span> </span><a id="lblCh_health" class="lbl"> </a></td>
@@ -3074,6 +3090,7 @@
 		            <td ><input id="txtCh_labor_self"  type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblWelfare" class="lbl"> </a></td>
 		            <td ><input id="txtWelfare"  type="text" class="txt num c1"/><input id="txtCh_labor_comp"  type="hidden" class="txt num c1"/></td>
+		            <td colspan="2"><select id="combBank" style="display: none;width: 95%;float: right;"> </select></td>
 		        </tr>
 		        <tr>
 		        	<td ><span> </span><a id="lblTotal3" class="lbl"> </a></td>

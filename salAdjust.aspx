@@ -267,6 +267,10 @@
 		            	break;
 		            }
 	            }
+	            
+	            if (q_getPara('sys.project').toUpperCase()=='NV'){
+	            	$('.tax').show();
+	            }
 			}
 			
 			function btnOk() {
@@ -455,7 +459,7 @@
 					<td align="center" style="width: 80px;" class="labor"><a id='lblRe_rate'>勞退提繳率(%)</a></td>
 					<td align="center" style="width: 80px;" class="labor"><a id='lblRe_comp'>勞退公司提繳</a></td>
 					<td align="center" style="width: 80px;" class="labor"><a id='lblRe_person'>勞退個人提繳</a></td>
-					<td align="center" style="width: 80px;" class="labor"><a id='lblTax'>所得稅</a></td>
+					<td align="center" style="width: 80px;" class="labor tax"><a id='lblTax'>所得稅</a></td>
 					<td align="center" style="width: 80px;" class="labor"><a id='lblMount'>扶養人數</a></td>
 					<!------------------------------------------------------------->
 					<td align="center" style="width: 80px;display: none;" class="unfix"><a id='lblUnfix'> </a></td>
@@ -502,7 +506,7 @@
 					<td class="labor"><input class="txt num c1" id="txtRe_rate.*" type="text" /></td>
 					<td class="labor"><input class="txt num c1" id="txtRe_comp.*" type="text" /></td>
 					<td class="labor"><input class="txt num c1" id="txtRe_person.*" type="text" /></td>
-					<td class="labor"><input class="txt num c1" id="txtTax.*" type="text" /></td>
+					<td class="labor tax"><input class="txt num c1" id="txtTax.*" type="text" /></td>
 					<td class="labor"><input class="txt num c1" id="txtMount.*" type="text" /></td>
 					<!------------------------------------------------------------->
 					<td style="display: none;" class="unfix"><input class="txt num c1" id="txtUnfix.*" type="text" /></td>
