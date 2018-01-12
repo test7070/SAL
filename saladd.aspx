@@ -133,10 +133,10 @@
                         if (as[0] != undefined) {
                             if($('#txtNoa').val()==as[0].noa){
                                 $('#txtApv').val(as[0].apv);
-                                abbm[q_recno]['apv'] = as[0].apv;
                             }
                         }
                     }
+                    $('#chkIsapv').prop('checked', true);
                 });
             }
             
@@ -368,10 +368,14 @@
                 if (q_getPara('sys.project').toUpperCase()=='SH'){
                     $('.isNSH').hide();
                     $('.isSH').show();
-                    if(r_rank<8 && !q_authRun(2)){
-                        $("#btnApv").attr("disabled", "disabled");
+                    if (q_cur == 1 || q_cur == 2) {
+                        if(r_rank<8 && !q_authRun(2)){
+                            $("#btnApv").attr("disabled", "disabled");
+                        }else{
+                            $("#btnApv").removeAttr("disabled");
+                        }
                     }else{
-                        $("#btnApv").removeAttr("disabled");
+                        $("#btnApv").attr("disabled", "disabled");
                     }
                }
                
@@ -379,11 +383,12 @@
 
             function readonly(t_para, empty) {
                 _readonly(t_para, empty);
-
+            
                 if (q_cur == 1 || q_cur == 2) {
                     if (!q_authRun(3) && r_rank < 8) {
                         $('#chkIsapv').attr('disabled', 'disabled');
                     }
+                    $('#txtApv').css('color', 'green').css('background', 'RGB(237,237,237)').attr('readonly', 'readonly');
                 }
             }
 
