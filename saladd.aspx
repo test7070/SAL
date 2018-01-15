@@ -307,11 +307,7 @@
             }
 
             function btnPrint() {
-                if(q_getPara('sys.project').toUpperCase()=='SH'){
-                    q_box('z_saladd.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "650px", q_getMsg("popPrint"));
-                }else{
-                   q_box('printtable.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "808px", q_getMsg("popPrint")); 
-                }
+                q_box('z_saladd.aspx' + "?;;;;" + ";noa=" + $('#txtNoa').val(), '', "95%", "650px", q_getMsg("popPrint"));
             }
 
             function q_stPost() {

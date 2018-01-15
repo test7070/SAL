@@ -37,24 +37,24 @@
                         dbf : 'part',
                         index : 'noa,part',
                         src : 'part_b.aspx'
+                    },{
+                        type : '5',
+                        name : 'xisapv',
+                        value : ('#non@全部,1@核准,0@未核准').split(',')
                     }]
                 });
                 q_popAssign();
                 q_getFormat();
                 q_langShow();
                 
-                var t_noa=typeof(q_getId()[5])=='undefined'?'':q_getId()[5];
-                t_noa  =  t_noa.replace('noa=','');
-                $('#txtXnoa').val(t_noa).width(100);
-                
+                                
                 $('#txtXdate1').mask(r_picd);
                 $('#txtXdate1').datepicker();
                 $('#txtXdate2').mask(r_picd);
                 $('#txtXdate2').datepicker();
-                $('#txtYdate1').mask(r_picd);
-                $('#txtYdate1').datepicker();
-                $('#txtYdate2').mask(r_picd);
-                $('#txtYdate2').datepicker();
+                
+                $('#txtXdate1').val(q_date().substr(0,r_lenm)+'/01');
+                $('#txtXdate2').val(q_cdn(q_cdn(q_date().substr(0,r_lenm)+'/01',35).substr(0,r_lenm)+'/01',-1));
                 
                 //105/10/28 040136 調整
                  if (r_rank < 8 && q_content=='' && r_userno!='040136'){
@@ -100,13 +100,13 @@
                         
                         break;
 	            	case 'sss':
-	                        var as = _q_appendData('sss', '', true);
-	                        if (as[0] != undefined) {
-	                            ssspartno = as[0].partno;
-	                            ssspart = as[0].part;
-		                        q_gt('authority', "where=^^a.noa='z_salvacause' and a.sssno='" + r_userno + "'^^", q_sqlCount, 1);
-	                        }
-	                        break;
+						var as = _q_appendData('sss', '', true);
+						if (as[0] != undefined) {
+							ssspartno = as[0].partno;
+							ssspart = as[0].part;
+							q_gt('authority', "where=^^a.noa='z_salvacause' and a.sssno='" + r_userno + "'^^", q_sqlCount, 1);
+						}
+						break;
 				}
             }
 		</script>
