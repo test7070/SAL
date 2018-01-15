@@ -3398,7 +3398,7 @@ case when  minusitem like '%其他扣款%' then sum(isnull(minusmoney,0)) end mi
 from carchg where a.noa=driverno and LEFT(datea,6)=@mon
 group by plusitem,minusitem)d
 outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from labase where noa=a.noa)lab
-where cartype='公司車'
+where cartype!='外車'
 
 select * from #tmp
 

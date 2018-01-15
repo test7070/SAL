@@ -99,6 +99,8 @@
 	            }
 	            
 	            if(q_getPara('sys.project').toUpperCase()=='NV'){
+	            	$('#cmbAddsource').val('1');
+	            	$('#textMon').val(q_cdn(q_date().substr(0,r_lenm)+'/01',-1).substr(0,r_lenm));
 	            	q_gt('bank', "where=^^1=1^^" , 0, 0, 0, "getbank", r_accy,1);
 			    	var as = _q_appendData("bank", "", true);
 			    	var t_item='#non@全部';
