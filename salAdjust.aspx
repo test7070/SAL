@@ -31,6 +31,7 @@
 			var bbmMask = [];
 			var bbsMask = [];
 			aPop = new Array(['txtJobno_', 'txtJobno_', 'salm', 'noa,job,level1', 'txtJobno_,txtJob_,txtLevel1_','salm_b.aspx']);
+			var t_authRun=false;
 			$(document).ready(function () {
 				bbmKey = [];
 				bbsKey = ['noa', 'noq'];
@@ -42,7 +43,8 @@
 				if (!q_paraChk())
 					return;
 				
-				main();
+				var t_where = "where=^^ a.noa='" + q_name + "' and a.sssno='"+r_userno+"' ^^";
+				q_gt('authority', t_where, 0, 0, 0, "getauthRun", r_accy);
 			});            /// end ready
 
 			function main() {
@@ -52,7 +54,7 @@
 					return;
 				}
 				
-				if(q_authRun())
+				if(t_authRun)
 					mainBrow(6, t_content, t_sqlname, t_postname);
 				else
 					alert('無使用權限');
@@ -342,21 +344,33 @@
 			var salranks=[];
 			function q_gtPost(t_postname) {  /// 資料下載後 ...
 				switch (t_postname) {
+					case 'getauthRun':
+						var as = _q_appendData("authority", "", true, true);
+						if (as[0] != undefined) {
+							if (as[0]["pr_run"] == "true"){
+								t_authRun=true;
+							}
+						}
+						if(r_rank>=8){
+							t_authRun=true;
+						}
+						main();
+						break;
 					case 'salrank':
-					salrank = _q_appendData("salrank", "", true);
-					if(salrank[0]!=undefined){
-						q_tr('txtBo_admin_'+b_seq,salrank[0].bo_admin);
-						q_tr('txtBo_traffic_'+b_seq,salrank[0].bo_traffic);
-						q_tr('txtBo_special_'+b_seq,salrank[0].bo_special);
-						q_tr('txtBo_oth_'+b_seq,salrank[0].bo_oth);
-						q_tr('txtBo_full_'+b_seq,salrank[0].bo_full);
-						q_tr('txtMoney_'+b_seq,salrank[0].money);
-						salranks = _q_appendData("salranks", "", true);
-						if(salranks[0]!=undefined)
-							q_tr('txtMoney_'+b_seq,salranks[dec($('#txtLevel2_'+b_seq).val())-1].money);
-						$('#txtMoney_'+b_seq).change();
-					}
-					break;
+						salrank = _q_appendData("salrank", "", true);
+						if(salrank[0]!=undefined){
+							q_tr('txtBo_admin_'+b_seq,salrank[0].bo_admin);
+							q_tr('txtBo_traffic_'+b_seq,salrank[0].bo_traffic);
+							q_tr('txtBo_special_'+b_seq,salrank[0].bo_special);
+							q_tr('txtBo_oth_'+b_seq,salrank[0].bo_oth);
+							q_tr('txtBo_full_'+b_seq,salrank[0].bo_full);
+							q_tr('txtMoney_'+b_seq,salrank[0].money);
+							salranks = _q_appendData("salranks", "", true);
+							if(salranks[0]!=undefined)
+								q_tr('txtMoney_'+b_seq,salranks[dec($('#txtLevel2_'+b_seq).val())-1].money);
+							$('#txtMoney_'+b_seq).change();
+						}
+						break;
 				}  /// end switch
 			}
 
