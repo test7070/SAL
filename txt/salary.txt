@@ -3340,6 +3340,11 @@ BEGIN
    drop table #tmpa
 END
 
+IF OBJECT_ID('tempdb..#tmpb')is not null
+BEGIN
+   drop table #tmpb
+END
+
 create table #tmpa(
 	driverno nvarchar(50),
 	money float
@@ -3349,6 +3354,30 @@ select driverno,SUM(ISNULL(total2,0))
 from view_trans
 where LEFT(datea,6)=@mon and ISNULL(total2,0)!=0
 group by driverno
+
+create table #tmpb(
+	gno nvarchar(1),
+	driverno nvarchar(50),
+	plus float,
+	borrow float,
+	welfare float,
+	minus float
+)
+insert #tmpb
+select '9',driverno,
+case when  plusitem not like '%借支%' and plusitem not like '%福利金%' then sum(isnull(plusmoney,0)) end plus,
+case when  minusitem like '%借支%' or plusitem like '%借支%' then sum(isnull(minusmoney,0)-isnull(plusmoney,0)) end borrow,
+case when  minusitem like '%福利金%' or plusitem like '%福利金%' then sum(isnull(minusmoney,0)-isnull(plusmoney,0)) end welfare,
+case when  minusitem not like '%借支%' and minusitem not like '%福利金%' then sum(isnull(minusmoney,0)) end minus
+from carchg where LEFT(datea,6)='107/02'
+group by driverno,plusitem,minusitem
+
+insert #tmpb
+select '0',driverno,SUM(ISNULL(plus,'')),SUM(ISNULL(borrow,'')),SUM(ISNULL(welfare,'')),SUM(ISNULL(minus,''))
+from #tmpb
+group by driverno
+
+delete #tmpb where gno='9'
 
 create table #tmp(
 	driverno nvarchar(50),
@@ -3377,26 +3406,14 @@ create table #tmp(
 	ch_health_insure float
 )
 insert #tmp
-select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),isnull(d.bo_admin,0),isnull(d.bo_traffic,0)
-,isnull(d.bo_special,0),isnull(d.bo_oth,0),isnull(d.plus,0),isnull(d.mi_total,0)
-,isnull(d.addmoney,0),isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
+select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),0,0
+,0,0,isnull(d.plus,0),0
+,0,isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
 ,isnull(lab.mount,0),isnull(d.minus,0),isnull(lab.re_comp,0),isnull(lab.sa_retire,0),isnull(lab.sa_labor,0),isnull(lab.sa_health,0)
 from driver a
 left join sss b on a.noa=b.noa
 left join #tmpa c on a.noa=c.driverno
-outer apply(select 
-case when plusitem like '%主管津貼%' then sum(isnull(plusmoney,0)) end bo_admin,
-case when  plusitem like '%交通津貼%' then sum(isnull(plusmoney,0)) end bo_traffic,
-case when  plusitem like '%工作津貼%' then sum(isnull(plusmoney,0)) end bo_special,
-case when  plusitem like '%其他津貼%' then sum(isnull(plusmoney,0)) end bo_oth,
-case when  plusitem like '%司機薪資%' then sum(isnull(plusmoney,0)) end plus,
-case when  minusitem like '%司機薪資%' then sum(isnull(minusmoney,0)) end mi_total,
-case when  minusitem like '%加班費%' then sum(isnull(minusmoney,0)) end addmoney,
-case when  minusitem like '%借支%' then sum(isnull(minusmoney,0)) end borrow,
-case when  minusitem like '%福利金%' then sum(isnull(minusmoney,0)) end welfare,
-case when  minusitem like '%其他扣款%' then sum(isnull(minusmoney,0)) end minus
-from carchg where a.noa=driverno and LEFT(datea,6)=@mon
-group by plusitem,minusitem)d
+left join #tmpb d on a.noa=d.driverno
 outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from labase where noa=a.noa)lab
 where cartype!='外車'
 
