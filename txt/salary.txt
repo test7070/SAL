@@ -3364,20 +3364,9 @@ create table #tmpb(
 	minus float
 )
 insert #tmpb
-select '9',driverno,
-case when  plusitem not like '%借支%' and plusitem not like '%福利金%' then sum(isnull(plusmoney,0)) end plus,
-case when  minusitem like '%借支%' or plusitem like '%借支%' then sum(isnull(minusmoney,0)-isnull(plusmoney,0)) end borrow,
-case when  minusitem like '%福利金%' or plusitem like '%福利金%' then sum(isnull(minusmoney,0)-isnull(plusmoney,0)) end welfare,
-case when  minusitem not like '%借支%' and minusitem not like '%福利金%' then sum(isnull(minusmoney,0)) end minus
+select '0',driverno,sum(isnull(plusmoney,0)),0,0,sum(isnull(minusmoney,0))
 from carchg where LEFT(datea,6)='107/02'
-group by driverno,plusitem,minusitem
-
-insert #tmpb
-select '0',driverno,SUM(ISNULL(plus,'')),SUM(ISNULL(borrow,'')),SUM(ISNULL(welfare,'')),SUM(ISNULL(minus,''))
-from #tmpb
 group by driverno
-
-delete #tmpb where gno='9'
 
 create table #tmp(
 	driverno nvarchar(50),
@@ -3396,6 +3385,7 @@ create table #tmp(
 	addmoney float,
 	borrow float,
 	ch_labor float,
+	ch_health float,
 	ch_labor_self float,
 	welfare float,
 	raise_num float,
@@ -3408,7 +3398,7 @@ create table #tmp(
 insert #tmp
 select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),0,0
 ,0,0,isnull(d.plus,0),0
-,0,isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
+,0,isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.he_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
 ,isnull(lab.mount,0),isnull(d.minus,0),isnull(lab.re_comp,0),isnull(lab.sa_retire,0),isnull(lab.sa_labor,0),isnull(lab.sa_health,0)
 from driver a
 left join sss b on a.noa=b.noa
