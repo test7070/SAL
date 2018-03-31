@@ -615,7 +615,8 @@ create table #tmp(
 	work bit,
 	weeks nvarchar(10),
 	
-	sssno nvarchar(50), 
+	sssno nvarchar(50),
+	cno nvarchar(50), 
 	namea nvarchar(50), 
 	partno nvarchar(50), 
 	part nvarchar(50), 
@@ -651,10 +652,10 @@ create table #tmp(
 	memo nvarchar(MAX)
 ) 
 
-insert #tmp(gno,mon,datea,sssno,namea,partno,part,class5,dclass5,btime,etime,clockindate,clockin,clockoutdate,clockout,bresttime,eresttime,workhours,memo
+insert #tmp(gno,mon,datea,cno,sssno,namea,partno,part,class5,dclass5,btime,etime,clockindate,clockin,clockoutdate,clockout,bresttime,eresttime,workhours,memo
 ,late,early,vacahours,overtime,doverhours,overhours,dhoverhours,hoverhours)
 select '0',left(a.noa,CAST(@t_rlen as int)+3),a.noa
-,b.sssno,b.namea,s.partno,s.part
+,s.cno,b.sssno,b.namea,s.partno,s.part
 ,case when isnull(adj.class5,'')!='' then adj.class5 else s.class5 end
 ,case when isnull(c1.noa,'')!='' then c1.noa else c2.noa end
 ,case when isnull(c1.noa,'')!='' then c1.btime else c2.btime end
@@ -733,7 +734,7 @@ end
 ,case when isnull(c1.noa,'')!='' then c1.overhours else c2.overhours end
 ,case when isnull(c1.noa,'')!='' then c1.dhoverhours else c2.dhoverhours end
 ,case when isnull(c1.noa,'')!='' then c1.hoverhours else c2.hoverhours end
-from (select a.datea,b.noa sssno,namea,b.partno,b.part,b.class5,b.cno from #tmpmon a,sss b) xtmp
+from (select a.datea,b.sssno sssno,namea,b.partno,b.part,b.class5,b.cno from #tmpmon a,(select b.sssno,namea,b.partno,b.part,b.class5,b.cno from #tmp b group by b.sssno,namea,b.partno,b.part,b.class5,b.cno)b) xtmp
 outer apply (select top 1 * from saladjust where noa=xtmp.sssno and datea<=xtmp.datea order by datea desc)adj
 --非輪班
 outer apply(select top 1 * from class5s  where noa=case when isnull(adj.class5,'')!='' then adj.class5 else xtmp.class5 end

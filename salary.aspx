@@ -623,8 +623,8 @@
                     case 'qtxt.query.driversalary':
                         var as = _q_appendData("tmp0", "", true, true);
                         if (as[0] != undefined) {
-                            q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob,txtMoney,txtBo_admin,txtBo_traffic,bo_special,txtBo_oth,txtPlus,txtMi_saliday,txtBo_full,txtAddmoney,txtBorrow,txtCh_labor,txtCh_labor_self,txtWelfare,txtRaise_num,txtMinus,txtCh_labor_comp,txtCh_labor1,txtCh_labor2,txtCh_health_insure', as.length, as,
-                            'driverno,driver,partno,part,jobno,job,money,bo_admin,bo_traffic,bo_special,bo_oth,plus,mi_saliday,bo_full,addmoney,borrow,ch_labor,ch_labor_self,welfare,raise_num,minus,ch_labor_comp,ch_labor1,ch_labor2,ch_health_insure', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob','');
+                            q_gridAddRow(bbsHtm, 'tbbs', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob,txtMoney,txtBo_admin,txtBo_traffic,bo_special,txtBo_oth,txtPlus,txtMi_saliday,txtBo_full,txtAddmoney,txtBorrow,txtCh_labor,txtCh_health,txtCh_labor_self,txtWelfare,txtRaise_num,txtMinus,txtCh_labor_comp,txtCh_labor1,txtCh_labor2,txtCh_health_insure', as.length, as,
+                            'driverno,driver,partno,part,jobno,job,money,bo_admin,bo_traffic,bo_special,bo_oth,plus,mi_saliday,bo_full,addmoney,borrow,ch_labor,ch_health,ch_labor_self,welfare,raise_num,minus,ch_labor_comp,ch_labor1,ch_labor2,ch_health_insure', 'txtSno,txtNamea,txtPartno,txtPart,txtJobno,txtJob','');
                         }
                         break;
                     }

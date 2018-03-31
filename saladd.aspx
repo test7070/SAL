@@ -320,8 +320,12 @@
 
                     q_func('qtxt.query.updatesalpresent', 'saladd.txt,updatesalpresent,' + encodeURI(x_datea) + ';' + encodeURI(x_sssno));
 
-                    if (q_cur == 1 || q_cur == 2)
+                    if (q_getPara('sys.project').toUpperCase() == 'SH'){
                         q_func('qtxt.query.updatesalpresent', 'saladd.txt,updatesalpresent,' + encodeURI($('#txtDatea').val()) + ';' + encodeURI($('#txtSssno').val()));
+                    }else{
+                        if (q_cur == 1 || q_cur == 2)
+                        q_func('qtxt.query.updatesalpresent', 'saladd.txt,updatesalpresent,' + encodeURI($('#txtDatea').val()) + ';' + encodeURI($('#txtSssno').val()));
+                    }
 
                     x_datea = '#non', x_sssno = '#non';
                 }
@@ -364,15 +368,12 @@
                 if (q_getPara('sys.project').toUpperCase()=='SH'){
                     $('.isNSH').hide();
                     $('.isSH').show();
-                    if (q_cur == 1 || q_cur == 2) {
-                        if(r_rank<8 && !q_authRun(2)){
+                    if(r_rank<8){
                             $("#btnApv").attr("disabled", "disabled");
-                        }else{
-                            $("#btnApv").removeAttr("disabled");
-                        }
                     }else{
-                        $("#btnApv").attr("disabled", "disabled");
+                            $("#btnApv").removeAttr("disabled");
                     }
+
                }
                
             }

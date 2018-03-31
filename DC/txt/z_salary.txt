@@ -1693,7 +1693,7 @@ declare @tmp table(
 ) 
 insert into @tmp 
 select '0' gno, a.noa,b.noq,c.cno,isnull((select top 1 acomp from acomp where noa=c.cno),''),
-b.sno,b.namea,c.indate,c.ft_date,c.outdate,b.money,b.pubmoney,b.bo_admin,b.bo_traffic,b.bo_special, 
+b.sno,case when LEFT(b.sno,1)='5' then c.namea else b.namea end,c.indate,c.ft_date,c.outdate,b.money,b.pubmoney,b.bo_admin,b.bo_traffic,b.bo_special, 
 b.bo_oth,b.total1,b.ch_labor1,b.ch_labor2,b.ch_health_insure,b.mi_saliday,b.mi_total,b.bo_full,b.tax_other,b.total2,b.addh2_1,b.addh2_2, 
 b.addmoney,b.tax_other2,b.total3,b.borrow,b.ch_labor,b.ch_labor_comp,b.ch_labor_self,isnull(b.hplus2,0),b.lodging_power_fee,b.tax,b.tax5, 
 b.welfare,b.ch_health,b.total4,b.total5,a.monkind,a.mon,isnull(b.minus,0),isnull(b.plus,0), 
@@ -1726,6 +1726,14 @@ select '2' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outd
 left join salchg b on a.sno=b.sssno and a.mon=b.mon left join salchgitem c on b.plusitem=c.noa
 where a.gno='0' and isnull(b.plusitem,'')!=''
 
+--gno=2
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph,itemnoq)
+select '2' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outdate,a.moneys,a.pubmoney,a.bo_admins,a.bo_traffic,a.bo_special,a.bo_oth,a.total1,a.ch_labor1,a.ch_labor2,a.ich_health,a.mi_sailday,a.mi_total,a.bo_full,a.tax_other,a.total2,a.addh2_1,a.addh2_2,a.addmoney,a.tax_other2,a.total3,a.borrow,a.ch_labor,a.chla_comp,a.chla_self,a.hplus,a.lopofee,a.tax,a.tax5,a.welfare,a.ch_health,a.total4,a.total5,a.monkind,a.mon
+,a.minus,b.plusmoney,b.plusitem,a.minusitem,b.memo,a.minusmemo,a.bomemo,a.vasph
+,ROW_NUMBER()over(partition by a.noq order by b.noa) from @tmp a 
+left join carchg b on a.sno=b.driverno and a.mon=left(b.datea,6)
+where a.gno='0' and isnull(b.plusitem,'')!=''
+
 --gno=3
 update a
 set gno=case when a.itemnoq=b.maxitemnoq then '3' else gno end
@@ -1737,9 +1745,20 @@ insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmon
 select '3' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp a
 where gno='0' and not exists (select * from @tmp where noa=a.noa and noq=a.noq and (gno='2' or gno='3'))
 
+--total1
+update @tmp
+set total1=a.moneys+a.pubmoney+a.bo_admins+a.bo_traffic+a.bo_special+a.bo_oth+b.plus
+from @tmp a
+outer apply(select sno,SUM(isnull(plus,0))plus from @tmp  where a.sno=sno and (gno='2' or gno='3') group by sno)b
+
 --gno=4
 insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
 select '4' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp where gno='0'
+
+--total2.3
+update @tmp
+set total2=total1-mi_total+bo_full+tax_other
+,total3=total1-mi_total+bo_full+tax_other+addmoney+tax_other2
 
 --減項
 --gno=5
@@ -1748,6 +1767,13 @@ select '5' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outd
 ,b.minus,a.plus,a.plusitem,c.item,a.plusmemo,b.memo,a.bomemo,a.vasph 
 ,ROW_NUMBER()over(partition by a.noq order by b.noa) from @tmp a 
 left join salchg b on a.sno=b.sssno and a.mon=b.mon left join salchgitem c on b.minusitem=c.noa
+where a.gno='0' and isnull(b.minusitem,'')!=''
+
+insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph,itemnoq)
+select '5' gno,a.noa,a.noq,a.cno,a.acomp,a.sno,a.namea,a.indate,a.ft_date,a.outdate,a.moneys,a.pubmoney,a.bo_admins,a.bo_traffic,a.bo_special,a.bo_oth,a.total1,a.ch_labor1,a.ch_labor2,a.ich_health,a.mi_sailday,a.mi_total,a.bo_full,a.tax_other,a.total2,a.addh2_1,a.addh2_2,a.addmoney,a.tax_other2,a.total3,a.borrow,a.ch_labor,a.chla_comp,a.chla_self,a.hplus,a.lopofee,a.tax,a.tax5,a.welfare,a.ch_health,a.total4,a.total5,a.monkind,a.mon
+,b.minusmoney,a.plus,a.plusitem,b.minusitem,a.plusmemo,b.memo,a.bomemo,a.vasph 
+,ROW_NUMBER()over(partition by a.noq order by b.noa) from @tmp a 
+left join carchg b on a.sno=b.driverno and a.mon=left(b.datea,6) 
 where a.gno='0' and isnull(b.minusitem,'')!=''
 
 --gno=6
@@ -1761,9 +1787,20 @@ insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmon
 select '6' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp a
 where gno='0' and not exists (select * from @tmp where noa=a.noa and noq=a.noq and (gno='5' or gno='6'))
 
+--total4
+update @tmp
+set total4=a.borrow+a.welfare+a.ch_health+a.ch_labor+a.chla_self+tax+tax5+b.minus
+from @tmp a
+outer apply(select sno,SUM(minus)minus from @tmp  where a.sno=sno and (gno=5 or gno=6) group by sno)b
+
 --gno=7
 insert @tmp(gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph)
 select '7' gno,noa,noq,cno,acomp,sno,namea,indate,ft_date,outdate,moneys,pubmoney,bo_admins,bo_traffic,bo_special,bo_oth,total1,ch_labor1,ch_labor2,ich_health,mi_sailday,mi_total,bo_full,tax_other,total2,addh2_1,addh2_2,addmoney,tax_other2,total3,borrow,ch_labor,chla_comp,chla_self,hplus,lopofee,tax,tax5,welfare,ch_health,total4,total5,monkind,mon,minus,plus,plusitem,minusitem,plusmemo,minusmemo,bomemo,vasph from @tmp where gno='0'
+
+--total5
+update @tmp
+set total5=total3-total4
+from @tmp a
 
 delete @tmp where gno='0'
 
