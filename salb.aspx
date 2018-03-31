@@ -261,14 +261,49 @@
 						}
 						t_tcd=true;
 						
-						q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtCh_meal,cmbTypea,cmbTypeb'
+						var t_n=0;
+						for(var i=0;i<t_salary.length;i++){
+							$('#txtSssno_'+i).val(t_salary[i].sno);
+							$('#txtNamea_'+i).val(t_salary[i].namea);
+							$('#txtMount_'+i).val(t_salary[i].raise_num);
+							$('#txtAd_money_'+i).val(t_salary[i].addmoney);
+							$('#txtMoney_'+i).val(t_salary[i].tmp_money);
+							$('#txtCh_meal_'+i).val(t_salary[i].tmp_food_money);
+							$('#cmbTypea_'+i).val(t_salary[i].typea);
+							$('#cmbTypea_'+i).change();
+							$('#cmbTypeb_'+i).val(t_salary[i].typeb);
+						}
+						t_n=0+(t_salary.length>0?t_salary.length-1:0);
+						for(var i=0;i<t_salaward.length;i++){
+							$('#txtSssno_'+(t_n+i)).val(t_salaward[i].sssno);
+							$('#txtNamea_'+(t_n+i)).val(t_salaward[i].namea);
+							$('#cmbTypea_'+(t_n+i)).val(t_salaward[i].typea);
+							$('#cmbTypea_'+(t_n+i)).change();
+							$('#cmbTypeb_'+(t_n+i)).val(t_salaward[i].typeb);
+							$('#txtMoney_'+(t_n+i)).val(t_salaward[i].money);
+							$('#txtTax_'+(t_n+i)).val(t_salaward[i].tax);
+							$('#txtMemo_'+(t_n+i)).val(t_salaward[i].memo);
+						}
+						t_n=t_n+(t_salaward.length>0?t_salaward.length-1:0);
+						for(var i=0;i<as.length;i++){
+							$('#txtSssno_'+(t_n+i)).val(t_salary[i].sssno);
+							$('#txtNamea_'+(t_n+i)).val(t_salary[i].namea);
+							$('#cmbTypea_'+(t_n+i)).val(t_salary[i].salbtypea);
+							$('#cmbTypea_'+(t_n+i)).change();
+							$('#cmbTypeb_'+(t_n+i)).val(t_salary[i].salbtypeb);
+							$('#cmbTypeb_'+(t_n+i)).change();
+							$('#cmbTypec'+(t_n+i)).val(t_salary[i].salbtypec);
+							$('#txtMoney_'+(t_n+i)).val(t_salary[i].plus);
+						}
+						
+						/*q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtCh_meal,cmbTypea,cmbTypeb'
 						,t_salary.length, t_salary,'sno,namea,raise_num,addmoney,tmp_money,tmp_food_money,typea,typeb','txtSssno');
 						
 						q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,cmbTypea,cmbTypeb,txtMoney,txtTax,txtMemo'
 						,t_salaward.length, t_salaward,'sssno,namea,typea,typeb,money,tax,memo','txtSssno');
 						
 						q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,cmbTypea,cmbTypeb,cmbTypec,txtMoney'
-						,as.length, as	,'sssno,namea,salbtypea,salbtypeb,salbtypec,plus','txtSssno');
+						,as.length, as	,'sssno,namea,salbtypea,salbtypeb,salbtypec,plus','txtSssno');*/
 						
 						if(SssArray.length > 0){
 							var t_where = "where=^^ noa in (" + SssArray.toString() + ") ^^";
@@ -349,53 +384,57 @@
 			}
 
 			function bbsAssign() {
-				_bbsAssign();
-				for (var j = 0; j < (q_bbsCount == 0 ? 1 : q_bbsCount); j++) {
-					$('#btnMinus_' + j).click(function() {
-						btnMinus($(this).attr('id'));
-					});
-					$('#txtNamea_'+j).focusin(function(){
-						q_msg($(this), $(this).val(),10,1800);
-					});
-					
-					$('#txtTax_'+j).change(function(){
-						sum();
-					});
-					
-					$('#cmbTypea_'+j).change(function(){
-						t_IdSeq = -1;
-	                    q_bodyId($(this).attr('id'));
-	                    b_seq = t_IdSeq;
-						if(q_cur==1 || q_cur==2){
-							//處理內容
-							$('#cmbTypeb_'+b_seq).text('');
-							$('#cmbTypec_'+b_seq).text('');
-							var c_typeb=' @ ';
-							
-							for (i=0;i<t_typeb.length;i++){
-								if(t_typeb[i].noa==$('#cmbTypea_'+b_seq).val())
-									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].inote+'.'+t_typeb[i].kind;
+				for(var j = 0; j < q_bbsCount; j++) {
+					if (!$('#btnMinus_' + j).hasClass('isAssign')) {
+						$('#btnMinus_' + j).click(function() {
+							btnMinus($(this).attr('id'));
+						});
+						$('#txtNamea_'+j).focusin(function(){
+							q_msg($(this), $(this).val(),10,1800);
+						});
+						
+						$('#txtTax_'+j).change(function(){
+							sum();
+						});
+						
+						$('#cmbTypea_'+j).change(function(){
+							t_IdSeq = -1;
+		                    q_bodyId($(this).attr('id'));
+		                    b_seq = t_IdSeq;
+							if(q_cur==1 || q_cur==2){
+								//處理內容
+								$('#cmbTypeb_'+b_seq).text('');
+								$('#cmbTypec_'+b_seq).text('');
+								var c_typeb=' @ ';
+								
+								for (var i=0;i<t_typeb.length;i++){
+									if(t_typeb[i].noa==$('#cmbTypea_'+b_seq).val())
+										c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].inote+'.'+t_typeb[i].kind;
+								}
+								q_cmbParse("cmbTypeb_"+b_seq, c_typeb);
+								
+								//處理內容
+								var c_typec=' @ ';
+								for (var i=0;i<t_typec.length;i++){
+									if(t_typec[i].payformno==$('#cmbTypea_'+b_seq).val())
+										c_typec=c_typec+','+t_typec[i].noa+"@"+t_typec[i].noa+'.'+t_typec[i].mark;
+								}
+								q_cmbParse("cmbTypec_"+b_seq, c_typec);
+								
+								Typechangedisabled();
 							}
-							q_cmbParse("cmbTypeb_"+b_seq, c_typeb);
-							
-							//處理內容
-							var c_typec=' @ ';
-							for (i=0;i<t_typec.length;i++){
-								if(t_typec[i].payformno==$('#cmbTypea_'+b_seq).val())
-									c_typec=c_typec+','+t_typec[i].noa+"@"+t_typec[i].noa+'.'+t_typec[i].mark;
-							}
-							q_cmbParse("cmbTypec_"+b_seq, c_typec);
-							
+						});
+						$('#cmbTypeb_'+j).change(function(){
+							t_IdSeq = -1;
+		                    q_bodyId($(this).attr('id'));
+		                    b_seq = t_IdSeq;
 							Typechangedisabled();
-						}
-					});
-					$('#cmbTypeb_'+j).change(function(){
-						t_IdSeq = -1;
-	                    q_bodyId($(this).attr('id'));
-	                    b_seq = t_IdSeq;
-						Typechangedisabled();
-					});
+						});
+					}
 				}
+				
+				_bbsAssign();
+				
 				btnTypechange();
 				
 				if($('#btnDividend').val().indexOf('隱藏')>-1){
@@ -542,7 +581,7 @@
 							$('#cmbTypec_'+j).text('');
 							var c_typeb=' @ ';
 							
-							for (i=0;i<t_typeb.length;i++){
+							for (var i=0;i<t_typeb.length;i++){
 								if(t_typeb[i].noa==$('#cmbTypea_'+j).val())
 									c_typeb=c_typeb+','+t_typeb[i].inote+"@"+t_typeb[i].inote+'.'+t_typeb[i].kind;
 							}
@@ -554,7 +593,7 @@
 							
 							//處理內容
 							var c_typec=' @ ';
-							for (i=0;i<t_typec.length;i++){
+							for (var i=0;i<t_typec.length;i++){
 								if(t_typec[i].payformno==$('#cmbTypea_'+j).val())
 									c_typec=c_typec+','+t_typec[i].noa+"@"+t_typec[i].noa+'.'+t_typec[i].mark;
 							}					
