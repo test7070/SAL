@@ -76,7 +76,7 @@
 					var t_mon = $.trim($('#txtMon').val());
 					if(t_mon.length>0 && (q_cur==1 || q_cur==2)){
 						var t_where = "where=^^ (typea=N'薪資') and (mon=N'"+t_mon+"') ^^";
-						q_gt('salary', t_where, 0, 0, 0, "");	
+						q_gt('salary', t_where, 0, 0, 0, "getsalary");	
 					}else{
 						alert('請輸入年份/月份!!');
 					}
@@ -165,33 +165,52 @@
 						t_typeb = _q_appendData("payremark", "", true);
 						refresh(q_recno);  /// 第一次需要重新載入
 						break;
-					case 'salary':
-						var as = _q_appendData("salarys", "", true);
+					case 'getsalary':
+						var as = _q_appendData("salary", "", true);
 						var t_mon = $.trim($('#txtMon').val());
+						t_salary=[];
 						if(as.length >0){
-							for(var k=0;k<as.length;k++){
-								//排除勞健保 其他加減項  伙食費
-								var s_money = dec(as[k].total5)-dec(as[k].plus)+dec(as[k].minus)-dec(as[k].meals)
-								+dec(as[k].borrow)+dec(as[k].ch_labor)+dec(as[k].ch_labor_self)+dec(as[k].ch_health)+dec(as[k].hplus2)
-								+dec(as[k].tax)+dec(as[k].tax5)+dec(as[k].welfare);
-								as[k]['tmp_money'] = s_money;
-								//as[k]['tmp_food_money'] = dec(as[k].meals);
-								as[k]['tmp_food_money'] = 0;
-								as[k]['raise_num'] = 0;
-								as[k]['addmoney'] = 0;
-								as[k]['typea'] = '50';
-								as[k]['typeb'] = '';
-							}
 							for(var j=0;j<q_bbsCount;j++){
 								$('#btnMinus_'+j).click();
 							}
-							
-							t_salary=as;
-							q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtCh_meal,cmbTypea,cmbTypeb'
-							,as.length, as,'sno,namea,raise_num,addmoney,tmp_money,tmp_food_money,typea,typeb','txtSssno');
-						}else{
-							t_salary=[];
 						}
+						
+						for(var i=0;i<as.length;i++){
+							var t_where = "where=^^ noa='"+as[i].noa+"' ^^";
+							q_gt('salary', t_where, 0, 0, 0, "getsalarys",r_accy,1);
+							var ass = _q_appendData("salarys", "", true);
+							
+							for(var k=0;k<ass.length;k++){
+								//排除勞健保 其他加減項  伙食費
+								var s_money = dec(ass[k].total5)-dec(ass[k].plus)+dec(ass[k].minus)-dec(ass[k].meals)
+								+dec(ass[k].borrow)+dec(ass[k].ch_labor)+dec(ass[k].ch_labor_self)+dec(ass[k].ch_health)+dec(ass[k].hplus2)
+								+dec(ass[k].tax)+dec(ass[k].tax5)+dec(ass[k].welfare);
+								
+								if(q_getPara('sys.project').toUpperCase()=='LN'){ //107/03/31不排除 加減項(為實際給付金額)
+									s_money = dec(ass[k].total5)-dec(ass[k].meals)
+									+dec(ass[k].borrow)+dec(ass[k].ch_labor)+dec(ass[k].ch_labor_self)+dec(ass[k].ch_health)+dec(ass[k].hplus2)
+									+dec(ass[k].tax)+dec(ass[k].tax5)+dec(ass[k].welfare);
+								}
+								
+								ass[k]['tmp_money'] = s_money;
+								//ass[k]['tmp_food_money'] = dec(ass[k].meals);
+								ass[k]['tmp_food_money'] = 0;
+								ass[k]['raise_num'] = 0;
+								ass[k]['addmoney'] = 0;
+								ass[k]['typea'] = '50';
+								ass[k]['typeb'] = '';
+								
+								if(s_money<=0){
+									ass.splice(k, 1);
+									k--;
+								}
+							}
+							
+							t_salary=t_salary.concat(ass);
+							q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtCh_meal,cmbTypea,cmbTypeb'
+							,ass.length, ass,'sno,namea,raise_num,addmoney,tmp_money,tmp_food_money,typea,typeb','txtSssno');
+						}
+						
 						//匯入獎金
 						var t_mon = $.trim($('#txtMon').val());
 						var t_where = "where=^^ year='"+t_mon+"' ^^";
@@ -204,6 +223,11 @@
 								as[i].memo=as[i].memo+(as[i].memo.length>0?',':'')+'獎金';
 								as[i]['typea'] = '50';
 								as[i]['typeb'] = '';
+								
+								if(dec(as[i].money)<=0){
+									as.splice(i, 1);
+									i--;
+								}
 							}
 							
 							t_salaward=as;
@@ -215,7 +239,7 @@
 						
 						//匯入其他項目salchg
 						var t_mon = $.trim($('#txtMon').val());
-						var t_where = "where=^^ mon='"+t_mon+"' and salbtypea!='' ^^";
+						var t_where = "where=^^ mon='"+t_mon+"' and salbtypea!='' and plus>0 ^^";
 						q_gt('salchg', t_where, 0, 0, 0, "salchg");
 						break;
 					case 'salchg':
