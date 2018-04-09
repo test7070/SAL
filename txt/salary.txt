@@ -3365,7 +3365,7 @@ create table #tmpb(
 )
 insert #tmpb
 select '0',driverno,sum(isnull(plusmoney,0)),0,0,sum(isnull(minusmoney,0))
-from carchg where LEFT(datea,6)='107/02'
+from carchg where LEFT(datea,6)=@mon
 group by driverno
 
 create table #tmp(
@@ -3395,17 +3395,17 @@ create table #tmp(
 	ch_labor2 float,
 	ch_health_insure float
 )
-insert #tmp
-select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),0,0
-,0,0,isnull(d.plus,0),0
-,0,isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.he_person,0),isnull(lab.re_person,0),isnull(d.welfare,0)
-,isnull(lab.mount,0),isnull(d.minus,0),isnull(lab.re_comp,0),isnull(lab.sa_retire,0),isnull(lab.sa_labor,0),isnull(lab.sa_health,0)
-from driver a
-left join sss b on a.noa=b.noa
-left join #tmpa c on a.noa=c.driverno
-left join #tmpb d on a.noa=d.driverno
-outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from labase where noa=a.noa)lab
-where cartype!='外車'
+insert #tmp 
+select a.noa,a.driver,b.partno,b.part,b.jobno,b.job,isnull(c.money,0),0,0 
+,0,0,isnull(d.plus,0),0 
+,0,isnull(d.borrow,0),isnull(lab.la_person,0),isnull(lab.he_person,0),isnull(lab.re_person,0),isnull(d.welfare,0) 
+,isnull(lab.mount,0),isnull(d.minus,0),isnull(lab.re_comp,0),isnull(lab.sa_retire,0),isnull(lab.sa_labor,0),isnull(lab.sa_health,0) 
+from driver a 
+left join sss b on a.noa=b.noa 
+left join #tmpa c on a.noa=c.driverno 
+left join #tmpb d on a.noa=d.driverno 
+outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from salinsures where noa=a.noa)lab 
+where cartype!='外車' and (len(leaveofficedate)='' or LEFT(leaveofficedate,6)>=@mon)
 
 select * from #tmp
 
