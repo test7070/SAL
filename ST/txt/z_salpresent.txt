@@ -992,13 +992,13 @@ begin
 		begin
 			if(@addbtime='')--沒有加班資料
 			begin
-				if(@overtime='') --加班時間空白
+				if(@overtime='' or @overtime=@etime) --加班時間空白
 				begin
 					update #tmp set clockout=@etime where datea=@datea and sssno=@sssno
 				end
 				else --有加班時間
 				begin
-					update #tmp set clockout=left(@overtime,2)+':'
+					update #tmp set clockout=right('00'+cast(cast(left(@overtime,2) as int)-1 as nvarchar(10)),2)+':'
 					+ case when right(@overtime,2)='00' then '59' else right('00'+CAST(CAST(right(@overtime,2) as int)-1 as nvarchar(10)),'2') end
 					where datea=@datea and sssno=@sssno
 				end
