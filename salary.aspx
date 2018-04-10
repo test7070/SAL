@@ -1509,7 +1509,7 @@
 	        			}
 	        			
 	        			if($('#cmbPerson').find("option:selected").text().indexOf('日薪')>-1){
-	        				q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+	        				q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        			q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額
 		        			q_tr('txtTotal2_'+j,Math.round((dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_traffic_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val()))+dec($('#txtPlus_'+j).val())+dec($('#txtMtotal_'+j).val())-dec($('#txtMi_total_'+j).val())+dec($('#txtBo_full_'+j).val())+dec($('#txtTax_other_'+j).val())));//給付總額
 	        			}else{
@@ -1579,7 +1579,7 @@
 			                	var t_late=dec(t_m2.split(';')[0]),t_early=dec(t_m2.split(';')[1])
 			                	,t_nopunch=dec(t_m2.split(';')[2]),t_late3_it=dec(t_m2.split(';')[3])
 			                	,t_typea=(t_m2.split(';')[4]==undefined?'':t_m2.split(';')[4]);
-			                	q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+			                	q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 			                	//扣薪金額=(連續3次或遲到超過5次(第6次)-500)+(早退+沒打卡*時數)+病假+事假+事假+曠工金額
 		        				q_tr('txtMi_total_'+j,Math.round(((t_typea.indexOf('早')>-1|| t_typea.indexOf('中')>-1||t_typea.indexOf('晚')>-1||t_typea.indexOf('足')>-1)?((t_late3_it>0|| t_late>5 ?500:0)+((t_nopunch+t_early)*q_float('txtOstand_'+j))):0)
 		        				+dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));
@@ -1600,7 +1600,7 @@
 						                q_tr('txtMi_leave_'+j,round(t_money/30/8*q_float('txtHr_leave_'+j),0));
 			        				}
 		        				}
-		        				q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+		        				q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        				q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額
 			               }
 	        			}
@@ -1658,7 +1658,7 @@
 			                	var t_late=dec(t_m2.split(';')[0]),t_early=dec(t_m2.split(';')[1])
 			                	,t_nopunch=dec(t_m2.split(';')[2]),t_late3_it=dec(t_m2.split(';')[3])
 			                	,t_typea=(t_m2.split(';')[4]==undefined?'':t_m2.split(';')[4]);
-			                	q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+			                	q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 			                	//扣薪金額=(連續3次或遲到超過5次(第6次)-500)+病假+事假+事假+曠工金額
 		        				//q_tr('txtMi_total_'+j,Math.round((t_late3_it>1|| t_late>5 ?-500:0)+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));
 		        				q_tr('txtMi_total_'+j,Math.round( ((t_typea.indexOf('早')>-1|| t_typea.indexOf('中')>-1||t_typea.indexOf('晚')>-1||t_typea.indexOf('足')>-1)?((t_late3_it>0|| t_late>5 ?500:0)+((t_nopunch+t_early)*q_float('txtOstand_'+j))):0)
@@ -1680,7 +1680,7 @@
 					                	q_tr('txtMi_leave_'+j,round(t_money/30/8*q_float('txtHr_leave_'+j),0));
 				                	}
 				                }
-			                	q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+			                	q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        				q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額	
 	        				}
 	        			}
@@ -1801,7 +1801,7 @@
 	        			q_tr('txtTotal1_'+j,Math.round(dec($('#txtDaymoney_'+j).val())));
 	        			q_tr('txtMtotal_'+j,Math.round(dec($('#txtDaymoney_'+j).val())*dec($('#txtDay_'+j).val())));//給薪金額
 	        			
-	        			q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+	        			q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 	        			q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額
 	        			q_tr('txtTotal2_'+j,Math.round((dec($('#txtBo_admin_'+j).val())+dec($('#txtBo_traffic_'+j).val())+dec($('#txtBo_special_'+j).val())+dec($('#txtBo_oth_'+j).val()))+dec($('#txtPlus_'+j).val())+dec($('#txtMtotal_'+j).val())-dec($('#txtMi_total_'+j).val())+dec($('#txtBo_full_'+j).val())+dec($('#txtTax_other_'+j).val())));//給付總額
 	        			
@@ -1847,7 +1847,7 @@
 							q_tr('txtMi_person_'+j,round(q_float('txtOstand_'+j)*q_float('txtHr_person_'+j),0));
 							q_tr('txtMi_nosalary_'+j,round(q_float('txtOstand_'+j)*q_float('txtHr_nosalary_'+j),0));
 							q_tr('txtMi_leave_'+j,round(q_float('txtOstand_'+j)*Math.ceil(q_float('txtHr_leave_'+j)),0));
-							q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+							q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 							q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額
 	        			}
 	        			
@@ -1879,7 +1879,7 @@
 				            q_tr('txtMi_person_'+j,round(q_float('txtOstand_'+j)*q_float('txtHr_person_'+j),0));
 				            q_tr('txtMi_nosalary_'+j,round(q_float('txtOstand_'+j)*q_float('txtHr_nosalary_'+j),0));
 				            q_tr('txtMi_leave_'+j,round(q_float('txtOstand_'+j)*Math.ceil(q_float('txtHr_leave_'+j)),0));
-				            q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+				            q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_late_'+j).val())+dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        			q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額
 	        			}
 	        			q_tr('txtTotal2_'+j,Math.round(dec($('#txtTotal1_'+j).val())-dec($('#txtMi_total_'+j).val())+dec($('#txtBo_full_'+j).val())+dec($('#txtBo_born_'+j).val())+dec($('#txtBo_night_'+j).val())+dec($('#txtBo_duty_'+j).val())+dec($('#txtTax_other_'+j).val())));//給付總額
@@ -2036,7 +2036,7 @@
 					            q_tr('txtMi_leave_'+j,round(t_money/30/8*q_float('txtHr_leave_'+j),0));
 							}
 				        }
-			            q_tr('txtMi_saliday_'+j,Math.round(dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val())));//扣薪時數=病假+事假+事假+曠工金額
+			            q_tr('txtMi_saliday_'+j,round(dec($('#txtHr_sick_'+j).val())+dec($('#txtHr_person_'+j).val())+dec($('#txtHr_nosalary_'+j).val())+dec($('#txtHr_leave_'+j).val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        		q_tr('txtMi_total_'+j,Math.round(dec($('#txtMi_late_'+j).val())+dec($('#txtMi_sick_'+j).val())+dec($('#txtMi_person_'+j).val())+dec($('#txtMi_nosalary_'+j).val())+dec($('#txtMi_leave_'+j).val())));//扣薪金額=病假+事假+事假+曠工金額	
 	        			
 	        		}
@@ -2153,7 +2153,7 @@
 	        		}
 	        		
 	        		if($('#cmbPerson').find("option:selected").text().indexOf('日薪')>-1){
-	        			q_tr('textMi_saliday',Math.round(dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+	        			q_tr('textMi_saliday',round(dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        		q_tr('textMi_total',Math.round(dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額
 		        		q_tr('textTotal2',Math.round((dec($('#textBo_admin').val())+dec($('#textBo_traffic').val())+dec($('#textBo_special').val())+dec($('#textBo_oth').val()))+dec($('#textMtotal').val())-dec($('#textMi_total').val())+dec($('#textBo_full').val())+dec($('#textTax_other').val())));//給付總額
 	        		}else{
@@ -2224,7 +2224,7 @@
 							var t_late=dec(t_m2.split(';')[0]),t_early=dec(t_m2.split(';')[1])
 			               	,t_nopunch=dec(t_m2.split(';')[2]),t_late3_it=dec(t_m2.split(';')[3])
 			               	,t_typea=(t_m2.split(';')[4]==undefined?'':t_m2.split(';')[4]);
-			               	q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+			               	q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 			               	//扣薪金額=(連續3次或遲到超過5次(第6次)-500)+(早退+沒打卡*時數)+病假+事假+事假+曠工金額
 		        			q_tr('textMi_total',Math.round(((t_typea.indexOf('早')>-1|| t_typea.indexOf('中')>-1||t_typea.indexOf('晚')>-1||t_typea.indexOf('足')>-1)?((t_late3_it>0|| t_late>5 ?500:0)+((t_nopunch+t_early)*q_float('textOstand'))):0)
 		        			+dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));
@@ -2243,7 +2243,7 @@
 								q_tr('textMi_nosalary',round(t_money/30/8*q_float('textHr_nosalary'),0));
 								q_tr('textMi_leave',round(t_money/30/8*q_float('textHr_leave'),0));
 							}
-							q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+							q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        			q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額
 			              }
 	        		}
@@ -2293,7 +2293,7 @@
 			               	var t_late=dec(t_m2.split(';')[0]),t_early=dec(t_m2.split(';')[1])
 			               	,t_nopunch=dec(t_m2.split(';')[2]),t_late3_it=dec(t_m2.split(';')[3])
 			               	,t_typea=(t_m2.split(';')[4]==undefined?'':t_m2.split(';')[4]);
-			               	q_tr('textMi_saliday',Math.round(dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+			               	q_tr('textMi_saliday',round(dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 			               	//扣薪金額=(連續3次或遲到超過5次(第6次)-500)+病假+事假+事假+曠工金額
 		        			//q_tr('textMi_total',Math.round((t_late3_it>1|| t_late>5 ?-500:0)+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));
 		        			q_tr('textMi_total',Math.round( ((t_typea.indexOf('早')>-1|| t_typea.indexOf('中')>-1||t_typea.indexOf('晚')>-1||t_typea.indexOf('足')>-1)?((t_late3_it>0|| t_late>5 ?500:0)+((t_nopunch+t_early)*q_float('textOstand'))):0)
@@ -2314,7 +2314,7 @@
 								q_tr('textMi_nosalary',round(t_money/30/8*q_float('textHr_nosalary'),0));
 								q_tr('textMi_leave',round(t_money/30/8*q_float('textHr_leave'),0));
 							}
-			               	q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+			               	q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        			q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額	
 	        			}
 	        		}
@@ -2361,7 +2361,7 @@
 	        		q_tr('textTotal1',Math.round(dec($('#textDaymoney').val())));
 	        		q_tr('textMtotal',Math.round(dec($('#textDaymoney').val())*dec($('#textDay').val())+dec($('#textPlus').val())));//給薪金額
 	        		
-	        		q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+	        		q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 	        		q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額
 	        		q_tr('textTotal2',Math.round((dec($('#textBo_admin').val())+dec($('#textBo_traffic').val())+dec($('#textBo_special').val())+dec($('#textBo_oth').val()))+dec($('#textMtotal').val())-dec($('#textMi_total').val())+dec($('#textBo_full').val())+dec($('#textTax_other').val())));//給付總額
 	        		
@@ -2382,7 +2382,7 @@
 						q_tr('textMi_person',round(q_float('textOstand')*q_float('textHr_person'),0));
 						q_tr('textMi_nosalary',round(q_float('textOstand')*q_float('textHr_nosalary'),0));
 						q_tr('textMi_leave',round(q_float('textOstand')*Math.ceil(q_float('textHr_leave')),0));
-						q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+						q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 						q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額
 	        		}
 	        		
@@ -2400,7 +2400,7 @@
 						q_tr('textMi_person',round(q_float('textOstand')*q_float('textHr_person'),0));
 						q_tr('textMi_nosalary',round(q_float('textOstand')*q_float('textHr_nosalary'),0));
 						q_tr('textMi_leave',round(q_float('textOstand')*Math.ceil(q_float('textHr_leave')),0));
-						q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+						q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 						q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額
 	        		}
 	        		q_tr('textTotal2',Math.round(dec($('#textTotal1').val())-dec($('#textMi_total').val())+dec($('#textBo_full').val())+dec($('#textBo_born').val())+dec($('#textBo_night').val())+dec($('#textBo_duty').val())+dec($('#textTax_other').val())));//給付總額
@@ -2462,7 +2462,7 @@
 						q_tr('textMi_nosalary',round(t_money/30/8*q_float('textHr_nosalary'),0));
 						q_tr('textMi_leave',round(t_money/30/8*q_float('textHr_leave'),0));
 					}
-			        q_tr('textMi_saliday',Math.round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val())));//扣薪時數=病假+事假+事假+曠工金額
+			        q_tr('textMi_saliday',round(dec($('#textHr_late').val())+dec($('#textHr_sick').val())+dec($('#textHr_person').val())+dec($('#textHr_nosalary').val())+dec($('#textHr_leave').val()),1));//扣薪時數=病假+事假+事假+曠工金額
 		        	q_tr('textMi_total',Math.round(dec($('#textMi_late').val())+dec($('#textMi_sick').val())+dec($('#textMi_person').val())+dec($('#textMi_nosalary').val())+dec($('#textMi_leave').val())));//扣薪金額=病假+事假+事假+曠工金額	
 	        	}
 	        	q_tr('textTotal2',Math.round(dec($('#textTotal1').val())-dec($('#textMi_total').val())+dec($('#textBo_full').val())+dec($('#textBo_born').val())+dec($('#textBo_night').val())+dec($('#textBo_duty').val())+dec($('#textTax_other').val())));//給付總額
