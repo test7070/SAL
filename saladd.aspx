@@ -137,6 +137,9 @@
                         }
                     }
                     $('#chkIsapv').prop('checked', true);
+                    if (q_getPara('sys.project').toUpperCase() == 'SH'){
+                        q_func('qtxt.query.updatesalpresent', 'saladd.txt,updatesalpresent,' + encodeURI($('#txtDatea').val()) + ';' + encodeURI($('#txtSssno').val()));
+                    }
                 });
             }
             
