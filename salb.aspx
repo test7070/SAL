@@ -74,11 +74,13 @@
 				
 				$('#btnIndata').click(function(){
 					var t_mon = $.trim($('#txtMon').val());
-					if(t_mon.length>0 && (q_cur==1 || q_cur==2)){
-						var t_where = "where=^^ (typea=N'薪資') and (mon=N'"+t_mon+"') ^^";
-						q_gt('salary', t_where, 0, 0, 0, "getsalary");	
-					}else{
-						alert('請輸入年份/月份!!');
+					if((q_cur==1 || q_cur==2)){
+						if(t_mon.length>0){
+							var t_where = "where=^^ (typea=N'薪資') and (mon=N'"+t_mon+"') ^^";
+							q_gt('salary', t_where, 0, 0, 0, "getsalary");	
+						}else{
+							alert('請輸入年份/月份!!');
+						}
 					}
 				});
 				
@@ -189,10 +191,13 @@
 								if(q_getPara('sys.project').toUpperCase()=='LN'){ //107/03/31不排除 加減項(為實際給付金額)
 									s_money = dec(ass[k].total5)-dec(ass[k].meals)
 									+dec(ass[k].borrow)+dec(ass[k].ch_labor)+dec(ass[k].ch_labor_self)+dec(ass[k].ch_health)+dec(ass[k].hplus2)
-									+dec(ass[k].tax)+dec(ass[k].tax5)+dec(ass[k].welfare);
+									+dec(ass[k].tax)+dec(ass[k].tax5)+dec(ass[k].welfare)
+									+dec(ass[k].money6)
+									;
 								}
 								
 								ass[k]['tmp_money'] = s_money;
+								ass[k]['tmp_tax'] = q_add(dec(ass[k].tax),dec(ass[k].tax5));
 								//ass[k]['tmp_food_money'] = dec(ass[k].meals);
 								ass[k]['tmp_food_money'] = 0;
 								ass[k]['raise_num'] = 0;
@@ -207,8 +212,8 @@
 							}
 							
 							t_salary=t_salary.concat(ass);
-							q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtCh_meal,cmbTypea,cmbTypeb'
-							,ass.length, ass,'sno,namea,raise_num,addmoney,tmp_money,tmp_food_money,typea,typeb','txtSssno');
+							q_gridAddRow(bbsHtm, 'tbbs','txtSssno,txtNamea,txtMount,txtAd_money,txtMoney,txtTax,txtCh_meal,txtRetire,cmbTypea,cmbTypeb'
+							,ass.length, ass,'sno,namea,raise_num,addmoney,tmp_money,tmp_tax,tmp_food_money,ch_labor_self,typea,typeb','txtSssno');
 						}
 						
 						//匯入獎金
@@ -268,6 +273,8 @@
 							$('#txtMount_'+i).val(t_salary[i].raise_num);
 							$('#txtAd_money_'+i).val(t_salary[i].addmoney);
 							$('#txtMoney_'+i).val(t_salary[i].tmp_money);
+							$('#txtTax_'+i).val(t_salary[i].tmp_tax);
+							$('#txtRetire_'+i).val(t_salary[i].ch_labor_self);
 							$('#txtCh_meal_'+i).val(t_salary[i].tmp_food_money);
 							$('#cmbTypea_'+i).val(t_salary[i].typea);
 							$('#cmbTypea_'+i).change();
