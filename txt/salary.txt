@@ -1372,7 +1372,7 @@ else 0 end
 	then "新進員工(工作日:"+cast(dbo.q_cdd(a.outdate,a.indate)+1 as nvarchar(10))+")"
 	when left(a.outdate,len(@mon))=@mon --當月離職
 	then "離職員工(工作日:"+CAST(dbo.q_cdd(a.outdate,@mon+'/01')+1 as nvarchar(10))+")"
-	else "新進員工(工作日:"+cast(dbo.q_cdd(@mon+'/'+dbo.q_lastday(@mon),a.indate) as nvarchar(10))+")" end --當月入職
+	else "新進員工(工作日:"+cast(dbo.q_cdd(@mon+'/'+dbo.q_lastday(@mon),a.indate)+1 as nvarchar(10))+")" end --當月入職
 else '' end
 from sss a 
 outer apply (select top 1 * from saladjust where noa=a.noa and datea<=@date2 order by datea desc)b
@@ -3262,7 +3262,7 @@ else 0 end
 	then "新進員工(工作日:"+cast(dbo.q_cdd(a.outdate,a.indate)+1 as nvarchar(10))+")"
 	when left(a.outdate,len(@mon))=@mon --當月離職
 	then "離職員工(工作日:"+CAST(dbo.q_cdd(a.outdate,@mon+'/01')+1 as nvarchar(10))+")"
-	else "新進員工(工作日:"+cast(dbo.q_cdd(@mon+'/'+dbo.q_lastday(@mon),a.indate) as nvarchar(10))+")" end --當月入職
+	else "新進員工(工作日:"+cast(dbo.q_cdd(@mon+'/'+dbo.q_lastday(@mon),a.indate)+1 as nvarchar(10))+")" end --當月入職
 else '' end
 from sss a 
 outer apply (select top 1 * from saladjust where noa=a.noa and datea<=@date2 order by datea desc)b
