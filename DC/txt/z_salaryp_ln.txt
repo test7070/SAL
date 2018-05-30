@@ -45,9 +45,9 @@ select '0' gno,c.noa,b.partno,b.part,b.jobno,b.job,b.namea
 ,isnull(b.money,0)+isnull(b.mtotal,0),b.bo_traffic,b.bo_special,b.bo_admin,b.bo_full,b.bo_oth,b.money3,b.money4
 --,case when isnull(b.addmoney,0)>0 then (round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0)) else 0 end
 --,isnull(b.addmoney,0)-(round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0))
-,case when isnull(b.addmoney,0)>0 && isnull(b.addh2_1,0)=0 && isnull(b.addh2_2,0)=0 && isnull(b.addh100,0)=0 && isnull(b.addh200,0)=0 && isnull(b.addh266,0)=0
+,case when isnull(b.addmoney,0)>0 and isnull(b.addh2_1,0)=0 and isnull(b.addh2_2,0)=0 and isnull(b.addh100,0)=0 and isnull(b.addh200,0)=0 and isnull(b.addh266,0)=0
 then isnull(b.addmoney,0) else (round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0)) end
-,case when isnull(b.addmoney,0)>0 && isnull(b.addh2_1,0)=0 && isnull(b.addh2_2,0)=0 && isnull(b.addh100,0)=0 && isnull(b.addh200,0)=0 && isnull(b.addh266,0)=0
+,case when isnull(b.addmoney,0)>0 and isnull(b.addh2_1,0)=0 and isnull(b.addh2_2,0)=0 and isnull(b.addh100,0)=0 and isnull(b.addh200,0)=0 and isnull(b.addh266,0)=0
 then 0 else isnull(b.addmoney,0)-(round(isnull(b.addh46_1,0)*1.3333*b.ostand,0)+round(isnull(b.addh46_2,0)*1.6666*b.ostand,0)) end
 ,isnull(b.meals,0)
 ,isnull(b.plus,0)+isnull(b.tax_other,0)+isnull(b.tax_other2,0)
