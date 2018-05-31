@@ -740,7 +740,7 @@ from @tmp where gno='0' order by cno,typea,typeb,typec,sssno
 z_salbb4:--z_salbb4
 declare @t_xyears nvarchar(10)
 set @t_xyears = case when '#non' = [1] then '' else [1] end
-
+declare @t_proj nvarchar(10)='[10]'
 declare @tlen int=[8]
 
 --所得資料暫存
@@ -865,7 +865,7 @@ insert @tmp
 select '0',a.typea+' '+g.form,a.noa,a.sssno,c.namea
 ,case when a.ptype in('0','1','3','4','A') then '' else case when d.is183=1 then 'Y' else 'N' end end
 ,c.id,c.passportno,d.taxtreaty,c.birthday
-,case when e.noa IS NULL then '非受僱單位員工或受僱單位員工(非所屬投保單位)' else '受僱單位員工(所屬投保單位)' end
+,case when @t_proj='LN' then c.typea when e.noa IS NULL then '非受僱單位員工或受僱單位員工(非所屬投保單位)' else '受僱單位員工(所屬投保單位)' end
 ,d.taxno,c.addr_conn,c.addr_home,d.addr_rent,a.typec+' '+h.mark
 ,a.ptype+' '+REPLACE(f.typea,'。',''),d.errnote,d.country
 from @tmpa a 
@@ -1112,8 +1112,8 @@ insert @tmp(gno,cno,sssno,typea,money,tax1,net,counts)
 select '7',cno,sssno,CHAR(255),SUM(money),SUM(tax1),SUM(net),count(*) from @tmp where gno<='5'
 group by cno,sssno
 
-insert @tmp(gno,cno,sssno,typea)
-select '8',cno,CHAR(255),CHAR(255) from @tmp where gno<='5'
+insert @tmp(gno,cno,sssno,typea,money,tax1,net,counts)
+select '8',cno,CHAR(255),CHAR(255),SUM(money),SUM(tax1),SUM(net),count(*) from @tmp where gno<='5'
 group by cno
 
 select 
