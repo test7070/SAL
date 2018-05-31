@@ -48,11 +48,15 @@
 						type : '0', //[8]
 						name : 'rlen',
 						value : r_len
-					}, {//[9]
-                        type : '5',
+					}, {
+                        type : '5',//[9]
                         name : 'xtypea',
                         value : [q_getPara('report.all')].concat(payform_item.split(','))
-                    }]
+                    }, {
+						type : '0', //[10]
+						name : 'xproj',
+						value : q_getPara('sys.project').toUpperCase()
+					}]
 				});
 				q_popAssign();
                 q_getFormat();

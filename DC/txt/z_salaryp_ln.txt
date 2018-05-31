@@ -185,6 +185,7 @@ declare @tmp table(
 	plusmemo nvarchar(max), 
 	minusmemo nvarchar(max), 
 	bomemo nvarchar(max),
+	bmemo nvarchar(max),
 	m3 float,
 	m4 float,
 	m6 float
@@ -198,7 +199,7 @@ b.welfare,b.ch_health,b.total4,b.total5,a.monkind,a.mon,isnull(b.minus,0),isnull
 (select minusitem from (select sssno,STUFF((select ','+T4.item from salchg T2 left join salchgitem T4 on T2.minusitem=T4.noa where T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')minusitem from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
 (select plusmemo from (select sssno,STUFF((select ','+T2.memo from salchg T2 where plusitem!='' and minusitem='' and T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')plusmemo from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
 (select minusmemo from (select sssno,STUFF((select ','+T2.memo from salchg T2 where plusitem='' and minusitem!='' and T2.sssno=T1.sssno and mon=@t_xmon FOR XML PATH('')),1,1,'')minusmemo from salchg T1 where mon=@t_xmon group by sssno) T3 where b.sno=sssno), 
-(select top 1 memo from saladjust where noa=b.sno order by noq desc) ,b.money3,b.money4,b.money6
+(select top 1 memo from saladjust where noa=b.sno order by noq desc) ,b.memo,b.money3,b.money4,b.money6
 from salary a 
 left join salarys b on a.noa = b.noa 
 left join sss c on b.sno = c.noa 
@@ -243,7 +244,7 @@ dbo.getComma(total5,-1) total5,mon,monkind,
 dbo.getComma(minus,-1) minus, 
 dbo.getComma(plus,-1) plus, 
 (select top 1 worker from salary where @t_xmon = mon  and (len(@t_xnoa)=0 or noa=@t_xnoa) and person = '本國') worker 
-,plusmemo,minusmemo
+,plusmemo,minusmemo,bmemo
 ,dbo.getComma(m3,-1) m3
 ,dbo.getComma(m4,-1) m4
 ,dbo.getComma(m6,-1) m6
