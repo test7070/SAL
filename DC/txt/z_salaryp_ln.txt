@@ -291,7 +291,7 @@ dbo.getComma(plum,-1) plum,memo
 from @tmp order by gno,sssno;
 
 --------------------------------------------------------------------------------------------------
-z_salary10:--z_salary10
+z_salaryp_ln03:--z_salaryp_ln03
 declare @t_xmon nvarchar(20)
 declare @t_bsssno nvarchar(20)
 declare @t_esssno nvarchar(20)
