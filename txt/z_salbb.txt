@@ -1190,7 +1190,7 @@ select ROW_NUMBER() over(partition by sno order by sno,mon),sno,MAX(namea),mon
 	+isnull(addmoney,0)+isnull(meals,0)+isnull(plus,0) 
 	+isnull(tax_other,0)+isnull(tax_other2,0) 
 	+isnull(bo_born,0)+isnull(bo_night,0)+isnull(bo_duty,0)+ISNULL(money1,0)+ISNULL(money2,0) 
-) else sum(isnull(total5,0)) end
+) else sum(isnull(total3,0)) end
 ,sum(isnull(tax,0)+isnull(tax5,0)+isnull(tax6,0)+isnull(tax12,0)+isnull(tax18,0))
 ,sum(isnull(ch_labor_self,0))
 from salarys where left(mon,@tlen)=@t_xyears
