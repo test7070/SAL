@@ -3404,7 +3404,7 @@ from driver a
 left join sss b on a.noa=b.noa 
 left join #tmpa c on a.noa=c.driverno 
 left join #tmpb d on a.noa=d.driverno 
-outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from salinsures where noa=a.noa)lab 
+outer apply (select top 1 noa,mount,re_person,la_person,he_person,re_comp,sa_retire,sa_labor,sa_health from salinsures where noa=a.noa and @mon=mon)lab 
 where cartype!='外車' and (len(leaveofficedate)='' or LEFT(leaveofficedate,6)>=@mon)
 
 select * from #tmp
