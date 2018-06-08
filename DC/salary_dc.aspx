@@ -1058,8 +1058,8 @@
 						if(q_getPara('sys.project').toUpperCase() == 'SH'){
 						    q_tr('txtOstand_' + j, Math.round(((dec($('#txtMoney_' + j).val())+dec($('#txtBo_admin_' + j).val())+dec($('#txtBo_traffic_' + j).val())+dec($('#txtBo_full_' + j).val()))/ inday / 8) * 100) / 100);
 						    q_tr('txtAddmoney_' + j, 
-                                Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val()))*1.33 + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))*1.66
-                                + Math.round(dec($('#txtOstand_' + j).val()) * 1.33 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))
+                                Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_1_' + j).val()))*1.34 + Math.round(dec($('#txtOstand_' + j).val()) * dec($('#txtAddh2_2_' + j).val()))*1.67
+                                + Math.round(dec($('#txtOstand_' + j).val()) * 1.34 * dec($('#txtAddh46_1_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1.67 * dec($('#txtAddh46_2_' + j).val())) + Math.round(dec($('#txtOstand_' + j).val()) * 1 * dec($('#txtAddh100_' + j).val()))
                             );
 						}else{
 						    q_tr('txtOstand_' + j, Math.round((dec($('#txtMoney_' + j).val()) / inday / 8) * 100) / 100);
