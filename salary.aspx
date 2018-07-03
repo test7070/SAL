@@ -59,7 +59,7 @@
 			
 	        function mainPost() {
 	            q_getFormat();
-	            bbmMask = [['txtDatea', r_picd],['txtMon', r_picm],['textMon', r_picm]];
+	            bbmMask = [['txtDatea', r_picd],['txtMon', r_picm],['textMon', r_picm],['txtDate2', r_picd]];
 	            q_mask(bbmMask);
 	            
 	            if (q_getPara('sys.project').toUpperCase()=='VU' || q_getPara('sys.project').toUpperCase()=='VU2'){
@@ -101,7 +101,7 @@
 	            if(q_getPara('sys.project').toUpperCase()=='NV'){
 	            	$('#cmbAddsource').val('1');
 	            	$('#textMon').val(q_cdn(q_date().substr(0,r_lenm)+'/01',-1).substr(0,r_lenm));
-	            	q_gt('bank', "where=^^1=1^^" , 0, 0, 0, "getbank", r_accy,1);
+	            	q_gt('bank', "where=^^1=1 and isnull(account,'')!='' ^^" , 0, 0, 0, "getbank", r_accy,1);
 			    	var as = _q_appendData("bank", "", true);
 			    	var t_item='#non@全部';
 			    	for(var i=0 ;i<as.length;i++){
@@ -109,7 +109,7 @@
 			    	}
 			    	
 			    	q_cmbParse("combBank", t_item);
-	            	$('#combBank').show();
+	            	$('.bank').show();
 	            }
 				
 				$('#txtDatea').focusout(function () {
@@ -249,7 +249,7 @@
 	            	q_func('banktran.gen', $('#txtNoa').val()+',4');
 	            });
 	            
-	            $('#btnPost').hide(); 
+	            $('.postbank').hide(); 
 	            $('#btnPost').click(function() {
 	            	if(!emp($('#txtNoa').val()) &&!(q_cur==1 || q_cur==2)){
 	            		if(q_getPara('sys.project').toUpperCase()=='NV'){
@@ -257,7 +257,12 @@
 	            			if(tbank==null){
 	            				tbank='#non';
 	            			}
-	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media5665,' +$('#txtNoa').val()+';NV;'+$('#txtDatea').val()+';'+tbank);
+	            			var t_date=$('#txtDate2').val();
+	            			if(t_date.length==0){
+	            				t_date=$('#txtDatea').val();
+	            			}
+	            			
+	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media5665,' +$('#txtNoa').val()+';NV;'+t_date+';'+tbank);
 	            		}else{
 	            			q_func('qtxt.query.postmedia', 'bankpost.txt,salary_media,' +$('#txtNoa').val());
 	            		}
@@ -266,8 +271,10 @@
 	            
 	            //106/12/01開放
 	            if(q_getPara('sys.project').toUpperCase()=='NV'){
-	            	$('#btnPost').show(); 
+	            	$('.postbank').show(); 
+	            	$('.date2').show();
 	            	$('#btnPost').val('雲林合庫電子檔');
+	            	$('#lblDate2').text('出帳日期');
 	            	$('#btnBank').hide();
 	            }
 	            
@@ -3023,8 +3030,8 @@
 	<!--#include file="../inc/toolbar.inc"-->
 		<div id='dmain' >
 	        <div class="dview" id="dview" style="float: left;  width:20%;"  >
-	           <table class="tview" id="tview"   border="1" cellpadding='2'  cellspacing='0' style="background-color: #FFFF66;">
-	            <tr>
+				<table class="tview" id="tview"   border="1" cellpadding='2'  cellspacing='0' style="background-color: #FFFF66;">
+				<tr>
 	                <td align="center" style="width:5%"><a id='vewChk'> </a></td>
 	                <td align="center" style="width:20%"><a id='vewMon'> </a></td>
 	            </tr>
@@ -3038,7 +3045,7 @@
 		        <table class="tbbm" id="tbbm"  border="0" cellpadding='2'  cellspacing='0'>
 		        <tr>
 		            <td ><span> </span><a id="lblMon" class="lbl"> </a></td>
-		            <td ><input id="txtMon"  type="text" class="txt c1"/></td>
+		            <td ><input id="txtMon" type="text" class="txt c1"/></td>
 		            <td ><span> </span><a id="lblPerson" class="lbl"> </a></td>
 		            <td ><select id="cmbPerson" class="txt c1"> </select></td>
 		            <td ><span> </span><a id="lblMonkind" class="lbl"> </a></td>
@@ -3046,65 +3053,69 @@
 		            <td ><span> </span><a id="lblType" class="lbl"> </a></td>
 		            <td ><select id="cmbTypea" class="txt c1"> </select></td>
 		            <td ><span> </span><a id="lblNoa" class="lbl"> </a></td>
-		            <td ><input id="txtNoa"  type="text" class="txt c1"/></td>
+		            <td ><input id="txtNoa" type="text" class="txt c1"/></td>
 		            <td ><input id="btnInput" type="button" style="width: auto;font-size: medium;"/></td>
 		        </tr>
 		        <tr>
 		        	<td ><span> </span><a id="lblDatea" class="lbl"> </a></td>
-		            <td ><input id="txtDatea"  type="text" class="txt c1"/></td>
+		            <td ><input id="txtDatea" type="text" class="txt c1"/></td>
 		            <td ><span> </span><a id="lblMoney" class="lbl"> </a><a id="lblDaymoney" class="lbl"> </a><a id="lblHrmoney" class="lbl"> </a></td>
-		            <td ><input id="txtMoney"  type="text" class="txt num c1" /><input id="txtDaymoney"  type="text" class="txt num c1" /></td>            
+		            <td ><input id="txtMoney" type="text" class="txt num c1" /><input id="txtDaymoney" type="text" class="txt num c1" /></td>            
 		            <td ><span> </span><a id="lblBo_admin" class="lbl"> </a></td>
-		            <td ><input id="txtBo_admin"  type="text" class="txt num c1" /></td>
+		            <td ><input id="txtBo_admin" type="text" class="txt num c1" /></td>
 		            <td ><span> </span><a id="lblBo_traffic" class="lbl"> </a></td>
-		            <td ><input id="txtBo_traffic"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtBo_traffic" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblPubmoney" class="lbl"> </a></td>
-		            <td ><input id="txtPubmoney"  type="text" class="txt num c1" /></td>
+		            <td ><input id="txtPubmoney" type="text" class="txt num c1" /></td>
 		        </tr>
 		        <tr>
 		            <td ><span> </span><a id="lblBo_special" class="lbl"> </a></td>
-		            <td ><input id="txtBo_special"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtBo_special" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblBo_oth" class="lbl"> </a></td>
-		            <td ><input id="txtBo_oth"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtBo_oth" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblTax_other" class="lbl"> </a></td>
-		            <td ><input id="txtTax_other"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtTax_other" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblMi_total" class="lbl"> </a><a id="lblMtotal" class="lbl"> </a></td>
-		            <td ><input id="txtMi_total"  type="text" class="txt num c1"/><input id="txtMtotal"  type="text" class="txt num c1"/></td>
-		            <td  colspan="2"><input id="btnBank" type="button" style="float: right;"/></td>
+		            <td ><input id="txtMi_total" type="text" class="txt num c1"/><input id="txtMtotal" type="text" class="txt num c1"/></td>
+		            <td colspan="2"><input id="btnBank" type="button" style="float: right;"/></td>
 		        </tr>
 		        <tr>
 		        	<td ><span> </span><a id="lblBo_full" class="lbl"> </a></td>
-		            <td ><input id="txtBo_full"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtBo_full" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblAddmoney" class="lbl"> </a></td>
-		            <td ><input id="txtAddmoney"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtAddmoney" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblPlus" class="lbl"> </a></td>
-		            <td ><input id="txtPlus"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtPlus" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblMinus" class="lbl"> </a></td>
-		            <td ><input id="txtMinus"  type="text" class="txt num c1"/></td>
-		            <td colspan="2"><input id="btnPost" type="button" style="float: right;"/></td>
+		            <td ><input id="txtMinus" type="text" class="txt num c1"/></td>
 		        </tr>
 		        <tr>
 		           	<td ><span> </span><a id="lblCh_health" class="lbl"> </a></td>
-		            <td ><input id="txtCh_health"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtCh_health" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblCh_labor" class="lbl"> </a></td>
-		            <td ><input id="txtCh_labor"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtCh_labor" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblCh_labor_self" class="lbl"> </a></td>
-		            <td ><input id="txtCh_labor_self"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtCh_labor_self" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblWelfare" class="lbl"> </a></td>
-		            <td ><input id="txtWelfare"  type="text" class="txt num c1"/><input id="txtCh_labor_comp"  type="hidden" class="txt num c1"/></td>
-		            <td colspan="2"><select id="combBank" style="display: none;width: 95%;float: right;"> </select></td>
+		            <td ><input id="txtWelfare" type="text" class="txt num c1"/><input id="txtCh_labor_comp" type="hidden" class="txt num c1"/></td>
 		        </tr>
 		        <tr>
 		        	<td ><span> </span><a id="lblTotal3" class="lbl"> </a></td>
-		            <td ><input id="txtTotal3"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtTotal3" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblTotal4" class="lbl"> </a></td>
-		            <td ><input id="txtTotal4"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtTotal4" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblTotal5" class="lbl"> </a></td>
-		            <td ><input id="txtTotal5"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtTotal5" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblBorrow" class="lbl"> </a></td>
-		            <td ><input id="txtBorrow"  type="text" class="txt num c1"/></td>
+		            <td ><input id="txtBorrow" type="text" class="txt num c1"/></td>
 		            <td ><span> </span><a id="lblWorker" class="lbl"> </a></td>
 		            <td ><input id="txtWorker" type="text" class="txt c1"/></td>
+		        </tr>
+		        <tr class="postbank">
+		        	<td style="display: none;" class="date2"><span> </span><a id="lblDate2" class="lbl"> </a></td>
+		            <td style="display: none;" class="date2" ><input id="txtDate2" type="text" class="txt num c1"/></td>
+		            <td style="display: none;" class="bank" colspan="2"><select id="combBank" style="width: 95%;float: right;"> </select></td>
+		            <td colspan="2"><input id="btnPost" type="button" style="float: right;"/></td>
 		        </tr>
 		        </table>
 	        </div>
