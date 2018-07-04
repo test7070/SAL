@@ -141,6 +141,7 @@
                         q_func('qtxt.query.updatesalpresent', 'saladd.txt,updatesalpresent,' + encodeURI($('#txtDatea').val()) + ';' + encodeURI($('#txtSssno').val()));
                     }
                 });
+                
             }
             
             function change_typea() {
@@ -280,6 +281,14 @@
 
             function q_gtPost(t_name) {
                 switch (t_name) {
+                    case 'salpresents':
+                        var as = _q_appendData("salpresents", "", true);
+                            if(as[0]!=undefined){
+                                $('#lblShowtime').text("當日上班時間："+as[0].clockin+"，當日下班時間："+as[0].clockout+"");
+                            }else{
+                                $('#lblShowtime').text("");
+                            }
+                        break;
                     case q_name:
                         if (q_cur == 4)
                             q_Seek_gtPost();
@@ -379,6 +388,11 @@
 
                }
                
+                         
+                if (!(q_cur == 1 || q_cur == 2)){
+                    var t_where = "where=^^ noa='"+$('#txtDatea').val()+"' and sssno='"+$('#txtSssno').val()+"' ^^ stop=999";
+                    q_gt('salpresents', t_where, 0, 0, 0, "salpresents", r_accy, 1);
+                }
             }
 
             function readonly(t_para, empty) {
@@ -390,6 +404,7 @@
                     }
                     $('#txtApv').css('color', 'green').css('background', 'RGB(237,237,237)').attr('readonly', 'readonly');
                 }
+              
             }
 
             function btnMinus(id) {
@@ -605,6 +620,10 @@
 							<input id="txtNamea"  type="text" style="width:50%;"/>
 						</td>
 					</tr>
+					<tr>
+					    <td></td>
+                        <td colspan="3"><span> </span><a id="lblShowtime"> </a></td>
+                    </tr>
 					<tr>
 						<td><span> </span><a id="lblTime" class="lbl"> </a></td>
 						<td colspan="3">
